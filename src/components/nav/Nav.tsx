@@ -1,11 +1,10 @@
 import "./Nav.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../contexts/AuthContext";
 import logo from "../../assets/logo/DarkThemeLogoLandscape-nobg.png";
 import { auth } from "../../data/firebase";
 import { useState } from "react";
 import Login from "../loginpopup/Login";
+import Search from "../search/Search";
 
 function Nav() {
     const user = useAuth();
@@ -25,16 +24,7 @@ function Nav() {
                             <img src={logo} alt="bineast" />
                         </a>
                     </div>
-                    <div className="aca-nav__search">
-                        <input
-                            type="text"
-                            placeholder="Buscar..."
-                            name="navInput"
-                        />
-                        <div className="aca-nav__search__icon">
-                            <FontAwesomeIcon icon={faSearch} />
-                        </div>
-                    </div>
+                    <Search />
                     {user ? (
                         <>
                             <div

@@ -26,9 +26,9 @@ function CourseCard({
                     <img src={img} alt={`course ${id}`} />
                 </div>
                 <div className="course-card__details">
-                    <h3>
+                    <h2>
                         {title.length > 55 ? title.slice(0, 55) + "..." : title}
-                    </h3>
+                    </h2>
                     <p>{description}</p>
                     <div className="tags">
                         <span className="duration">{duration} hours</span>

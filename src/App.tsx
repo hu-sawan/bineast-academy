@@ -8,8 +8,8 @@ import Footer from "./components/footer/Footer";
 function App() {
     return (
         <AuthProvider>
-            <Nav />
             <BrowserRouter>
+                <Nav />
                 <Routes>
                     <Route path="/" element={<Home />} />
                 </Routes>
