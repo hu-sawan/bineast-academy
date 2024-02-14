@@ -1,0 +1,103 @@
+.aca-nav {
+    background-color: black;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .aca-nav__logo {
+        img {
+            width: 140px;
+            display: block;
+        }
+    }
+
+    .aca-nav__search {
+        display: flex;
+        width: 40%;
+        max-width: 400px;
+
+        input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px 0px 0px 5px;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .aca-nav__search__icon {
+            padding: 7.6px 15px;
+            line-height: normal;
+            border: none;
+            border-radius: 0px 5px 5px 0px;
+            background-color: #f1f1f1;
+            color: #333;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #e1e1e1;
+            }
+        }
+    }
+
+    .aca-nav__profile {
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .aca-nav__login {
+        color: white;
+        border: 1px solid white;
+        padding: 5px 20px;
+        border-radius: 5px;
+
+        cursor: pointer;
+    }
+
+    .aca-nav__signout {
+        position: absolute;
+        background-color: black;
+        padding: 18px 30px;
+        right: 0;
+        box-shadow: 0 4px 1px rgba(255, 255, 255, 0.1);
+        top: 95%;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+
+        &.active {
+            opacity: 1;
+            top: 100%;
+            visibility: visible;
+        }
+
+        span {
+            color: white;
+            border: 1px solid white;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    }
+}

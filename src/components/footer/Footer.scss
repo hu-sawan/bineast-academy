@@ -1,0 +1,47 @@
+.aca-footer {
+    color: white;
+    margin-top: min(15%, 120px);
+    padding: 6rem 3rem 1.5rem;
+
+    .aca-footer__separator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        margin-bottom: 50px;
+
+        hr {
+            background-color: white;
+            width: 80%;
+            margin: 24px 0;
+        }
+    }
+
+    .aca-footer__social {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            font-size: 1.25rem;
+            color: inherit;
+            padding: 0 18px;
+            height: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .aca-footer__content {
+        text-align: center;
+        font-size: small;
+
+        a {
+            color: #627eff;
+        }
+        a:not(first-child) {
+            margin-left: 10px;
+        }
+    }
+}
