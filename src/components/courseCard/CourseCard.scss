@@ -1,18 +1,29 @@
 .course-card {
     border-radius: 10px;
-    transition: all 0.3s ease;
     overflow: hidden;
     cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40%;
+    max-width: 300px;
+    align-self: stretch;
+    color: var(--main-text-color);
+    background-color: var(--secondary-background-color);
+
+    @media (max-width: 767px) {
+        width: 47%;
+    }
+    @media (max-width: 454px) {
+        width: 80%;
+    }
 
     &:hover {
         transform: scale(1.02);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 10px var(--box-shadow-color);
     }
 
     .course-card__img {
         width: 100%;
         aspect-ratio: 16/9;
-        background-color: #8080800d;
 
         img {
             display: block;
@@ -26,7 +37,12 @@
     .course-card__details {
         text-align: center;
         padding: 0.7rem 0;
-        background-color: #8080800d;
+
+        h1 {
+            font-size: 21px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
 
         .tags {
             display: flex;

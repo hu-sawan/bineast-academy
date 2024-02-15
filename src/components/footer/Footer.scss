@@ -1,5 +1,5 @@
 .aca-footer {
-    color: white;
+    color: var(--main-text-color);
     margin-top: min(15%, 120px);
     padding: 6rem 3rem 1.5rem;
 
@@ -12,6 +12,7 @@
 
         hr {
             background-color: white;
+            border-top: 1px solid gray;
             width: 80%;
             margin: 24px 0;
         }

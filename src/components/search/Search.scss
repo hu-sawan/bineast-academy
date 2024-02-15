@@ -3,6 +3,12 @@
     display: flex;
     width: 40%;
     max-width: 400px;
+    background-color: var(--light-background-color);
+    border-radius: 5px;
+
+    @media (max-width: 640px) {
+        display: none;
+    }
 
     input {
         flex-grow: 1;
@@ -20,18 +26,18 @@
         line-height: normal;
         border: none;
         border-radius: 0px 5px 5px 0px;
-        background-color: #f1f1f1;
-        color: #333;
+        background-color: var(--search-icon-background-color);
+        color: var(--search-icon-color);
         cursor: pointer;
 
         &:hover {
-            background-color: #e1e1e1;
+            background-color: var(--light-hover);
         }
     }
 
     .suggestion-list {
         position: absolute;
-        background-color: white;
+        background-color: var(--light-background-color);
         top: calc(100% + 1px);
         width: 100%;
         border-radius: 5px;
@@ -42,7 +48,7 @@
             transition: background-color 0.3s ease;
 
             &:not(.no-hover):hover {
-                background-color: #33333315;
+                background-color: var(--light-hover);
             }
         }
     }

@@ -20,15 +20,15 @@ function CourseCard({
     level,
 }: CourseCardProps) {
     return (
-        <Link to={`/course/${id}`}>
-            <div className="course-card">
+        <div className="course-card">
+            <Link to={`/course/${id}`}>
                 <div className="course-card__img">
                     <img src={img} alt={`course ${id}`} />
                 </div>
                 <div className="course-card__details">
-                    <h2>
+                    <h1>
                         {title.length > 55 ? title.slice(0, 55) + "..." : title}
-                    </h2>
+                    </h1>
                     <p>{description}</p>
                     <div className="tags">
                         <span className="duration">{duration} hours</span>
@@ -37,8 +37,8 @@ function CourseCard({
                         </span>
                     </div>
                 </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     );
 }
 

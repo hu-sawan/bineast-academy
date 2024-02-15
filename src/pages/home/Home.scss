@@ -1,26 +1,21 @@
-a {
-    color: inherit;
-}
-
 .home {
     min-height: 100vh;
-    background-color: black;
+    background-color: var(--main-background-color);
 
     .home__featured {
         padding-top: 2rem;
-        color: white;
+        color: var(--main-text-color);
 
         .container {
-            background-color: #8080800d;
             padding: 10px;
-            border: 1px solid #ffffff08;
         }
 
         .home__featured__content {
-            padding: 1.5rem 2rem 0 2rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            padding: 1.5rem 0 0 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px 20px;
+            flex-wrap: wrap;
         }
     }
 }

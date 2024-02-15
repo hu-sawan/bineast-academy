@@ -1,10 +1,11 @@
 .aca-nav {
-    background-color: black;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    background-color: var(--main-background-color);
+    box-shadow: 0 0 10px var(--box-shadow-color);
     z-index: 100;
     position: sticky;
     top: 0;
     left: 0;
+    color: var(--main-text-color);
 
     .container {
         display: flex;
@@ -16,57 +17,82 @@
         img {
             width: 140px;
             display: block;
+
+            @media (max-width: 640px) {
+                width: 100px;
+            }
         }
     }
 
-    .aca-nav__profile {
-        transition: all 0.3s ease;
-        cursor: pointer;
+    .aca-nav__control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
 
-        img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-        }
-
-        &:hover {
-            transform: scale(1.1);
-        }
-    }
-
-    .aca-nav__login {
-        color: white;
-        border: 1px solid white;
-        padding: 5px 20px;
-        border-radius: 5px;
-
-        cursor: pointer;
-    }
-
-    .aca-nav__signout {
-        position: absolute;
-        background-color: black;
-        padding: 18px 30px;
-        right: 0;
-        box-shadow: 0 4px 1px rgba(255, 255, 255, 0.1);
-        top: 95%;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-
-        &.active {
-            opacity: 1;
-            top: 100%;
-            visibility: visible;
-        }
-
-        span {
-            color: white;
-            border: 1px solid white;
-            padding: 10px 20px;
+        .aca-nav__control__theme {
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 21px;
+            padding: 10px 20px;
+            border-radius: 20px;
+
+            &:hover {
+                background-color: var(--main-background-color-hover);
+            }
+        }
+
+        .aca-nav__control__profile {
+            transition: all 0.3s ease;
+            cursor: pointer;
+
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                display: block;
+
+                @media (max-width: 640px) {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+
+        .aca-nav__control__login {
+            border: 1px solid white;
+            padding: 5px 20px;
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .aca-nav__control__signout {
+            position: absolute;
+            background-color: var(--main-background-color);
+            padding: 18px 30px;
+            right: 0;
+            box-shadow: 0 4px 1px rgba(255, 255, 255, 0.1);
+            top: 95%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+
+            &.active {
+                opacity: 1;
+                top: 100%;
+                visibility: visible;
+            }
+
+            span {
+                border: 1px solid white;
+                padding: 10px 20px;
+                cursor: pointer;
+            }
         }
     }
 }
