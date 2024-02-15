@@ -20,7 +20,7 @@ function App() {
 
     return (
         <div>
-            <BrowserRouter>
+            <BrowserRouter basename="/bineast-academy">
                 <Nav />
                 <Routes>
                     <Route path="/" element={<Home />} />
