@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/bineast-academy/static/css/main.b529d307.css",
+    "main.js": "/bineast-academy/static/js/main.5148881a.js",
+    "static/js/592.f90b9fe8.chunk.js": "/bineast-academy/static/js/592.f90b9fe8.chunk.js",
+    "static/media/DarkThemeLogoLandscape-nobg.png": "/bineast-academy/static/media/DarkThemeLogoLandscape-nobg.099369ad09b4dd944288.png",
+    "static/media/LightThemeLogoLandscape-nobg.png": "/bineast-academy/static/media/LightThemeLogoLandscape-nobg.22d1f491836e297a73df.png",
+    "index.html": "/bineast-academy/index.html",
+    "main.b529d307.css.map": "/bineast-academy/static/css/main.b529d307.css.map",
+    "main.5148881a.js.map": "/bineast-academy/static/js/main.5148881a.js.map",
+    "592.f90b9fe8.chunk.js.map": "/bineast-academy/static/js/592.f90b9fe8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b529d307.css",
+    "static/js/main.5148881a.js"
+  ]
+}
