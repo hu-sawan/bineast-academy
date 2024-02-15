@@ -1,6 +1,7 @@
 import "./Nav.scss";
 import { useAuth } from "../../contexts/AuthContext";
-import logo from "../../assets/logo/DarkThemeLogoLandscape-nobg.png";
+import darkLogo from "../../assets/logo/DarkThemeLogoLandscape-nobg.png";
+import lightLogo from "../../assets/logo/LightThemeLogoLandscape-nobg.png";
 import { auth } from "../../data/firebase";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,10 +11,10 @@ import Search from "../search/Search";
 import { useTheme } from "../../contexts/ThemeContext";
 
 function Nav() {
-    const user = useAuth();
     const [active, setActive] = useState<boolean>(false);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
+    const user = useAuth();
     const { theme, toggleTheme } = useTheme();
 
     const handleClose = () => {
@@ -26,7 +27,10 @@ function Nav() {
                 <div className="container">
                     <div className="aca-nav__logo">
                         <a href="/">
-                            <img src={logo} alt="bineast" />
+                            <img
+                                src={theme === "dark" ? darkLogo : lightLogo}
+                                alt="bineast"
+                            />
                         </a>
                     </div>
                     <Search />
