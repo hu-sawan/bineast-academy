@@ -19,6 +19,12 @@ function CourseCard({
     duration,
     level,
 }: CourseCardProps) {
+    const levelObj = {
+        beginner: "is-easy",
+        medium: "is-medium",
+        hard: "is-hard",
+    };
+
     return (
         <div className="course-card">
             <Link to={`/course/${id}`}>
@@ -32,7 +38,13 @@ function CourseCard({
                     <p>{description}</p>
                     <div className="tags">
                         <span className="duration">{duration} hours</span>
-                        <span className={`level ${level.toLowerCase()}`}>
+                        <span
+                            className={`level ${
+                                levelObj[
+                                    level.toLowerCase() as keyof typeof levelObj
+                                ]
+                            }`}
+                        >
                             {level}
                         </span>
                     </div>

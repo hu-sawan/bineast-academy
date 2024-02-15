@@ -8,8 +8,9 @@
     --box-shadow-color: rgba(255, 255, 255, 0.1);
     --search-icon-background-color: #f0f0f0;
     --search-icon-color: #333;
-    --light-background-color: white;
+    --search-background-color: white;
     --main-background-color-hover: rgba(255, 255, 255, 0.1);
+    --signout-shadow-color: rgba(255, 255, 255, 0.1);
 }
 
 .light {
@@ -18,12 +19,13 @@
     --tooltip-background-color: rgba(30, 30, 30, 0.87);
     --main-text-color: black;
     --dark-hover: rgba(0, 0, 0, 0.1);
-    --light-hover: rgba(255, 255, 255, 0.1);
-    --box-shadow-color: rgba(0, 0, 0, 0.1);
-    --search-icon-background-color: #f0f0f0;
+    --light-hover: rgba(0, 0, 0, 0.1);
+    --box-shadow-color: rgba(0, 0, 0, 0.2);
+    --search-icon-background-color: #e0e0e0;
     --search-icon-color: #333;
-    --light-background-color: white;
+    --search-background-color: #eaeaea;
     --main-background-color-hover: rgba(0, 0, 0, 0.1);
+    --signout-shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 body {
@@ -66,4 +68,16 @@ ul {
 a {
     color: inherit;
     text-decoration: none;
+}
+
+.is-easy {
+    background-color: #48c78e;
+}
+
+.is-medium {
+    background-color: #f1c40f;
+}
+
+.is-hard {
+    background-color: #e74c3c;
 }

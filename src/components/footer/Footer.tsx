@@ -28,7 +28,9 @@ function Footer() {
                 <p>
                     Copyright &copy; {CURRENT_YEAR} bineast, All right reserved.
                 </p>
+                <br />
                 <p>Contact: bineast2023@gmail.com</p>
+                <br />
                 <a href="/">Github</a>
             </div>
         </footer>
