@@ -17,6 +17,7 @@
         img {
             width: 140px;
             display: block;
+            pointer-events: none;
 
             @media (max-width: 640px) {
                 width: 100px;

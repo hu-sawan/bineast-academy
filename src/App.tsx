@@ -4,6 +4,7 @@ import Home from "./pages/home/Home";
 import Nav from "./components/nav/Nav";
 import Footer from "./components/footer/Footer";
 import { useTheme } from "./contexts/ThemeContext";
+import Course from "./pages/course/Course";
 
 function App() {
     const { theme } = useTheme();
@@ -24,6 +25,7 @@ function App() {
                 <Nav />
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path={`/course/:id`} element={<Course />} />
                 </Routes>
             </BrowserRouter>
             <Footer />

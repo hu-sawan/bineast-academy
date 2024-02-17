@@ -39,7 +39,7 @@
         font-size: small;
 
         a {
-            color: #627eff;
+            color: var(--link-color);
         }
         a:not(first-child) {
             margin-left: 10px;

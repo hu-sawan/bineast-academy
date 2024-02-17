@@ -1,5 +1,5 @@
 import "./Login.scss";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../data/firebase";
 
@@ -30,7 +30,7 @@ function Login({ close }: Props) {
         <div className="popup">
             <div className="popup-wrapper">
                 <h1>Login</h1>
-                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
+                {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} /> */}
                 <span onClick={() => close()} className="popup-close">
                     Cancel
                 </span>
