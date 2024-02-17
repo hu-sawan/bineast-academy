@@ -9,6 +9,7 @@ type course = {
     level: "Beginner" | "Medium" | "Hard" | "beginner" | "medium" | "hard";
     img: string;
     tags: string[];
+    isPremium: boolean;
 };
 
 // playlist object:
@@ -22,6 +23,7 @@ const courses: course[] = [
         level: "Beginner",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: true,
     },
     {
         id: 2,
@@ -32,6 +34,7 @@ const courses: course[] = [
         level: "Beginner",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: false,
     },
     {
         id: 3,
@@ -42,6 +45,7 @@ const courses: course[] = [
         level: "Beginner",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: false,
     },
     {
         id: 4,
@@ -52,6 +56,7 @@ const courses: course[] = [
         level: "Beginner",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: true,
     },
     {
         id: 5,
@@ -62,6 +67,7 @@ const courses: course[] = [
         level: "Medium",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: true,
     },
     {
         id: 6,
@@ -72,6 +78,7 @@ const courses: course[] = [
         level: "Hard",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: false,
     },
     {
         id: 7,
@@ -82,6 +89,7 @@ const courses: course[] = [
         level: "Beginner",
         img: "https://via.placeholder.com/300x200",
         tags: ["c++", "programming", "beginner"],
+        isPremium: false,
     },
 ];
 
@@ -91,7 +99,7 @@ function Home() {
             <div className="home__featured">
                 <div className="container">
                     <div className="home__featured__wrapper">
-                        <h1>Featured:</h1>
+                        <h1>Courses:</h1>
                         <div className="home__featured__content">
                             {courses.map(
                                 (
@@ -103,6 +111,7 @@ function Home() {
                                         img,
                                         duration,
                                         tags,
+                                        isPremium,
                                     }: course,
                                     idx: number
                                 ) => (
@@ -114,6 +123,7 @@ function Home() {
                                         level={level}
                                         img={img}
                                         tags={tags}
+                                        isPremium={isPremium}
                                         key={idx}
                                     />
                                 )

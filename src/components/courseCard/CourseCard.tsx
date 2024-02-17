@@ -9,6 +9,7 @@ interface CourseCardProps {
     duration: number;
     level: string;
     tags: string[];
+    isPremium: boolean;
 }
 
 function CourseCard({
@@ -18,6 +19,7 @@ function CourseCard({
     description,
     duration,
     level,
+    isPremium,
 }: CourseCardProps) {
     const levelObj = {
         beginner: "is-easy",
@@ -27,7 +29,12 @@ function CourseCard({
 
     return (
         <div className="course-card">
-            <Link to={`/course/${id}`}>
+            {isPremium && (
+                <div className="course-card__premium__ribon">
+                    <span>Premium</span>
+                </div>
+            )}
+            <Link to={`/course/${id}/0`}>
                 <div className="course-card__img">
                     <img src={img} alt={`course ${id}`} />
                 </div>

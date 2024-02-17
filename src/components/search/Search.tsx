@@ -89,7 +89,7 @@ function Search() {
             <input
                 onChange={handleChange}
                 type="text"
-                placeholder="Search..."
+                placeholder="Find Course..."
                 name="navInput"
                 value={word}
             />

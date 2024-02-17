@@ -26,7 +26,7 @@ function Nav() {
             <nav className="aca-nav">
                 <div className="container">
                     <div className="aca-nav__logo">
-                        <a href="/">
+                        <a href="/bineast-academy">
                             <img
                                 src={theme === "dark" ? darkLogo : lightLogo}
                                 alt="bineast"

@@ -5,6 +5,7 @@ import Nav from "./components/nav/Nav";
 import Footer from "./components/footer/Footer";
 import { useTheme } from "./contexts/ThemeContext";
 import Course from "./pages/course/Course";
+import Video from "./components/video/Video";
 
 function App() {
     const { theme } = useTheme();
@@ -25,7 +26,9 @@ function App() {
                 <Nav />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path={`/course/:id`} element={<Course />} />
+                    <Route path={`/course/:id`} element={<Course />}>
+                        <Route path=":vidId" element={<Video />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
             <Footer />
