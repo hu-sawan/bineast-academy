@@ -3,25 +3,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Course.scss";
 import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 
 function Course() {
-    const [countDown, setCountDown] = useState<number>(5);
     const { id } = useParams();
     const user = useAuth();
 
-    console.log(user);
-    if (!user) {
-        return (
-            <>
-                <h1>Not logged in</h1>
-                Return{" "}
-                <Link to="/" style={{ textDecoration: "underline" }}>
-                    Home
-                </Link>
-            </>
-        );
-    }
+    // commented temporary to allow github domain users see content
+    // TODO: remove commments
+    // if (!user) {
+    //     return (
+    //         <>
+    //             <h1>Not logged in</h1>
+    //             Return{" "}
+    //             <Link to="/" style={{ textDecoration: "underline" }}>
+    //                 Home
+    //             </Link>
+    //         </>
+    //     );
+    // }
 
     // API call to get course info and to see if is a premium course
     // const course = apiCall();
