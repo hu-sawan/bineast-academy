@@ -30,8 +30,8 @@ function App() {
                         <Route path=":vidId" element={<Video />} />
                     </Route>
                 </Routes>
+                <Footer />
             </BrowserRouter>
-            <Footer />
         </div>
     );
 }

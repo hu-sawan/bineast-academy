@@ -1,59 +1,72 @@
 .course {
-    .course__head {
-        margin: 20px 0;
-        display: flex;
-        gap: 10px;
-        align-items: center;
+    margin-top: 20px;
 
-        .course__head__back {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            font-size: 22px;
-            border-radius: 50%;
-            transition: background-color 0.3 ease;
-
-            &:hover {
-                background-color: var(--dark-hover);
-            }
-        }
-    }
     .wrapper {
         background-color: var(--secondary-background-color);
         display: flex;
 
         .course__nav {
-            width: 35%;
+            width: 25%;
             min-width: 300px;
             max-width: 400px;
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            position: sticky;
+            top: 0;
 
-            a {
+            .course__nav__head {
+                margin: 20px 0;
                 display: flex;
-                align-items: center;
                 gap: 10px;
-                padding: 10px 20px;
-                transition: background-color 0.3s ease;
+                align-items: center;
+                padding: 0 0 0 20px;
 
-                &:hover {
-                    background-color: var(--dark-hover);
-                }
-
-                &.active {
-                    background-color: var(--dark-hover);
-                }
-
-                .course__nav__id {
-                    color: white;
-                    display: grid;
-                    place-items: center;
-                    width: 30px;
-                    height: 30px;
-                    background-color: blue;
+                .course__nav__head__back {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 22px;
                     border-radius: 50%;
+                    transition: background-color 0.3 ease;
+
+                    &:hover {
+                        background-color: var(--dark-hover);
+                    }
+                }
+            }
+
+            .course__nav__list {
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 10px 20px;
+                    transition: background-color 0.3s ease;
+
+                    &:hover {
+                        background-color: var(--dark-hover);
+                    }
+
+                    &.active {
+                        background-color: var(--dark-hover);
+                    }
+
+                    .course__nav__id {
+                        color: white;
+                        display: grid;
+                        place-items: center;
+                        width: 30px;
+                        height: 30px;
+                        background-color: blue;
+                        border-radius: 50%;
+                    }
                 }
             }
         }

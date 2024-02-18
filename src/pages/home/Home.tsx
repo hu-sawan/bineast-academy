@@ -1,4 +1,5 @@
 import CourseCard from "../../components/courseCard/CourseCard";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Home.scss";
 
 type course = {

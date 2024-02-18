@@ -2,10 +2,8 @@
     background-color: var(--main-background-color);
     box-shadow: 0 0 10px var(--box-shadow-color);
     z-index: 100;
-    position: sticky;
-    top: 0;
-    left: 0;
     color: var(--main-text-color);
+    position: relative;
 
     .container {
         display: flex;

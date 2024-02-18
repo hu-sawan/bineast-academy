@@ -12,6 +12,7 @@
     --main-background-color-hover: rgba(255, 255, 255, 0.1);
     --signout-shadow-color: rgba(255, 255, 255, 0.1);
     --link-color: #627eff;
+    --scroll-bar-thumb-color: #4d4d4d;
 }
 
 .light {
@@ -28,6 +29,7 @@
     --main-background-color-hover: rgba(0, 0, 0, 0.1);
     --signout-shadow-color: rgba(0, 0, 0, 0.1);
     --link-color: #2d53ff;
+    --scroll-bar-thumb-color: #b3b3b3;
 }
 
 body {
@@ -83,4 +85,13 @@ a {
 
 .is-hard {
     background-color: #e74c3c;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--main-background-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-thumb-color);
 }

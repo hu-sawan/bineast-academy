@@ -1,37 +1,69 @@
 import "./Login.scss";
-// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { GoogleAuthProvider } from "firebase/auth";
+import {
+    Auth,
+    OAuthProvider,
+    getRedirectResult,
+    signInWithRedirect,
+} from "firebase/auth";
 import { auth } from "../../data/firebase";
+import googleLogo from "../../assets/providers/google.png";
+import { useEffect, useState } from "react";
+
+type SupportedProviders = "google" | "facebook" | "github";
+
+const providers: Record<SupportedProviders, OAuthProvider> = {
+    google: new OAuthProvider("google.com"),
+    facebook: new OAuthProvider("facebook.com"),
+    github: new OAuthProvider("github.com"),
+};
 
 interface Props {
     close: () => void;
 }
 
 function Login({ close }: Props) {
-    const uiConfig = {
-        // Popup signin flow rather than redirect flow.
-        signInFlow: "popup",
-        // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-        signInSuccessUrl: "/bineast-academy",
-        // We will display Google and Facebook as auth providers.
-        signInOptions: [
-            {
-                provider: GoogleAuthProvider.PROVIDER_ID,
-                customParameters: {
-                    // Forces account selection even when one account
-                    // is available.
-                    prompt: "select_account",
-                },
-                providerName: "Google",
-            },
-        ],
+    const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        setLoading(true);
+        // TODO: handle error
+        getRedirectResult(auth)
+            .then((res) => {
+                if (!res) return;
+            })
+            .catch((error) => {})
+            .finally(() => setLoading(false));
+    }, []);
+
+    const handleSignInWithProvider = async (
+        auth: Auth,
+        providerName: SupportedProviders
+    ) => {
+        const provider = providers[providerName];
+
+        if (!provider) throw new Error(`Unsupported provider ${providerName}`);
+        // TODO: handle error
+        signInWithRedirect(auth, provider)
+            .then(() => {
+                close();
+            })
+            .catch((error) => {
+                close();
+            });
     };
+
     return (
         <div className="popup">
-            <div className="popup-wrapper">
+            <div className="popup__wrapper">
                 <h1>Login</h1>
-                {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} /> */}
-                <span onClick={() => close()} className="popup-close">
+                <div className="popup__wrapper__providers">
+                    <button
+                        onClick={() => handleSignInWithProvider(auth, "google")}
+                    >
+                        <img src={googleLogo} alt="google" /> Google
+                    </button>
+                </div>
+                <span onClick={() => close()} className="popup__close">
                     Cancel
                 </span>
             </div>

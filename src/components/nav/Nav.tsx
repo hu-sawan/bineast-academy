@@ -21,6 +21,10 @@ function Nav() {
         setShowPopup(false);
     };
 
+    const handleSignOut = () => {
+        auth.signOut();
+    };
+
     return (
         <>
             <nav className="aca-nav">
@@ -56,7 +60,7 @@ function Nav() {
                                         active ? "active" : null
                                     }`}
                                 >
-                                    <span onClick={() => auth.signOut()}>
+                                    <span onClick={handleSignOut}>
                                         Sign Out
                                     </span>
                                 </div>

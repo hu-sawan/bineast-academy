@@ -10,15 +10,47 @@
     z-index: 1000;
     animation: fade-in 0.2s linear forwards;
 
-    .popup-wrapper {
+    .popup__wrapper {
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0px 0px 10px 0px #000;
         width: 300px;
         text-align: center;
+        color: black;
 
-        .popup-close {
+        &__providers {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+
+            button {
+                width: fit-content;
+                border: none;
+                outline: none;
+                margin: auto;
+                padding: 5px 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+
+                font: {
+                    size: 18px;
+                }
+
+                img {
+                    width: 25px;
+                    height: 25px;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        .popup__close {
             font-weight: bold;
             color: red;
             border: 2px solid red;
