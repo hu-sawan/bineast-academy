@@ -1,100 +1,37 @@
+import { useEffect, useState } from "react";
 import CourseCard from "../../components/courseCard/CourseCard";
-import { useAuth } from "../../contexts/AuthContext";
+// import { useAuth } from "../../contexts/AuthContext";
 import "./Home.scss";
 
 type course = {
-    id: number;
+    id: string;
     title: string;
     description: string;
-    duration: number;
-    level: "Beginner" | "Medium" | "Hard" | "beginner" | "medium" | "hard";
-    img: string;
-    tags: string[];
+    durationInMinutes: number;
+    level:
+        | "Beginner"
+        | "Intermediate"
+        | "Advanced"
+        | "beginner"
+        | "intermediate"
+        | "advanced";
+    imgUrl: string;
     isPremium: boolean;
 };
 
-// playlist object:
-const courses: course[] = [
-    {
-        id: 1,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Beginner",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: true,
-    },
-    {
-        id: 2,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Beginner",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: false,
-    },
-    {
-        id: 3,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Beginner",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: false,
-    },
-    {
-        id: 4,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Beginner",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: true,
-    },
-    {
-        id: 5,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Medium",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: true,
-    },
-    {
-        id: 6,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Hard",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: false,
-    },
-    {
-        id: 7,
-        title: "Intro to programming with c++",
-        description:
-            "mastering c++ from 0 to Hero I want to see how long txt is handled",
-        duration: 4.5,
-        level: "Beginner",
-        img: "https://via.placeholder.com/300x200",
-        tags: ["c++", "programming", "beginner"],
-        isPremium: false,
-    },
-];
-
 function Home() {
+    const [courses, setCourses] = useState<course[]>([]);
+
+    useEffect(() => {
+        const getCourses = async () => {
+            const response = await fetch("http://localhost:5050/api/courses");
+            const data = await response.json();
+            setCourses(data);
+        };
+
+        getCourses();
+    }, []);
+
     return (
         <div className="home">
             <div className="home__featured">
@@ -109,9 +46,8 @@ function Home() {
                                         title,
                                         description,
                                         level,
-                                        img,
-                                        duration,
-                                        tags,
+                                        imgUrl,
+                                        durationInMinutes,
                                         isPremium,
                                     }: course,
                                     idx: number
@@ -120,10 +56,9 @@ function Home() {
                                         id={id}
                                         title={title}
                                         description={description}
-                                        duration={duration}
+                                        durationInMinutes={durationInMinutes}
                                         level={level}
-                                        img={img}
-                                        tags={tags}
+                                        img={imgUrl}
                                         isPremium={isPremium}
                                         key={idx}
                                     />

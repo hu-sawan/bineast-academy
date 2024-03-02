@@ -26,8 +26,8 @@ function App() {
                 <Nav />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path={`/course/:id`} element={<Course />}>
-                        <Route path=":vidId" element={<Video />} />
+                    <Route path={`/course/:courseId`} element={<Course />}>
+                        <Route path=":orderNb" element={<Video />} />
                     </Route>
                 </Routes>
                 <Footer />

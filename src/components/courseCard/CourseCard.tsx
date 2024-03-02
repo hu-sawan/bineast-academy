@@ -2,13 +2,12 @@ import "./CourseCard.scss";
 import { Link } from "react-router-dom";
 
 interface CourseCardProps {
-    id: number;
+    id: string;
     img: string;
     title: string;
     description: string;
-    duration: number;
+    durationInMinutes: number;
     level: string;
-    tags: string[];
     isPremium: boolean;
 }
 
@@ -17,24 +16,24 @@ function CourseCard({
     img,
     title,
     description,
-    duration,
+    durationInMinutes,
     level,
     isPremium,
 }: CourseCardProps) {
     const levelObj = {
         beginner: "is-easy",
-        medium: "is-medium",
-        hard: "is-hard",
+        intermediate: "is-medium",
+        advanced: "is-hard",
     };
 
     return (
         <div className="course-card">
-            {isPremium && (
+            {!!isPremium && (
                 <div className="course-card__premium__ribon">
                     <span>Premium</span>
                 </div>
             )}
-            <Link to={`/course/${id}/0`}>
+            <Link to={`/course/${id}/1`}>
                 <div className="course-card__img">
                     <img src={img} alt={`course ${id}`} />
                 </div>
@@ -44,7 +43,9 @@ function CourseCard({
                     </h1>
                     <p>{description}</p>
                     <div className="tags">
-                        <span className="duration">{duration} hours</span>
+                        <span className="duration">
+                            {durationInMinutes / 60} hours
+                        </span>
                         <span
                             className={`level ${
                                 levelObj[

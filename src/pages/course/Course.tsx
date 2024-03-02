@@ -3,58 +3,81 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Course.scss";
 import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+
+interface userInfoInterface {
+    id: string;
+    email: string;
+    role: string;
+    isPremium: boolean;
+}
+
+// ! will change
+interface courseVideos {
+    orderNb: number;
+    title: string;
+}
 
 function Course() {
-    const { id } = useParams();
+    const { courseId } = useParams();
+    const [userInfo, setUserInfo] = useState<userInfoInterface | null>(null);
+    const [courseVideos, setCourseVideos] = useState<courseVideos[]>([]);
     const user = useAuth();
+
+    // Get userInfo from our database to check if he is a premium User or not
+    // useEffect(() => {
+    //     const fetchUser = async () => {
+    //         try {
+    //             const response = await fetch(
+    //                 `http://localhost:5050/api/user/${user?.uid}`
+    //             );
+
+    //             if (!response.ok) throw new Error("something wrong happened!");
+
+    //             const data = await response.json();
+    //             setUserInfo(data);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    //     if (user) fetchUser();
+    // }, [user]);
+
+    // get all related videos we need only the title and orderNb
+    useEffect(() => {
+        const getVideos = async () => {
+            const response = await fetch(
+                `http://localhost:5050/api/courses/${courseId}`
+            );
+            const data = await response.json();
+            setCourseVideos(data);
+        };
+
+        getVideos();
+    }, [courseId]);
 
     // commented temporary to allow github domain users see content
     // TODO: remove commments
-    // if (!user) {
-    //     return (
-    //         <>
-    //             <h1>Not logged in</h1>
-    //             Return{" "}
-    //             <Link to="/" style={{ textDecoration: "underline" }}>
-    //                 Home
-    //             </Link>
-    //         </>
-    //     );
-    // }
+    if (!user) {
+        return (
+            <>
+                <h1>Not logged in</h1>
+                Return{" "}
+                <Link to="/" style={{ textDecoration: "underline" }}>
+                    Home
+                </Link>
+            </>
+        );
+    }
 
     // API call to get course info and to see if is a premium course
     // const course = apiCall();
 
     // if it is a premium course and no user is signed or he is not a premium member then deny acces
-    // if (courses.isPremium && (!user || user.isPremium === false))
+    // if (courses.isPremium && userInfo.isPremium === false)
     //     return <AccessDenied />; // TODO: implement AccessDenied Page
 
     // API call to get all videos related to this course:
-
-    // ! will change
-    interface courseVideos {
-        vidId: number;
-        title: string;
-    }
-    const courses: courseVideos[] = [
-        { vidId: 0, title: "Base" },
-        { vidId: 1, title: "Introduction to loops - first part part" },
-        { vidId: 2, title: "First video" },
-        { vidId: 3, title: "Second video" },
-        { vidId: 4, title: "Third video" },
-        { vidId: 5, title: "Fourth video" },
-        { vidId: 6, title: "Fifth video" },
-        { vidId: 7, title: "Sixth video" },
-        { vidId: 8, title: "Seventh video" },
-        { vidId: 9, title: "Eighth video" },
-        { vidId: 10, title: "Ninth video" },
-        { vidId: 11, title: "Tenth video" },
-        { vidId: 12, title: "Eleventh video" },
-        { vidId: 13, title: "Twelfth video" },
-        { vidId: 14, title: "Thirteenth video" },
-        { vidId: 15, title: "Fourteenth video" },
-        { vidId: 16, title: "Fifteenth video" },
-    ];
 
     return (
         <div className="container">
@@ -73,43 +96,47 @@ function Course() {
                                     icon={faArrowLeft}
                                 />
                             </Link>
-                            <h1>Course {id}</h1>
+                            {/* make it display the course title */}
+                            {/* <h1 data-tooltip={courseTitle.length > 20 ? courseTitle ? null}>Course {id}</h1> */}
+                            <h1>Course {courseId}</h1>
                         </div>
                         <div className="course__nav__list">
-                            {courses.map(({ vidId, title }: courseVideos) => {
-                                const TEXT_OFFSET: number = 35;
-                                const isLong = title.length > TEXT_OFFSET;
-                                return (
-                                    <NavLink
-                                        data-tooltip={isLong ? title : null}
-                                        key={vidId}
-                                        to={`/course/${id}/${vidId}`}
-                                        className={({ isActive }) => {
-                                            let class_name = "";
+                            {courseVideos.map(
+                                ({ orderNb, title }: courseVideos) => {
+                                    const TEXT_OFFSET: number = 35;
+                                    const isLong = title.length > TEXT_OFFSET;
+                                    return (
+                                        <NavLink
+                                            data-tooltip={isLong ? title : null}
+                                            key={orderNb}
+                                            to={`/course/${courseId}/${orderNb}`}
+                                            className={({ isActive }) => {
+                                                let class_name = "";
 
-                                            if (isActive)
-                                                class_name += "active ";
+                                                if (isActive)
+                                                    class_name += "active ";
 
-                                            if (isLong)
-                                                class_name += "tooltip top";
+                                                if (isLong)
+                                                    class_name += "tooltip top";
 
-                                            return class_name;
-                                        }}
-                                    >
-                                        <span className="course__nav__id">
-                                            {vidId}
-                                        </span>
-                                        <span className="course__nav__title">
-                                            {isLong
-                                                ? `${title.slice(
-                                                      0,
-                                                      TEXT_OFFSET + 1
-                                                  )}...`
-                                                : title}
-                                        </span>
-                                    </NavLink>
-                                );
-                            })}
+                                                return class_name;
+                                            }}
+                                        >
+                                            <span className="course__nav__id">
+                                                {orderNb}
+                                            </span>
+                                            <span className="course__nav__title">
+                                                {isLong
+                                                    ? `${title.slice(
+                                                          0,
+                                                          TEXT_OFFSET + 1
+                                                      )}...`
+                                                    : title}
+                                            </span>
+                                        </NavLink>
+                                    );
+                                }
+                            )}
                         </div>
                     </div>
                     <Outlet />

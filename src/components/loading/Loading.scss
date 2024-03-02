@@ -1,0 +1,43 @@
+.loading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__spinner {
+        display: flex;
+        gap: 4px;
+        margin: 0 auto;
+
+        div {
+            width: 20px;
+            height: 20px;
+            background-color: var(--loading-spinner-color);
+            border-radius: 100%;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        div:nth-child(1) {
+            animation-delay: 0.16s;
+        }
+        div:nth-child(2) {
+            animation-delay: 0.32s;
+        }
+        div:nth-child(3) {
+            animation-delay: 0.48s;
+        }
+        div:nth-child(4) {
+            animation-delay: 0.64s;
+        }
+
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+    }
+}
