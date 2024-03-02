@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CourseCard from "../../components/courseCard/CourseCard";
 // import { useAuth } from "../../contexts/AuthContext";
 import "./Home.scss";
+import Loading from "../../components/loading/Loading";
 
 type course = {
     id: string;
@@ -21,12 +22,19 @@ type course = {
 
 function Home() {
     const [courses, setCourses] = useState<course[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const getCourses = async () => {
-            const response = await fetch("http://localhost:5050/api/courses");
-            const data = await response.json();
-            setCourses(data);
+            try {
+                setLoading(true);
+                const response = await fetch(
+                    "http://localhost:5050/api/courses"
+                );
+                const data = await response.json();
+                setCourses(data);
+                setLoading(false);
+            } catch (err) {}
         };
 
         getCourses();
@@ -34,6 +42,7 @@ function Home() {
 
     return (
         <div className="home">
+            {loading && <Loading />}
             <div className="home__featured">
                 <div className="container">
                     <div className="home__featured__wrapper">

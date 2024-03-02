@@ -44,7 +44,7 @@ function CourseCard({
                     <p>{description}</p>
                     <div className="tags">
                         <span className="duration">
-                            {durationInMinutes / 60} hours
+                            {(durationInMinutes / 60).toFixed(2)} hours
                         </span>
                         <span
                             className={`level ${

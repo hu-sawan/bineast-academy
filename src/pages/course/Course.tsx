@@ -102,7 +102,7 @@ function Course() {
                         </div>
                         <div className="course__nav__list">
                             {courseVideos.map(
-                                ({ orderNb, title }: courseVideos) => {
+                                ({ orderNb, title }: courseVideos, idx) => {
                                     const TEXT_OFFSET: number = 35;
                                     const isLong = title.length > TEXT_OFFSET;
                                     return (
@@ -117,7 +117,11 @@ function Course() {
                                                     class_name += "active ";
 
                                                 if (isLong)
-                                                    class_name += "tooltip top";
+                                                    class_name += `tooltip ${
+                                                        idx === 0
+                                                            ? "bottom"
+                                                            : "top"
+                                                    }`;
 
                                                 return class_name;
                                             }}

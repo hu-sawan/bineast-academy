@@ -1,8 +1,13 @@
 .loading {
     width: 100%;
+    min-height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+
     &__spinner {
         display: flex;
         gap: 4px;

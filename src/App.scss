@@ -6,8 +6,7 @@
 .tooltip {
     &::before {
         content: attr(data-tooltip);
-        display: inline-block;
-        position: absolute;
+        display: block;
         background-color: var(--tooltip-background-color);
         color: white;
         padding: 8px 16px;
@@ -40,12 +39,9 @@
         left: 50%;
         transform: translateX(-50%);
     }
-}
 
-.tooltip {
     &::after {
         content: "";
-        position: absolute;
         border-width: 7px;
         border-style: solid;
         pointer-events: none;
@@ -89,6 +85,11 @@
     }
 }
 
+.tooltip::before,
+.tooltip::after {
+    position: absolute;
+    z-index: 1001;
+}
 .tooltip:hover::before,
 .tooltip:hover::after {
     opacity: 1;

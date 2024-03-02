@@ -18,11 +18,13 @@ function Video() {
 
     useEffect(() => {
         const getVideo = async () => {
-            const response = await fetch(
-                `http://localhost:5050/api/courses/${courseId}/${orderNb}`
-            );
-            const data = await response.json();
-            setVideo(data[0]);
+            try {
+                const response = await fetch(
+                    `http://localhost:5050/api/courses/${courseId}/${orderNb}`
+                );
+                const data = await response.json();
+                setVideo(data[0]);
+            } catch (err) {}
         };
 
         getVideo();
