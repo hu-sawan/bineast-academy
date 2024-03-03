@@ -1,9 +1,11 @@
+import "./Course.scss";
 import { useAuth } from "../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./Course.scss";
 import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import Loading from "../../components/loading/Loading";
+import ErrorCard from "../../components/error/ErrorCard";
 
 interface userInfoInterface {
     id: string;
@@ -16,12 +18,15 @@ interface userInfoInterface {
 interface courseVideos {
     orderNb: number;
     title: string;
+    courseTitle: string;
 }
 
 function Course() {
     const { courseId } = useParams();
-    const [userInfo, setUserInfo] = useState<userInfoInterface | null>(null);
+    // const [userInfo, setUserInfo] = useState<userInfoInterface | null>(null);
     const [courseVideos, setCourseVideos] = useState<courseVideos[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>("");
     const user = useAuth();
 
     // Get userInfo from our database to check if he is a premium User or not
@@ -46,11 +51,21 @@ function Course() {
     // get all related videos we need only the title and orderNb
     useEffect(() => {
         const getVideos = async () => {
-            const response = await fetch(
-                `http://localhost:5050/api/courses/${courseId}`
-            );
-            const data = await response.json();
-            setCourseVideos(data);
+            try {
+                setLoading(true);
+                const response = await fetch(
+                    `http://localhost:5050/api/courses/${courseId}`
+                );
+                const data = await response.json();
+                setCourseVideos(data);
+                setLoading(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    setError("Something wrong happened!");
+                } else {
+                    setError("Error fetching data from server");
+                }
+            }
         };
 
         getVideos();
@@ -79,26 +94,48 @@ function Course() {
 
     // API call to get all videos related to this course:
 
+    const isCourseTitleLong = loading
+        ? false
+        : courseVideos[0].courseTitle.length > 65;
+
+    if (error) return <ErrorCard message={error} />;
+
     return (
         <div className="container">
             <div className="course">
+                {loading && <Loading />}
                 <div className="wrapper">
                     <div className="course__nav">
-                        {/* TODO: change it with the actual name */}
                         <div className="course__nav__head">
                             <Link
                                 className="course__nav__head__back tooltip bottom"
                                 to="/"
-                                data-tooltip="back"
+                                data-tooltip="home"
                             >
                                 <FontAwesomeIcon
                                     className="course__nav__head__icon"
                                     icon={faArrowLeft}
                                 />
                             </Link>
-                            {/* make it display the course title */}
-                            {/* <h1 data-tooltip={courseTitle.length > 20 ? courseTitle ? null}>Course {id}</h1> */}
-                            <h1>Course {courseId}</h1>
+
+                            <h2
+                                data-tooltip={`${
+                                    isCourseTitleLong
+                                        ? courseVideos[0].courseTitle
+                                        : null
+                                }`}
+                                className={`${
+                                    isCourseTitleLong ? "tooltip bottom" : null
+                                }`}
+                            >
+                                {!loading &&
+                                    (isCourseTitleLong
+                                        ? `${courseVideos[0].courseTitle.slice(
+                                              0,
+                                              65
+                                          )}...`
+                                        : courseVideos[0].courseTitle)}
+                            </h2>
                         </div>
                         <div className="course__nav__list">
                             {courseVideos.map(

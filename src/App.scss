@@ -4,6 +4,12 @@
 }
 
 .tooltip {
+    &::before,
+    &::after {
+        position: absolute;
+        z-index: 100;
+    }
+
     &::before {
         content: attr(data-tooltip);
         display: block;
@@ -83,16 +89,11 @@
         left: 50%;
         transform: translateX(-50%);
     }
-}
 
-.tooltip::before,
-.tooltip::after {
-    position: absolute;
-    z-index: 1001;
-}
-.tooltip:hover::before,
-.tooltip:hover::after {
-    opacity: 1;
-    visibility: visible;
-    z-index: 1001;
+    &:hover::before,
+    &:hover::after {
+        opacity: 1;
+        visibility: visible;
+        z-index: 100;
+    }
 }

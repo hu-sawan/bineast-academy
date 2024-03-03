@@ -1,22 +1,47 @@
+// Define sizes using a map
+$sizes: (
+    large: 20px,
+    medium: 10px,
+    small: 5px,
+);
+
+// Define mixin to set size based on class
+@mixin setSize($size) {
+    width: $size;
+    height: $size;
+}
+
 .loading {
     width: 100%;
     min-height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    &__spinner {
+    &.absolute {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    @each $class, $size in $sizes {
+        &.#{$class} {
+            .loading__animation {
+                div {
+                    @include setSize($size);
+                }
+            }
+        }
+    }
+
+    &__animation {
         display: flex;
         gap: 4px;
         margin: 0 auto;
 
         div {
-            width: 20px;
-            height: 20px;
-            background-color: var(--loading-spinner-color);
+            background-color: var(--loading-boxes-color);
             border-radius: 100%;
             display: inline-block;
             animation: bounce 1.4s infinite ease-in-out both;

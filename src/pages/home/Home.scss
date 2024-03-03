@@ -1,17 +1,23 @@
 .home {
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--main-background-color);
-    position: relative;
 
-    .home__featured {
+    &__featured {
+        height: 100%;
         padding-top: 2rem;
         color: var(--main-text-color);
 
         .container {
             padding: 10px;
+            height: 100%;
         }
 
-        .home__featured__content {
+        &__wrapper {
+            height: 80%;
+            position: relative;
+        }
+
+        &__content {
             padding: 1.5rem 0 0 0;
             display: flex;
             justify-content: center;

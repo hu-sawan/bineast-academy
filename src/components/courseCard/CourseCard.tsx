@@ -33,7 +33,7 @@ function CourseCard({
                     <span>Premium</span>
                 </div>
             )}
-            <Link to={`/course/${id}/1`}>
+            <Link to={`/course/${id}`}>
                 <div className="course-card__img">
                     <img src={img} alt={`course ${id}`} />
                 </div>

@@ -1,0 +1,42 @@
+.error {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #e74c3ca1;
+        font-size: 20px;
+        gap: 20px;
+
+        .icon {
+            width: 50px;
+            height: 50px;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+            font-size: 38px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
