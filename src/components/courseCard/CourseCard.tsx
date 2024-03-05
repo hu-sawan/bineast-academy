@@ -9,6 +9,7 @@ interface CourseCardProps {
     durationInMinutes: number;
     level: string;
     isPremium: boolean;
+    setCourseId: (couresId: string) => void;
 }
 
 function CourseCard({
@@ -19,6 +20,7 @@ function CourseCard({
     durationInMinutes,
     level,
     isPremium,
+    setCourseId,
 }: CourseCardProps) {
     const levelObj = {
         beginner: "is-easy",
@@ -27,7 +29,7 @@ function CourseCard({
     };
 
     return (
-        <div className="course-card">
+        <div className="course-card" onClick={() => setCourseId(id)}>
             {!!isPremium && (
                 <div className="course-card__premium__ribon">
                     <span>Premium</span>

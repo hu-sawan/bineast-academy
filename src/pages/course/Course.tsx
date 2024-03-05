@@ -1,25 +1,13 @@
 import "./Course.scss";
-import { useAuth } from "../../contexts/AuthContext";
+// import { useAuth } from "../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import Loading from "../../components/loading/Loading";
 import ErrorCard from "../../components/error/ErrorCard";
-
-interface userInfoInterface {
-    id: string;
-    email: string;
-    role: string;
-    isPremium: boolean;
-}
-
-// ! will change
-interface courseVideos {
-    orderNb: number;
-    title: string;
-    courseTitle: string;
-}
+import { courseVideos } from "../../types/types";
+import { useCourse } from "../../contexts/CourseContext";
 
 function Course() {
     const { courseId } = useParams();
@@ -27,7 +15,10 @@ function Course() {
     const [courseVideos, setCourseVideos] = useState<courseVideos[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
-    const user = useAuth();
+    const courseDetails = useCourse();
+
+    console.log("courseDetails: ", courseDetails);
+    // const user = useAuth();
 
     // Get userInfo from our database to check if he is a premium User or not
     // useEffect(() => {
@@ -54,9 +45,10 @@ function Course() {
             try {
                 setLoading(true);
                 const response = await fetch(
-                    `http://localhost:5050/api/courses/${courseId}`
+                    `http://localhost:5050/api/videos/${courseId}/U001`
                 );
                 const data = await response.json();
+                console.log("data: ", data);
                 setCourseVideos(data);
                 setLoading(false);
             } catch (error) {
@@ -73,17 +65,17 @@ function Course() {
 
     // commented temporary to allow github domain users see content
     // TODO: remove commments
-    if (!user) {
-        return (
-            <>
-                <h1>Not logged in</h1>
-                Return{" "}
-                <Link to="/" style={{ textDecoration: "underline" }}>
-                    Home
-                </Link>
-            </>
-        );
-    }
+    // if (!user) {
+    //     return (
+    //         <>
+    //             <h1>Not logged in</h1>
+    //             Return{" "}
+    //             <Link to="/" style={{ textDecoration: "underline" }}>
+    //                 Home
+    //             </Link>
+    //         </>
+    //     );
+    // }
 
     // API call to get course info and to see if is a premium course
     // const course = apiCall();
@@ -94,9 +86,11 @@ function Course() {
 
     // API call to get all videos related to this course:
 
-    const isCourseTitleLong = loading
-        ? false
-        : courseVideos[0].courseTitle.length > 65;
+    const isCourseTitleLong = false;
+    // TODO: use courseTitle from the context
+    // loading
+    //     ? false
+    //     : courseVideos[0].courseTitle.length > 65;
 
     if (error) return <ErrorCard message={error} />;
 
@@ -118,7 +112,7 @@ function Course() {
                                 />
                             </Link>
 
-                            <h2
+                            {/* <h2
                                 data-tooltip={`${
                                     isCourseTitleLong
                                         ? courseVideos[0].courseTitle
@@ -135,7 +129,7 @@ function Course() {
                                               65
                                           )}...`
                                         : courseVideos[0].courseTitle)}
-                            </h2>
+                            </h2> */}
                         </div>
                         <div className="course__nav__list">
                             {courseVideos.map(

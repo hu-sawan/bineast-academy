@@ -4,27 +4,14 @@ import CourseCard from "../../components/courseCard/CourseCard";
 import "./Home.scss";
 import Loading from "../../components/loading/Loading";
 import ErrorCard from "../../components/error/ErrorCard";
-
-type course = {
-    id: string;
-    title: string;
-    description: string;
-    durationInMinutes: number;
-    level:
-        | "Beginner"
-        | "Intermediate"
-        | "Advanced"
-        | "beginner"
-        | "intermediate"
-        | "advanced";
-    imgUrl: string;
-    isPremium: boolean;
-};
+import { course } from "../../types/types";
+import { useCourse } from "../../contexts/CourseContext";
 
 function Home() {
     const [courses, setCourses] = useState<course[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const { setCourseId } = useCourse();
 
     useEffect(() => {
         const getCourses = async () => {
@@ -81,6 +68,7 @@ function Home() {
                                         img={imgUrl}
                                         isPremium={isPremium}
                                         key={idx}
+                                        setCourseId={setCourseId}
                                     />
                                 )
                             )}

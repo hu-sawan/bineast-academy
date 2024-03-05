@@ -6,6 +6,7 @@ import Footer from "./components/footer/Footer";
 import { useTheme } from "./contexts/ThemeContext";
 import Course from "./pages/course/Course";
 import Video from "./components/video/Video";
+import { CourseProvider } from "./contexts/CourseContext";
 
 function App() {
     const { theme } = useTheme();
@@ -22,16 +23,18 @@ function App() {
 
     return (
         <div>
+            <Nav />
             <BrowserRouter basename="/bineast-academy">
-                <Nav />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path={`/course/:courseId`} element={<Course />}>
-                        <Route path=":orderNb" element={<Video />} />
-                    </Route>
-                </Routes>
-                <Footer />
+                <CourseProvider>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path={`/course/:courseId`} element={<Course />}>
+                            <Route path=":orderNb" element={<Video />} />
+                        </Route>
+                    </Routes>
+                </CourseProvider>
             </BrowserRouter>
+            <Footer />
         </div>
     );
 }
