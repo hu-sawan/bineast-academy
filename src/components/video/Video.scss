@@ -31,7 +31,7 @@
 
     &__nav {
         display: flex;
-        // justify-content: flex-end;
+        justify-content: flex-end;
         align-items: center;
         gap: 20px;
 
@@ -41,6 +41,16 @@
             padding: 5px 20px;
             background-color: transparent;
             color: var(--main-text-color);
+
+            &.done-btn {
+                background-color: #3fb24b;
+                border-color: #3fb24b;
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
         }
     }
 }

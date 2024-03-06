@@ -17,27 +17,57 @@
 
             .course__nav__head {
                 margin: 20px 0;
-                display: flex;
-                gap: 10px;
-                align-items: center;
                 padding: 0 0 0 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
 
-                h2 {
-                    font-size: 20px;
+                &__title {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+
+                    &__back {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-width: 40px;
+                        height: 40px;
+                        font-size: 22px;
+                        border-radius: 50%;
+                        transition: background-color 0.3 ease;
+
+                        &:hover {
+                            background-color: var(--dark-hover);
+                        }
+                    }
+
+                    h2 {
+                        font-size: 20px;
+                    }
                 }
 
-                .course__nav__head__back {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-width: 40px;
-                    height: 40px;
-                    font-size: 22px;
-                    border-radius: 50%;
-                    transition: background-color 0.3 ease;
+                .done__videos {
+                    text-align: center;
 
-                    &:hover {
-                        background-color: var(--dark-hover);
+                    &__progress {
+                        display: inline-block;
+                        margin-top: 5px;
+                        width: 80%;
+                        height: 10px;
+                        margin: auto;
+                        background-color: white;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        position: relative;
+
+                        span {
+                            height: 100%;
+                            background-color: #3fb24b;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                        }
                     }
                 }
             }
@@ -60,6 +90,20 @@
 
                     &.active {
                         background-color: var(--dark-hover);
+                    }
+
+                    &.done {
+                        opacity: 0.3;
+                        .course__nav__title {
+                            text-decoration: line-through;
+                        }
+
+                        &.tooltip::before,
+                        &.tooltip::after,
+                        &.tooltip:hover:before,
+                        &.tooltip:hover:after {
+                            opacity: 0;
+                        }
                     }
 
                     .course__nav__id {

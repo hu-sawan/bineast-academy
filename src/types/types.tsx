@@ -1,3 +1,13 @@
+export interface videoDetails {
+    orderNb: number;
+    courseId: string;
+    title: string;
+    description: string;
+    videoUrl: string;
+    durationInMinutes: number;
+    isDone: boolean;
+}
+
 export interface instructor {
     id: number;
     instructorFullName: string;
@@ -29,12 +39,14 @@ export interface course {
         | "advanced";
     imgUrl: string;
     isPremium: boolean;
+    completed: number;
 }
 
 export interface courseContextType {
     course: course | null;
-    videos: courseVideos[] | null;
-    instructors: instructor[] | null;
+    videos: courseVideos[];
+    instructors: instructor[];
+    error: string;
     setCourseId: (courseId: string) => void;
     requestVideos: () => void;
 }

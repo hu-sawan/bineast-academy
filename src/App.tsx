@@ -23,9 +23,9 @@ function App() {
 
     return (
         <div>
-            <Nav />
             <BrowserRouter basename="/bineast-academy">
                 <CourseProvider>
+                    <Nav />
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path={`/course/:courseId`} element={<Course />}>
@@ -33,8 +33,8 @@ function App() {
                         </Route>
                     </Routes>
                 </CourseProvider>
+                <Footer />
             </BrowserRouter>
-            <Footer />
         </div>
     );
 }

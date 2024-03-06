@@ -19,17 +19,24 @@ export const useCourse = () => {
     return context;
 };
 
+// This context provider set the main details of a course like course details and videos and instructors
 export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
-    const user = useAuth();
+    // TODO: get user from useAuth
+    const user = {
+        uid: "U001",
+    };
     const [courseId, setCourseId] = useState<string>("");
     const [course, setCourse] = useState<course | null>(null);
     const [instructors, setInstructors] = useState<instructor[]>([
         { id: -1, instructorFullName: "Unknown", email: "N/A" },
     ]);
-    const [videos, setVideos] = useState<courseVideos[] | null>(null);
+    const [videos, setVideos] = useState<courseVideos[]>([]);
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
 
+    // a simple useEffect to fetch the course details, instructors and videos
+    // TODO: separate the fetch into multiple useEffects to avoid unnecessary fetches
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -40,7 +47,11 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
                         fetch(
                             `http://localhost:5050/api/instructors/${courseId}`
                         ),
-                        fetch(`http://localhost:5050/api/courses/${courseId}`),
+                        fetch(
+                            `http://localhost:5050/api/courses/${courseId}/${
+                                user ? user.uid : null
+                            }`
+                        ),
                         fetch(
                             `http://localhost:5050/api/videos/${courseId}/${
                                 user ? user.uid : null
@@ -57,9 +68,13 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
 
                 setInstructors(instructorsData);
                 setVideos(videoData);
-                setCourse(courseData);
+                setCourse(courseData[0]);
             } catch (error) {
-                console.log(error);
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError("An unknown error occurred");
+                }
             }
             setLoading(false);
         };
@@ -71,13 +86,30 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
 
     const requestVideos = async () => {
         try {
-            const response = await fetch(
+            const videosResponse = await fetch(
                 `http://localhost:5050/api/videos/${courseId}/${
                     user ? user.uid : null
                 }`
             );
-            const data = await response.json();
-            setVideos(data);
+            const videosData = await videosResponse.json();
+            setVideos(videosData);
+            if (user) {
+                const courseResponse = await fetch(
+                    `http://localhost:5050/api/courses/completed/${courseId}/${user.uid}`
+                );
+                const courseData = await courseResponse.json();
+
+                setCourse((prevCourse) => {
+                    if (prevCourse) {
+                        return {
+                            ...prevCourse,
+                            completed: courseData.completed,
+                        };
+                    } else {
+                        return prevCourse;
+                    }
+                });
+            }
         } catch (error) {
             console.error("Error fetching videos:", error);
         }
@@ -87,6 +119,7 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         course,
         instructors,
         videos,
+        error,
         setCourseId,
         requestVideos,
     };

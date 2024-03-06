@@ -5,48 +5,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../loading/Loading";
 import ErrorCard from "../error/ErrorCard";
-import { instructor } from "../../types/types";
-
-interface videoType {
-    orderNb: number;
-    courseId: string;
-    title: string;
-    description: string;
-    videoUrl: string;
-    durationInMinutes: number;
-}
+import { instructor, videoDetails } from "../../types/types";
+import { useCourse } from "../../contexts/CourseContext";
 
 function Video() {
     const { courseId, orderNb } = useParams();
-    const [video, setVideo] = useState<videoType | null>(null);
-    const [instructors, setInstructors] = useState<instructor[]>([
-        { id: -1, instructorFullName: "Unknown", email: "N/A" },
-    ]);
-    // ! also compare it to the total number of videos retrieved from the context to know the initial state
-    // ! of the buttons
-    const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false);
+    const { videos, instructors, requestVideos } = useCourse();
+    const [video, setVideo] = useState<videoDetails | null>(null);
+    const [isNextDisabled, setIsNextDisabled] = useState<boolean>(
+        orderNb === `${videos.length}` ? true : false
+    );
     const [isPrevDisabled, setIsPrevDisabled] = useState<boolean>(
         orderNb === "1" ? true : false
     );
-    // ! The initial state should be retrieved from the video it self
-    // TODO: add done attribute to the video object and set a useEffect to update the
-    // TODO: database when the done state is changed to insure consistency
-    const [done, setDone] = useState<boolean>(false);
+
+    const [done, setDone] = useState<boolean>(video?.isDone ?? false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
     const navigate = useNavigate();
 
-    // ! uncomment fetch statements
     useEffect(() => {
         const getVideo = async () => {
             try {
                 setError("");
                 setVideo(null);
                 const response = await fetch(
-                    `http://localhost:5050/api/videos/details/${courseId}/${orderNb}`
+                    `http://localhost:5050/api/videos/details/${courseId}/${orderNb}/U001`
                 );
 
                 const data = await response.json();
+
                 if (response.status !== 200) throw Error(data.message);
 
                 setVideo(data[0]);
@@ -60,23 +49,73 @@ function Video() {
         };
 
         getVideo();
-
-        const getInstructor = async () => {
-            const response = await fetch(
-                `http://localhost:5050/api/courses/instructor/${courseId}`
-            );
-            const data = await response.json();
-            setInstructors(data);
-        };
-
-        // getInstructor();
     }, [courseId, orderNb]);
 
-    // TODO: implement a patch request to update the done state in the database
-    // useEffect(()=>{}, [done])
+    useEffect(() => {
+        setDone(video?.isDone ?? false);
+    }, [video]);
 
-    const handleDoneClick = () => {
-        setDone(!done);
+    const handleDoneClick = async () => {
+        setLoading(true);
+        // if already done then delete the done status
+        if (done) {
+            const response = await fetch(
+                `http://localhost:5050/api/videos/finished`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        courseId,
+                        orderNb,
+                        userId: "U001",
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.status !== 200) {
+                setError(data.message);
+                setLoading(false);
+                return;
+            }
+
+            requestVideos();
+
+            setDone(false);
+        }
+        // if not done then set the done status
+        else {
+            const response = await fetch(
+                `http://localhost:5050/api/videos/finished`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        courseId,
+                        orderNb,
+                        userId: "U001",
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.status !== 200) {
+                setError(data.message);
+                setLoading(false);
+                return;
+            }
+
+            requestVideos();
+
+            setDone(true);
+        }
+        setLoading(false);
     };
 
     const handlePrevClick = () => {
@@ -93,10 +132,7 @@ function Video() {
     const handleNextClick = () => {
         const nextOrderNb = parseInt(orderNb ?? "0") + 1;
 
-        // TODO: finish setting up the context and then retreive the video count from the context
-        // ! check if we reached the end of the video list
-        // ! temporary will use static value
-        if (nextOrderNb === 11) {
+        if (nextOrderNb - 1 === videos.length) {
             setIsNextDisabled(true);
         } else {
             if (isPrevDisabled) setIsPrevDisabled(false);
@@ -112,14 +148,14 @@ function Video() {
         );
 
     return (
-        <div className="video">
+        <div className={`video ${video?.isDone ? "done" : null}`}>
             {!video ? (
                 <Loading />
             ) : (
                 <>
                     <div className="video__heading">
                         <h2>{video.title}</h2>
-                        {done && (
+                        {!!done && (
                             <FontAwesomeIcon
                                 className="video__heading__check"
                                 icon={faCircleCheck}
@@ -143,16 +179,23 @@ function Video() {
                     <div className="video__description">
                         {video.description}
                     </div>
-                    {/* TODO: khallesa bel jem3a */}
                     <div className="video__nav">
-                        <button onClick={handleDoneClick}>Done</button>
                         <button
+                            className="done-btn"
+                            onClick={handleDoneClick}
+                            disabled={loading}
+                        >
+                            Done
+                        </button>
+                        <button
+                            className="prev-btn"
                             onClick={handlePrevClick}
                             disabled={isPrevDisabled}
                         >
                             Prev
                         </button>
                         <button
+                            className="next-btn"
                             onClick={handleNextClick}
                             disabled={isNextDisabled}
                         >
