@@ -17,7 +17,7 @@ export interface instructor {
 
 export interface courseVideos {
     orderNb: number;
-    couresId: string;
+    courseId: string;
     durationInMinutes: number;
     title: string;
     description: string;
@@ -46,7 +46,9 @@ export interface courseContextType {
     course: course | null;
     videos: courseVideos[];
     instructors: instructor[];
-    error: string;
+    contextLoading: boolean;
+    contextError: string;
+    setCourse: (course: course) => void;
+    setVideos: (videos: courseVideos[]) => void;
     setCourseId: (courseId: string) => void;
-    requestVideos: () => void;
 }

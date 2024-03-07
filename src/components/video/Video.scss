@@ -45,11 +45,16 @@
             &.done-btn {
                 background-color: #3fb24b;
                 border-color: #3fb24b;
+            }
 
-                &:disabled {
-                    opacity: 0.5;
-                    cursor: not-allowed;
-                }
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            &.done {
+                text-decoration: line-through;
+                opacity: 0.8;
             }
         }
     }

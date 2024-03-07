@@ -1,5 +1,3 @@
-// ! This file is for the course context it is just a blueprint for the context should fix the logic
-// ! The logic is not correct
 import { createContext, useContext, useEffect, useState } from "react";
 import {
     courseVideos,
@@ -7,7 +5,7 @@ import {
     courseContextType,
     course,
 } from "../types/types";
-import { useAuth } from "./AuthContext";
+// import { useAuth } from "./AuthContext";
 
 const CourseContext = createContext<courseContextType | null>(null);
 
@@ -32,14 +30,14 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     ]);
     const [videos, setVideos] = useState<courseVideos[]>([]);
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
+    const [contextLoading, setContextLoading] = useState<boolean>(false);
+    const [contextError, setContextError] = useState<string>("");
 
     // a simple useEffect to fetch the course details, instructors and videos
     // TODO: separate the fetch into multiple useEffects to avoid unnecessary fetches
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
+            setContextLoading(true);
 
             try {
                 const [instructorResponse, courseResponse, videoResponse] =
@@ -71,12 +69,12 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
                 setCourse(courseData[0]);
             } catch (error) {
                 if (error instanceof Error) {
-                    setError(error.message);
+                    setContextError(error.message);
                 } else {
-                    setError("An unknown error occurred");
+                    setContextError("An unknown error occurred");
                 }
             }
-            setLoading(false);
+            setContextLoading(false);
         };
 
         if (courseId) {
@@ -84,49 +82,20 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [courseId]);
 
-    const requestVideos = async () => {
-        try {
-            const videosResponse = await fetch(
-                `http://localhost:5050/api/videos/${courseId}/${
-                    user ? user.uid : null
-                }`
-            );
-            const videosData = await videosResponse.json();
-            setVideos(videosData);
-            if (user) {
-                const courseResponse = await fetch(
-                    `http://localhost:5050/api/courses/completed/${courseId}/${user.uid}`
-                );
-                const courseData = await courseResponse.json();
-
-                setCourse((prevCourse) => {
-                    if (prevCourse) {
-                        return {
-                            ...prevCourse,
-                            completed: courseData.completed,
-                        };
-                    } else {
-                        return prevCourse;
-                    }
-                });
-            }
-        } catch (error) {
-            console.error("Error fetching videos:", error);
-        }
-    };
-
     const courseDetais: courseContextType = {
         course,
         instructors,
         videos,
-        error,
+        contextError,
+        contextLoading,
+        setCourse,
+        setVideos,
         setCourseId,
-        requestVideos,
     };
 
     return (
         <CourseContext.Provider value={courseDetais}>
-            {!loading && children}
+            {children}
         </CourseContext.Provider>
     );
 };

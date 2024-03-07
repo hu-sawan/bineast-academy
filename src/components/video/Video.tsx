@@ -5,12 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../loading/Loading";
 import ErrorCard from "../error/ErrorCard";
-import { instructor, videoDetails } from "../../types/types";
+import { course, instructor, videoDetails } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 
 function Video() {
     const { courseId, orderNb } = useParams();
-    const { videos, instructors, requestVideos } = useCourse();
+    const { course, videos, instructors, setVideos, setCourse } = useCourse();
     const [video, setVideo] = useState<videoDetails | null>(null);
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(
         orderNb === `${videos.length}` ? true : false
@@ -51,11 +51,42 @@ function Video() {
         getVideo();
     }, [courseId, orderNb]);
 
+    // A simple useEffect to decide if the prev, next buttons are disabled
+    useEffect(() => {
+        if (orderNb === "1") {
+            setIsPrevDisabled(true);
+        } else {
+            setIsPrevDisabled(false);
+        }
+
+        if (orderNb === `${videos.length}`) {
+            setIsNextDisabled(true);
+        } else {
+            setIsNextDisabled(false);
+        }
+    }, [orderNb, videos.length]);
+
+    // This useEffect synchronizes the data retrieved from the backend with the component's state.
     useEffect(() => {
         setDone(video?.isDone ?? false);
     }, [video]);
 
     const handleDoneClick = async () => {
+        // this is just to avoid react anger :)
+        if (!course) return;
+
+        /**
+         * The first implementation I came with was to define a new function in the course context
+         * that requests a new copy of the videos and course, this was inefficient and not necessary.
+         *
+         * The second implementation which is the current one is to update the course and videos
+         * state locally in the client side without requesting a new copy from the server while keeping
+         * the server in sync with the client side. this reduced the number of requests to the server
+         * and made the app more efficient. And each time the user refreshes the page, the data will be
+         * fetched from the server.
+         */
+
+        let updatedCourse: course;
         setLoading(true);
         // if already done then delete the done status
         if (done) {
@@ -82,7 +113,10 @@ function Video() {
                 return;
             }
 
-            requestVideos();
+            updatedCourse = {
+                ...course,
+                completed: (course?.completed ?? 1) - 1,
+            };
 
             setDone(false);
         }
@@ -110,34 +144,45 @@ function Video() {
                 setLoading(false);
                 return;
             }
-
-            requestVideos();
+            updatedCourse = {
+                ...course,
+                completed: (course?.completed ?? -1) + 1,
+            };
 
             setDone(true);
         }
+
+        const updatedVideos = videos.map((video) => {
+            if (
+                video.courseId === courseId &&
+                video.orderNb === parseInt(orderNb ?? "0")
+            ) {
+                return { ...video, isDone: !video.isDone };
+            }
+
+            return video;
+        });
+
+        setCourse(updatedCourse);
+        setVideos(updatedVideos);
+
         setLoading(false);
     };
 
     const handlePrevClick = () => {
-        const prevOrderNb = parseInt(orderNb ?? "0") - 1;
+        // set true to avoid race condition
+        setIsPrevDisabled(true);
 
-        if (prevOrderNb + 1 === 1) {
-            setIsPrevDisabled(true);
-        } else {
-            if (isNextDisabled) setIsNextDisabled(false);
-            navigate(`/course/${courseId}/${prevOrderNb}`);
-        }
+        const prevOrderNb = parseInt(orderNb ?? "0") - 1;
+        navigate(`/course/${courseId}/${prevOrderNb}`);
     };
 
     const handleNextClick = () => {
-        const nextOrderNb = parseInt(orderNb ?? "0") + 1;
+        // set true to avoid race condition
+        setIsNextDisabled(true);
 
-        if (nextOrderNb - 1 === videos.length) {
-            setIsNextDisabled(true);
-        } else {
-            if (isPrevDisabled) setIsPrevDisabled(false);
-            navigate(`/course/${courseId}/${nextOrderNb}`);
-        }
+        const nextOrderNb = parseInt(orderNb ?? "0") + 1;
+        navigate(`/course/${courseId}/${nextOrderNb}`);
     };
 
     if (error)
@@ -181,7 +226,7 @@ function Video() {
                     </div>
                     <div className="video__nav">
                         <button
-                            className="done-btn"
+                            className={`done-btn ${done ? "done" : null}`}
                             onClick={handleDoneClick}
                             disabled={loading}
                         >
