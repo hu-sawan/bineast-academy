@@ -42,9 +42,13 @@ function Home() {
             <div className="home__featured">
                 <div className="container">
                     <div className="home__featured__wrapper">
-                        {error && <ErrorCard message={error} />}
-                        {loading && <Loading />}
                         <h1>Courses:</h1>
+                        {(loading || error) && (
+                            <div className="home__featured__status">
+                                {loading && <Loading />}
+                                {error && <ErrorCard message={error} />}
+                            </div>
+                        )}
                         <div className="home__featured__content">
                             {courses.map(
                                 (

@@ -28,6 +28,7 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     const [instructors, setInstructors] = useState<instructor[]>([
         { id: -1, instructorFullName: "Unknown", email: "N/A" },
     ]);
+
     const [videos, setVideos] = useState<courseVideos[]>([]);
 
     const [contextLoading, setContextLoading] = useState<boolean>(false);

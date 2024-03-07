@@ -4,8 +4,8 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function ErrorCard({ message }: { message: string }) {
     return (
-        <div className="error">
-            <div className="error__wrapper">
+        <div className="error-card">
+            <div className="error-card__wrapper">
                 <div className="icon">
                     <FontAwesomeIcon icon={faXmark} shake />
                 </div>

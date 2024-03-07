@@ -33,18 +33,20 @@ function Search() {
         }
 
         const fetchData = async () => {
-            setLoading(true);
-            const response = await fetch(
-                `http://localhost:5050/api/search/courses/${word}`
-            );
+            try {
+                setLoading(true);
+                const response = await fetch(
+                    `http://localhost:5050/api/search/courses/${word}`
+                );
 
-            if (response.status !== 200) {
-                setLoading(false);
-                return;
-            }
+                if (response.status !== 200) {
+                    setLoading(false);
+                    return;
+                }
 
-            const data = await response.json();
-            setSuggestions(data);
+                const data = await response.json();
+                setSuggestions(data);
+            } catch (error) {}
             setLoading(false);
         };
 

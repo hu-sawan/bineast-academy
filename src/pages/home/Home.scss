@@ -1,9 +1,8 @@
 .home {
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--main-background-color);
 
     &__featured {
-        height: 100%;
         padding-top: 2rem;
         color: var(--main-text-color);
 
@@ -14,6 +13,10 @@
 
         &__wrapper {
             height: 80%;
+        }
+
+        &__status {
+            height: 100vh;
             position: relative;
         }
 

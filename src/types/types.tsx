@@ -1,3 +1,9 @@
+import { User } from "firebase/auth";
+
+export interface localUser extends User {
+    isPremium: boolean;
+}
+
 export interface videoDetails {
     orderNb: number;
     courseId: string;
