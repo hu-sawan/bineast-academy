@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/bineast-academy/static/css/main.656e557e.css",
-    "main.js": "/bineast-academy/static/js/main.12ac7cb7.js",
+    "main.css": "/bineast-academy/static/css/main.60baaba2.css",
+    "main.js": "/bineast-academy/static/js/main.a6796d8a.js",
     "static/js/592.f90b9fe8.chunk.js": "/bineast-academy/static/js/592.f90b9fe8.chunk.js",
     "static/media/DarkThemeLogoLandscape-nobg.png": "/bineast-academy/static/media/DarkThemeLogoLandscape-nobg.099369ad09b4dd944288.png",
     "static/media/LightThemeLogoLandscape-nobg.png": "/bineast-academy/static/media/LightThemeLogoLandscape-nobg.22d1f491836e297a73df.png",
     "static/media/google.png": "/bineast-academy/static/media/google.39c52b1bcccb20569aa4.png",
     "index.html": "/bineast-academy/index.html",
-    "main.656e557e.css.map": "/bineast-academy/static/css/main.656e557e.css.map",
-    "main.12ac7cb7.js.map": "/bineast-academy/static/js/main.12ac7cb7.js.map",
+    "main.60baaba2.css.map": "/bineast-academy/static/css/main.60baaba2.css.map",
+    "main.a6796d8a.js.map": "/bineast-academy/static/js/main.a6796d8a.js.map",
     "592.f90b9fe8.chunk.js.map": "/bineast-academy/static/js/592.f90b9fe8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.656e557e.css",
-    "static/js/main.12ac7cb7.js"
+    "static/css/main.60baaba2.css",
+    "static/js/main.a6796d8a.js"
   ]
 }
