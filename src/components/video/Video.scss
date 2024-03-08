@@ -4,6 +4,10 @@
     width: 100%;
     padding: 10px 20px;
 
+    @media (max-width: 640px) {
+        width: fit-content;
+    }
+
     &__heading {
         display: flex;
         align-items: center;

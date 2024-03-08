@@ -71,14 +71,18 @@
             border: 1px solid var(--main-text-color);
             padding: 5px 20px;
             border-radius: 5px;
-
             cursor: pointer;
+
+            @media (max-width: 640px) {
+                padding: 4px 13px;
+                font-size: 13px;
+            }
         }
 
         .aca-nav__control__signout {
             position: absolute;
             background-color: var(--main-background-color);
-            padding: 18px 30px;
+            padding: 12px 22px;
             right: 0;
             box-shadow: 0 4px 1px var(--signout-shadow-color);
             top: 95%;
@@ -94,8 +98,9 @@
 
             span {
                 border: 1px solid var(--main-text-color);
-                padding: 8px 20px;
+                padding: 4px 10px;
                 border-radius: 5px;
+                font-size: 13px;
                 cursor: pointer;
             }
         }

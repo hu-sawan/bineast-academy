@@ -6,9 +6,15 @@ interface ErrorCardProps {
     message: string;
     fill?: boolean;
     onTop?: boolean;
+    position?: "relative" | "absolute";
 }
 
-function ErrorCard({ message, fill = false, onTop = false }: ErrorCardProps) {
+function ErrorCard({
+    message,
+    position = "absolute",
+    fill = false,
+    onTop = false,
+}: ErrorCardProps) {
     return (
         <div className={`error-card ${fill && "fill"} ${onTop && "on-top"}`}>
             <div className="error-card__wrapper">

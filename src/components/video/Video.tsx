@@ -7,6 +7,7 @@ import Loading from "../loading/Loading";
 import ErrorCard from "../error/ErrorCard";
 import { Course, Instructor, VideoDetails } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Video() {
     const { courseId, orderNb } = useParams();
@@ -25,13 +26,15 @@ function Video() {
 
     const navigate = useNavigate();
 
+    const { user } = useAuth();
+
     useEffect(() => {
         const getVideo = async () => {
             try {
                 setError("");
                 setVideo(null);
                 const response = await fetch(
-                    `http://localhost:5050/api/videos/details/${courseId}/${orderNb}/U001`
+                    `http://localhost:5050/api/videos/details/${courseId}/${orderNb}/${user?.uid}`
                 );
 
                 const data = await response.json();
@@ -49,7 +52,8 @@ function Video() {
         };
 
         getVideo();
-    }, [courseId, orderNb]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [courseId, orderNb, user]);
 
     // A simple useEffect to decide if the prev, next buttons are disabled
     useEffect(() => {
@@ -100,7 +104,7 @@ function Video() {
                     body: JSON.stringify({
                         courseId,
                         orderNb,
-                        userId: "U001",
+                        userId: user?.uid ?? null,
                     }),
                 }
             );
@@ -132,7 +136,7 @@ function Video() {
                     body: JSON.stringify({
                         courseId,
                         orderNb,
-                        userId: "U001",
+                        userId: user?.uid ?? null,
                     }),
                 }
             );
@@ -225,13 +229,15 @@ function Video() {
                         {video.description}
                     </div>
                     <div className="video__nav">
-                        <button
-                            className={`done-btn ${done ? "done" : null}`}
-                            onClick={handleDoneClick}
-                            disabled={loading}
-                        >
-                            Done
-                        </button>
+                        {user && (
+                            <button
+                                className={`done-btn ${done ? "done" : null}`}
+                                onClick={handleDoneClick}
+                                disabled={loading}
+                            >
+                                Done
+                            </button>
+                        )}
                         <button
                             className="prev-btn"
                             onClick={handlePrevClick}

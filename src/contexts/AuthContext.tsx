@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             `http://localhost:5050/api/users/${user.uid}`
                         );
 
-                        const { isPremium }: UserFromDB =
+                        const [{ isPremium }]: [UserFromDB] =
                             await userDataResponse.json();
 
                         contextValue.updateContext({

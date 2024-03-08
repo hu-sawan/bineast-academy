@@ -7,6 +7,10 @@
         position: relative;
         display: flex;
 
+        @media (max-width: 640px) {
+            flex-direction: column;
+        }
+
         .course__nav {
             width: 300px;
             min-width: 300px;
@@ -16,6 +20,12 @@
             position: sticky;
             top: 0;
             background-color: inherit;
+
+            @media (max-width: 640px) {
+                width: 100%;
+                min-width: 100%;
+                position: relative;
+            }
 
             .course__nav__head {
                 margin: 20px 0;

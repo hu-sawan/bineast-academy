@@ -5,6 +5,7 @@ import {
     CourseContextType,
     Course,
 } from "../types/types";
+import { useAuth } from "./AuthContext";
 // import { useAuth } from "./AuthContext";
 
 const CourseContext = createContext<CourseContextType | null>(null);
@@ -19,10 +20,7 @@ export const useCourse = () => {
 
 // This context provider set the main details of a course like course details and videos and instructors
 export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
-    // TODO: get user from useAuth
-    const user = {
-        uid: "U001",
-    };
+    const { user } = useAuth();
     const [courseId, setCourseId] = useState<string>("");
     const [course, setCourse] = useState<Course | null>(null);
     const [instructors, setInstructors] = useState<Instructor[]>([
@@ -41,32 +39,21 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
             setContextLoading(true);
 
             try {
-                const [instructorResponse, courseResponse, videoResponse] =
-                    await Promise.all([
-                        fetch(
-                            `http://localhost:5050/api/instructors/${courseId}`
-                        ),
-                        fetch(
-                            `http://localhost:5050/api/courses/${courseId}/${
-                                user ? user.uid : null
-                            }`
-                        ),
-                        fetch(
-                            `http://localhost:5050/api/videos/${courseId}/${
-                                user ? user.uid : null
-                            }`
-                        ),
-                    ]);
+                const [instructorResponse, courseResponse] = await Promise.all([
+                    fetch(`http://localhost:5050/api/instructors/${courseId}`),
+                    fetch(
+                        `http://localhost:5050/api/courses/${courseId}/${
+                            user ? user.uid : null
+                        }`
+                    ),
+                ]);
 
-                const [instructorsData, courseData, videoData] =
-                    await Promise.all([
-                        instructorResponse.json(),
-                        courseResponse.json(),
-                        videoResponse.json(),
-                    ]);
+                const [instructorsData, courseData] = await Promise.all([
+                    instructorResponse.json(),
+                    courseResponse.json(),
+                ]);
 
                 setInstructors(instructorsData);
-                setVideos(videoData);
                 setCourse(courseData[0]);
             } catch (error) {
                 if (error instanceof Error) {
@@ -81,7 +68,35 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         if (courseId) {
             fetchData();
         }
-    }, [courseId]);
+    }, [courseId, user]);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:5050/api/videos/${courseId}/${
+                        user ? user.uid : ""
+                    }`
+                );
+
+                const data = await response.json();
+
+                if (response.status !== 200) throw Error(data.message);
+
+                setVideos(data);
+            } catch (error) {
+                if (error instanceof Error) {
+                    setContextError(error.message);
+                } else {
+                    setContextError("An unknown error occurred");
+                }
+            }
+        };
+
+        // is user not logged in and the course is a premium course then don't provide videos
+        if (courseId && (user || !course?.isPremium)) fetchVideos();
+        else setVideos([]);
+    }, [courseId, course, user]);
 
     const courseDetais: CourseContextType = {
         course,

@@ -8,6 +8,9 @@ import Course from "./pages/course/Course";
 import Video from "./components/video/Video";
 import { CourseProvider } from "./contexts/CourseContext";
 
+// TODO: try to find a payment gateway to implement the premium feature
+// TODO: optimize the fetches and use a custom hook to handle the fetches
+// TODO: reduce the number of rerenderes by using memo and useCallback
 function App() {
     const { theme } = useTheme();
 

@@ -1,5 +1,4 @@
 import "./Course.scss";
-// import { useAuth } from "../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +7,7 @@ import ErrorCard from "../../components/error/ErrorCard";
 import { CourseVideos } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 import Loading from "../../components/loading/Loading";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface NavListProps {
     courseId: string;
@@ -55,16 +55,45 @@ const NavList = memo(({ courseId, videos }: NavListProps) => {
         </div>
     );
 });
+
 function Course() {
     const { courseId } = useParams();
-    // const [userInfo, setUserInfo] = useState<userInfoInterface | null>(null);
     const { videos, course, contextError, setCourseId } = useCourse();
+    const { user } = useAuth();
 
     useEffect(() => {
         if (!videos || !course) {
             setCourseId(courseId ?? "");
         }
     }, [course, courseId, setCourseId, videos]);
+
+    // If the user is not logged in and the course is premium then show an error message
+    if (!user && course?.isPremium) {
+        return (
+            <div className="status__holder">
+                <ErrorCard
+                    message="You need to be logged in to access this course"
+                    position="relative"
+                    fill={true}
+                />
+            </div>
+        );
+    }
+
+    // If the user is not a premium member and the course is premium then show an error message
+    if (user && !user.isPremium && course?.isPremium) {
+        console.log("user", user);
+        console.log("course", course);
+        return (
+            <div className="status__holder">
+                <ErrorCard
+                    message="You need to be a premium member to access this course"
+                    position="relative"
+                    fill={true}
+                />
+            </div>
+        );
+    }
 
     const isCourseTitleLong = !course ? false : course.title.length > 65;
 
