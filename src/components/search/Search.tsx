@@ -1,7 +1,7 @@
 import "./Search.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCourse } from "../../contexts/CourseContext";
 
@@ -15,6 +15,8 @@ function Search() {
     const [word, setWord] = useState<string>("");
     const [suggestions, setSuggestions] = useState<SuggestionsInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const searchRef = useRef<HTMLDivElement>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setWord(e.target.value);
@@ -59,8 +61,27 @@ function Search() {
         };
     }, [word]);
 
+    // will keep track where the user is clicking
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (
+                searchRef.current &&
+                !searchRef.current.contains(e.target as Node)
+            ) {
+                setSuggestions([]);
+                setWord("");
+            }
+        };
+
+        document.addEventListener("click", handleClick);
+
+        return () => {
+            document.removeEventListener("click", handleClick);
+        };
+    }, []);
+
     return (
-        <div className="search">
+        <div className="search" ref={searchRef}>
             <input
                 onChange={handleChange}
                 type="text"
