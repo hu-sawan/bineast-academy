@@ -14,13 +14,29 @@ function Footer() {
                 <hr />
             </div>
             <div className="aca-footer__social">
-                <a href="/" className="tooltip bottom" data-tooltip="Youtube">
+                <a
+                    href="/"
+                    className="tooltip bottom"
+                    data-tooltip="Youtube"
+                    rel="noreferrer"
+                >
                     <FontAwesomeIcon icon={faYoutube} />
                 </a>
-                <a href="/" className="tooltip bottom" data-tooltip="LinkedIn">
+                <a
+                    href="https://www.linkedin.com/company/bineast-solutions/"
+                    target="_blank"
+                    className="tooltip bottom"
+                    data-tooltip="LinkedIn"
+                    rel="noreferrer"
+                >
                     <FontAwesomeIcon icon={faLinkedinIn} />
                 </a>
-                <a href="/" className="tooltip bottom" data-tooltip="Twitter">
+                <a
+                    href="/"
+                    className="tooltip bottom"
+                    data-tooltip="Twitter"
+                    rel="noreferrer"
+                >
                     <FontAwesomeIcon icon={faTwitter} />
                 </a>
             </div>

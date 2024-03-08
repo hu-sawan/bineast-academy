@@ -10,6 +10,14 @@
     text-align: center;
     animation: fadeIn 0.3s ease;
 
+    &.fill {
+        background-color: inherit;
+    }
+
+    &.on-top {
+        z-index: 1000;
+    }
+
     &__wrapper {
         display: flex;
         flex-direction: column;

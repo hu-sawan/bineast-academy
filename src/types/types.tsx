@@ -1,10 +1,26 @@
 import { User } from "firebase/auth";
 
-export interface localUser extends User {
+export interface UserFromDB {
+    id: string;
+    email: string;
+    role: string;
     isPremium: boolean;
 }
 
-export interface videoDetails {
+export interface LocalUser extends User {
+    isPremium: boolean;
+}
+
+export interface AuthContextType {
+    user: LocalUser | null;
+    authContextSuccess: string;
+    authContextError: string;
+    authContextLoading: boolean;
+    authContextIsDone: boolean;
+    updateContext: (newValues: Partial<AuthContextType>) => void;
+}
+
+export interface VideoDetails {
     orderNb: number;
     courseId: string;
     title: string;
@@ -14,14 +30,14 @@ export interface videoDetails {
     isDone: boolean;
 }
 
-export interface instructor {
+export interface Instructor {
     id: number;
     instructorFullName: string;
     email: string;
     phoneNumber?: string;
 }
 
-export interface courseVideos {
+export interface CourseVideos {
     orderNb: number;
     courseId: string;
     durationInMinutes: number;
@@ -31,7 +47,7 @@ export interface courseVideos {
     isDone: boolean;
 }
 
-export interface course {
+export interface Course {
     id: string;
     title: string;
     description: string;
@@ -48,13 +64,13 @@ export interface course {
     completed: number;
 }
 
-export interface courseContextType {
-    course: course | null;
-    videos: courseVideos[];
-    instructors: instructor[];
+export interface CourseContextType {
+    course: Course | null;
+    videos: CourseVideos[];
+    instructors: Instructor[];
     contextLoading: boolean;
     contextError: string;
-    setCourse: (course: course) => void;
-    setVideos: (videos: courseVideos[]) => void;
+    setCourse: (course: Course) => void;
+    setVideos: (videos: CourseVideos[]) => void;
     setCourseId: (courseId: string) => void;
 }

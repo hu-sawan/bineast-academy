@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {
-    courseVideos,
-    instructor,
-    courseContextType,
-    course,
+    CourseVideos,
+    Instructor,
+    CourseContextType,
+    Course,
 } from "../types/types";
 // import { useAuth } from "./AuthContext";
 
-const CourseContext = createContext<courseContextType | null>(null);
+const CourseContext = createContext<CourseContextType | null>(null);
 
 export const useCourse = () => {
     const context = useContext(CourseContext);
@@ -24,12 +24,12 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         uid: "U001",
     };
     const [courseId, setCourseId] = useState<string>("");
-    const [course, setCourse] = useState<course | null>(null);
-    const [instructors, setInstructors] = useState<instructor[]>([
+    const [course, setCourse] = useState<Course | null>(null);
+    const [instructors, setInstructors] = useState<Instructor[]>([
         { id: -1, instructorFullName: "Unknown", email: "N/A" },
     ]);
 
-    const [videos, setVideos] = useState<courseVideos[]>([]);
+    const [videos, setVideos] = useState<CourseVideos[]>([]);
 
     const [contextLoading, setContextLoading] = useState<boolean>(false);
     const [contextError, setContextError] = useState<string>("");
@@ -83,7 +83,7 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [courseId]);
 
-    const courseDetais: courseContextType = {
+    const courseDetais: CourseContextType = {
         course,
         instructors,
         videos,

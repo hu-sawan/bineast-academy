@@ -1,9 +1,10 @@
 import "./Login.scss";
-import { Auth, OAuthProvider, User, signInWithPopup } from "firebase/auth";
+import { Auth, OAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../data/firebase";
 import googleLogo from "../../assets/providers/google.png";
 import { useEffect, useState } from "react";
 import Loading from "../loading/Loading";
+import { useAuth } from "../../contexts/AuthContext";
 
 type SupportedProviders = "google" | "facebook" | "github";
 
@@ -18,35 +19,43 @@ interface Props {
 }
 
 function Login({ close }: Props) {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
-    const [success, setSuccess] = useState<string>("");
     const [counter, setCounter] = useState<number>(5);
 
-    // isDone can be used for both to represent error or success messages but now we will only use it with success
-    const [isDone, setIsDone] = useState<boolean>(false);
+    const {
+        authContextLoading,
+        authContextError,
+        authContextSuccess,
+        authContextIsDone,
+        updateContext,
+    } = useAuth();
 
     // To avoid the counter to get decremented when the component is rendered we keep track of isMount
     const [isMounted, setIsMounted] = useState<boolean>(false);
 
     useEffect(() => {
-        const time = setTimeout(() => setError(""), 15000);
+        const time = setTimeout(
+            () => updateContext({ authContextError: "" }),
+            15000
+        );
 
         return () => clearTimeout(time);
-    }, [error]);
+    }, [authContextError, updateContext]);
 
     useEffect(() => {
-        const time = setTimeout(() => setSuccess(""), 15000);
+        const time = setTimeout(
+            () => updateContext({ authContextSuccess: "" }),
+            15000
+        );
 
         return () => clearTimeout(time);
-    }, [success]);
+    }, [authContextSuccess, updateContext]);
 
     useEffect(() => {
         setIsMounted(true);
 
         let interval: NodeJS.Timer;
 
-        if (isMounted && isDone) {
+        if (isMounted && authContextIsDone) {
             interval = setInterval(() => {
                 setCounter((prevCounter) => prevCounter - 1);
             }, 1000);
@@ -55,106 +64,77 @@ function Login({ close }: Props) {
         return () => {
             clearInterval(interval);
         };
-    }, [isDone, isMounted]);
+    }, [authContextIsDone, isMounted]);
 
     useEffect(() => {
-        if (counter === 0) close();
-    }, [counter, close]);
+        if (counter === 0) {
+            updateContext({ authContextIsDone: false });
+            close();
+        }
+    }, [counter, close, updateContext]);
+
+    useEffect(() => {
+        return () => {
+            updateContext({
+                authContextSuccess: "",
+                authContextError: "",
+                authContextLoading: false,
+                authContextIsDone: false,
+            });
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleSignInWithProvider = async (
         auth: Auth,
         providerName: SupportedProviders
     ) => {
-        setError("");
-        setLoading(true);
-        const provider = providers[providerName];
-        provider.setCustomParameters({
-            login_hint: "hello@gmail.com",
+        updateContext({
+            authContextLoading: true,
         });
-
+        const provider = providers[providerName];
         if (!provider) throw new Error(`Unsupported provider ${providerName}`);
 
-        signInWithPopup(auth, provider)
-            .then(async (result) => {
-                const user: User = result.user;
+        signInWithPopup(auth, provider).catch((error) => {
+            if (error.code === "auth/popup-closed-by-user") {
+                updateContext({
+                    authContextError: "Popup closed by user. Please try again.",
+                });
+            } else if (error.code === "auth/user-cancelled") {
+                updateContext({
+                    authContextError: "Operation Canceled. Please try again.",
+                });
+            } else {
+                updateContext({
+                    authContextError: "Uknown error. Please try again.",
+                });
+            }
 
-                if (user) {
-                    const response = await fetch(
-                        `http://localhost:5050/api/users/isFound/${user.uid}`
-                    );
-
-                    if (response.status === 200) {
-                        setError("");
-                        setSuccess(`User found. Redirecting to main page in `);
-                        setIsDone(true);
-                    }
-
-                    if (response.status === 404) {
-                        setSuccess("");
-                        setError("User not found. Creating user...");
-
-                        const response = await fetch(
-                            "http://localhost:5050/api/users/add",
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    userId: user.uid,
-                                    email: user.email,
-                                    role: "USER",
-                                }),
-                            }
-                        );
-
-                        if (response.status === 201) {
-                            setError("");
-                            setSuccess(
-                                `User created. Redirecting to main page in `
-                            );
-                            setIsDone(true);
-                        } else
-                            throw new Error(
-                                "Something went wrong. Please try again."
-                            );
-                    }
-                }
-                setLoading(false);
-            })
-            .catch((error) => {
-                if (error.code === "auth/popup-closed-by-user") {
-                    setError("Popup closed by user. Please try again.");
-                } else if (error.code === "auth/user-cancelled") {
-                    setError("Operation Canceled. Please try again.");
-                } else {
-                    setError("Something went wrong. Please try again.");
-                }
-
-                console.log("ERROR CAUGHT");
-
-                setLoading(false);
-            });
+            updateContext({ authContextLoading: false });
+        });
     };
 
     return (
         <div className="popup">
             <div className="popup__wrapper">
                 <h1>Login</h1>
-                {error && <p className="error">{error}</p>}
-                {success && (
+                {authContextError && (
+                    <p className="error">{authContextError}</p>
+                )}
+                {authContextSuccess && (
                     <p className="success">
-                        {success + (isDone ? counter : null)}
+                        {authContextSuccess +
+                            (authContextIsDone ? counter : null)}
                     </p>
                 )}
                 <div className="popup__wrapper__providers">
                     <button
                         onClick={() => handleSignInWithProvider(auth, "google")}
-                        disabled={loading || isDone}
+                        disabled={authContextLoading || authContextIsDone}
                     >
                         <img src={googleLogo} alt="google" />{" "}
                         <div>
-                            {loading ? (
+                            {authContextLoading ? (
                                 <Loading position="relative" size="small" />
                             ) : (
                                 "Google"
@@ -165,7 +145,7 @@ function Login({ close }: Props) {
                 <button
                     onClick={() => close()}
                     className="popup__close"
-                    disabled={loading}
+                    disabled={authContextLoading}
                 >
                     Cancel
                 </button>

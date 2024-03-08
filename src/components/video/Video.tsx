@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../loading/Loading";
 import ErrorCard from "../error/ErrorCard";
-import { course, instructor, videoDetails } from "../../types/types";
+import { Course, Instructor, VideoDetails } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 
 function Video() {
     const { courseId, orderNb } = useParams();
     const { course, videos, instructors, setVideos, setCourse } = useCourse();
-    const [video, setVideo] = useState<videoDetails | null>(null);
+    const [video, setVideo] = useState<VideoDetails | null>(null);
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(
         orderNb === `${videos.length}` ? true : false
     );
@@ -86,7 +86,7 @@ function Video() {
          * fetched from the server.
          */
 
-        let updatedCourse: course;
+        let updatedCourse: Course;
         setLoading(true);
         // if already done then delete the done status
         if (done) {
@@ -213,7 +213,7 @@ function Video() {
                     <div className="video__instructor">
                         Instructor(s):{" "}
                         {instructors.map(
-                            ({ instructorFullName }: instructor, idx) => {
+                            ({ instructorFullName }: Instructor, idx) => {
                                 return (
                                     instructorFullName +
                                     (idx === instructors.length - 1 ? "" : ", ")

@@ -4,11 +4,11 @@ import CourseCard from "../../components/courseCard/CourseCard";
 import "./Home.scss";
 import Loading from "../../components/loading/Loading";
 import ErrorCard from "../../components/error/ErrorCard";
-import { course } from "../../types/types";
+import { Course } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 
 function Home() {
-    const [courses, setCourses] = useState<course[]>([]);
+    const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const { setCourseId } = useCourse();
@@ -60,7 +60,7 @@ function Home() {
                                         imgUrl,
                                         durationInMinutes,
                                         isPremium,
-                                    }: course,
+                                    }: Course,
                                     idx: number
                                 ) => (
                                     <CourseCard

@@ -19,6 +19,14 @@ $sizes: (
     justify-content: center;
     align-items: center;
 
+    &.fill {
+        background-color: inherit;
+    }
+
+    &.on-top {
+        z-index: 1000;
+    }
+
     &.absolute {
         position: absolute;
         top: 0;

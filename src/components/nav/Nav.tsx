@@ -14,7 +14,7 @@ function Nav() {
     const [active, setActive] = useState<boolean>(false);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
-    const user = useAuth();
+    const { user } = useAuth();
     const { theme, toggleTheme } = useTheme();
 
     const handleClose = () => {

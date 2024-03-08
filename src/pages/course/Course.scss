@@ -4,6 +4,7 @@
 
     .wrapper {
         background-color: var(--secondary-background-color);
+        position: relative;
         display: flex;
 
         .course__nav {
@@ -14,6 +15,7 @@
             height: 100vh;
             position: sticky;
             top: 0;
+            background-color: inherit;
 
             .course__nav__head {
                 margin: 20px 0;
