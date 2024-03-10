@@ -65,11 +65,11 @@ function Nav() {
                     </div>
                     <Search />
                     <div className="aca-nav__control">
-                        {user ? (
+                        {user && !user.isPremium ? (
                             <div
                                 className="aca-nav__control__subscription tooltip bottom"
                                 onClick={handleSubscribeClick}
-                                data-tooltip="Become premium member "
+                                data-tooltip="Become premium member"
                             >
                                 <FontAwesomeIcon icon={faStar} />
                             </div>
