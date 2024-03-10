@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/bineast-academy/static/css/main.7b3e91ad.css",
-    "main.js": "/bineast-academy/static/js/main.01f56c7f.js",
+    "main.js": "/bineast-academy/static/js/main.35910065.js",
     "static/js/592.f90b9fe8.chunk.js": "/bineast-academy/static/js/592.f90b9fe8.chunk.js",
     "static/media/DarkThemeLogoLandscape-nobg.png": "/bineast-academy/static/media/DarkThemeLogoLandscape-nobg.099369ad09b4dd944288.png",
     "static/media/LightThemeLogoLandscape-nobg.png": "/bineast-academy/static/media/LightThemeLogoLandscape-nobg.22d1f491836e297a73df.png",
     "static/media/google.png": "/bineast-academy/static/media/google.39c52b1bcccb20569aa4.png",
     "index.html": "/bineast-academy/index.html",
     "main.7b3e91ad.css.map": "/bineast-academy/static/css/main.7b3e91ad.css.map",
-    "main.01f56c7f.js.map": "/bineast-academy/static/js/main.01f56c7f.js.map",
+    "main.35910065.js.map": "/bineast-academy/static/js/main.35910065.js.map",
     "592.f90b9fe8.chunk.js.map": "/bineast-academy/static/js/592.f90b9fe8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7b3e91ad.css",
-    "static/js/main.01f56c7f.js"
+    "static/js/main.35910065.js"
   ]
 }
