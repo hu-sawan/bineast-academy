@@ -4,17 +4,26 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCourse } from "../../contexts/CourseContext";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface SuggestionsInterface {
     id: string;
     title: string;
 }
 
-function Search() {
+interface SearchProps {
+    className?: "mobile";
+}
+
+function Search({ className }: SearchProps) {
     const { setCourseId } = useCourse();
     const [word, setWord] = useState<string>("");
     const [suggestions, setSuggestions] = useState<SuggestionsInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // To show/hide the suggestion list on small screens
+    const [active, setActive] = useState<boolean>(false);
+    const { isSmallScreen } = useTheme();
 
     const searchRef = useRef<HTMLDivElement>(null);
 
@@ -26,6 +35,7 @@ function Search() {
         }
     };
 
+    // Fetching the suggestions from the server
     useEffect(() => {
         if (word) {
             setLoading(true);
@@ -61,7 +71,7 @@ function Search() {
         };
     }, [word]);
 
-    // will keep track where the user is clicking
+    // To hide the suggestion list when clicked outside
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
             if (
@@ -80,16 +90,26 @@ function Search() {
         };
     }, []);
 
+    const handleClick = () => {
+        setActive(!active);
+    };
+
     return (
-        <div className="search" ref={searchRef}>
+        <div
+            className={`search ${className} ${
+                isSmallScreen && (active ? "show" : "hide")
+            }`}
+            ref={searchRef}
+        >
             <input
                 onChange={handleChange}
                 type="text"
                 placeholder="Find Course..."
                 name="navInput"
+                autoComplete="off"
                 value={word}
             />
-            <div className="search__icon">
+            <div className="search__icon" onClick={handleClick}>
                 <FontAwesomeIcon icon={faSearch} />
             </div>
             <ul className="suggestion-list">

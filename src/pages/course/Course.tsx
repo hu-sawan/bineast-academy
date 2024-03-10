@@ -82,8 +82,6 @@ function Course() {
 
     // If the user is not a premium member and the course is premium then show an error message
     if (user && !user.isPremium && course?.isPremium) {
-        console.log("user", user);
-        console.log("course", course);
         return (
             <div className="status__holder">
                 <ErrorCard

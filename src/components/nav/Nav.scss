@@ -28,6 +28,22 @@
         align-items: center;
         gap: 10px;
 
+        &__subscription {
+            background-color: purple;
+            display: flex;
+            align-items: center;
+            color: white;
+            padding: 10px 20px;
+            font-size: 19px;
+            border-radius: 25px;
+            cursor: pointer;
+
+            @media (max-width: 640px) {
+                padding: 8px 15px;
+                font-size: 18px;
+            }
+        }
+
         .aca-nav__control__theme {
             cursor: pointer;
             transition: all 0.3s ease;

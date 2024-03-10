@@ -1,9 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "light" | "dark";
 
 interface ThemeContextData {
     theme: Theme;
+    isSmallScreen: boolean;
     toggleTheme: () => void;
 }
 
@@ -26,6 +27,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("theme", "dark");
         return "dark";
     });
+    const [isSmallScreen, setIsSmall] = useState<boolean>(false);
 
     const toggleTheme = () => {
         setTheme((prevTheme) => {
@@ -35,8 +37,27 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         });
     };
 
+    useEffect(() => {
+        const checkIfSmallScreen = () => {
+            if (window.innerWidth <= 640) {
+                setIsSmall(true);
+            } else {
+                setIsSmall(false);
+            }
+        };
+
+        checkIfSmallScreen();
+
+        window.addEventListener("resize", checkIfSmallScreen);
+
+        return () => {
+            window.removeEventListener("resize", checkIfSmallScreen);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, isSmallScreen, toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     );

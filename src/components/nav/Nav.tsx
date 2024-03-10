@@ -5,9 +5,9 @@ import lightLogo from "../../assets/logo/LightThemeLogoLandscape-nobg.png";
 import { auth } from "../../data/firebase";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
-import Login from "../loginpopup/Login";
+import { faSun, faMoon, faStar } from "@fortawesome/free-solid-svg-icons";
 import Search from "../search/Search";
+import Login from "../loginpopup/Login";
 import { useTheme } from "../../contexts/ThemeContext";
 
 function Nav() {
@@ -15,7 +15,7 @@ function Nav() {
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     const { user } = useAuth();
-    const { theme, toggleTheme } = useTheme();
+    const { theme, isSmallScreen, toggleTheme } = useTheme();
 
     const handleClose = () => {
         setShowPopup(false);
@@ -25,9 +25,35 @@ function Nav() {
         auth.signOut();
     };
 
+    const handleSubscribeClick = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/api/subscribe`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userId: user?.uid,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.status !== 200) throw Error(data.message);
+
+            window.location.href = data.url;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <>
             <nav className="aca-nav">
+                {isSmallScreen && <Search className="mobile" />}
                 <div className="container">
                     <div className="aca-nav__logo">
                         <a href="/bineast-academy">
@@ -39,6 +65,15 @@ function Nav() {
                     </div>
                     <Search />
                     <div className="aca-nav__control">
+                        {user ? (
+                            <div
+                                className="aca-nav__control__subscription tooltip bottom"
+                                onClick={handleSubscribeClick}
+                                data-tooltip="Become premium member "
+                            >
+                                <FontAwesomeIcon icon={faStar} />
+                            </div>
+                        ) : null}
                         <FontAwesomeIcon
                             className="aca-nav__control__theme"
                             icon={theme === "light" ? faMoon : faSun}

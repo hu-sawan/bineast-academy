@@ -19,7 +19,7 @@ function ErrorCard({
         <div className={`error-card ${fill && "fill"} ${onTop && "on-top"}`}>
             <div className="error-card__wrapper">
                 <div className="icon">
-                    <FontAwesomeIcon icon={faXmark} shake />
+                    <FontAwesomeIcon icon={faXmark} />
                 </div>
                 {message}
             </div>

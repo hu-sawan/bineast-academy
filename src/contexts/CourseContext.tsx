@@ -37,6 +37,8 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const fetchData = async () => {
             setContextLoading(true);
+            setVideos([]);
+            setCourse(null);
 
             try {
                 const [instructorResponse, courseResponse] = await Promise.all([
