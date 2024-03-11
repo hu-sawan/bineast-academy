@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCourse } from "../../contexts/CourseContext";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useAccessToken } from "../../contexts/AccessTokenContext";
 
 interface SuggestionsInterface {
     id: string;
@@ -17,6 +18,7 @@ interface SearchProps {
 
 function Search({ className }: SearchProps) {
     const { setCourseId } = useCourse();
+    const accessToken = useAccessToken();
     const [word, setWord] = useState<string>("");
     const [suggestions, setSuggestions] = useState<SuggestionsInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -48,7 +50,15 @@ function Search({ className }: SearchProps) {
             try {
                 setLoading(true);
                 const response = await fetch(
-                    `http://localhost:5050/api/search/courses/${word}`
+                    process.env.REACT_APP_API_URL +
+                        `/api/search/courses/${word}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                    }
                 );
 
                 if (response.status !== 200) {
@@ -69,7 +79,7 @@ function Search({ className }: SearchProps) {
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [word]);
+    }, [accessToken, word]);
 
     // To hide the suggestion list when clicked outside
     useEffect(() => {

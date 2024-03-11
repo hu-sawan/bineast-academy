@@ -6,6 +6,7 @@ import {
     Course,
 } from "../types/types";
 import { useAuth } from "./AuthContext";
+import { useAccessToken } from "./AccessTokenContext";
 // import { useAuth } from "./AuthContext";
 
 const CourseContext = createContext<CourseContextType | null>(null);
@@ -21,6 +22,7 @@ export const useCourse = () => {
 // This context provider set the main details of a course like course details and videos and instructors
 export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     const { user } = useAuth();
+    const accessToken = useAccessToken();
     const [courseId, setCourseId] = useState<string>("");
     const [course, setCourse] = useState<Course | null>(null);
     const [instructors, setInstructors] = useState<Instructor[]>([
@@ -41,21 +43,21 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
             setCourse(null);
 
             try {
-                const [instructorResponse, courseResponse] = await Promise.all([
-                    fetch(`http://localhost:5050/api/instructors/${courseId}`),
-                    fetch(
-                        `http://localhost:5050/api/courses/${courseId}/${
-                            user ? user.uid : null
-                        }`
-                    ),
-                ]);
+                const courseResponse = await fetch(
+                    `http://localhost:5050/api/courses/${courseId}/${
+                        user ? user.uid : null
+                    }`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                    }
+                );
 
-                const [instructorsData, courseData] = await Promise.all([
-                    instructorResponse.json(),
-                    courseResponse.json(),
-                ]);
+                const courseData = await courseResponse.json();
 
-                setInstructors(instructorsData);
                 setCourse(courseData[0]);
             } catch (error) {
                 if (error instanceof Error) {
@@ -78,7 +80,14 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
                 const response = await fetch(
                     `http://localhost:5050/api/videos/${courseId}/${
                         user ? user.uid : ""
-                    }`
+                    }`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                    }
                 );
 
                 const data = await response.json();
@@ -99,6 +108,34 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         if (courseId && (user || !course?.isPremium)) fetchVideos();
         else setVideos([]);
     }, [courseId, course, user]);
+
+    useEffect(() => {
+        const getInstructors = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:5050/api/instructors/${courseId}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                    }
+                );
+
+                const data = await response.json();
+
+                setInstructors(data);
+            } catch (error) {
+                if (error instanceof Error)
+                    return setContextError(error.message);
+
+                setContextError("Something wrong happened!");
+            }
+        };
+
+        if (courseId) getInstructors();
+    }, [accessToken, courseId]);
 
     const courseDetais: CourseContextType = {
         course,

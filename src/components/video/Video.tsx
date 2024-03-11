@@ -8,6 +8,7 @@ import ErrorCard from "../error/ErrorCard";
 import { Course, Instructor, VideoDetails } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { useAccessToken } from "../../contexts/AccessTokenContext";
 
 function Video() {
     const { courseId, orderNb } = useParams();
@@ -28,13 +29,23 @@ function Video() {
 
     const { user } = useAuth();
 
+    const accessToken = useAccessToken();
+
     useEffect(() => {
         const getVideo = async () => {
             try {
                 setError("");
                 setVideo(null);
                 const response = await fetch(
-                    `http://localhost:5050/api/videos/details/${courseId}/${orderNb}/${user?.uid}`
+                    process.env.REACT_APP_API_URL +
+                        `/api/videos/details/${courseId}/${orderNb}/${user?.uid}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                    }
                 );
 
                 const data = await response.json();

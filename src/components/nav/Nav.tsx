@@ -9,6 +9,7 @@ import { faSun, faMoon, faStar } from "@fortawesome/free-solid-svg-icons";
 import Search from "../search/Search";
 import Login from "../loginpopup/Login";
 import { useTheme } from "../../contexts/ThemeContext";
+import { useAccessToken } from "../../contexts/AccessTokenContext";
 
 function Nav() {
     const [active, setActive] = useState<boolean>(false);
@@ -16,6 +17,7 @@ function Nav() {
 
     const { user } = useAuth();
     const { theme, isSmallScreen, toggleTheme } = useTheme();
+    const accessToken = useAccessToken();
 
     const handleClose = () => {
         setShowPopup(false);
@@ -33,6 +35,7 @@ function Nav() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "x-access-token": accessToken,
                     },
                     body: JSON.stringify({
                         userId: user?.uid,

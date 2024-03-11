@@ -1,11 +1,14 @@
 import { AuthProvider } from "./AuthContext";
 import { ThemeProvider } from "./ThemeContext";
+import { AccessTokenProvider } from "./AccessTokenContext";
 
 const AppContextsProvider = ({ children }: { children: React.ReactNode }) => {
     return (
-        <AuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-        </AuthProvider>
+        <AccessTokenProvider>
+            <AuthProvider>
+                <ThemeProvider>{children}</ThemeProvider>
+            </AuthProvider>
+        </AccessTokenProvider>
     );
 };
 

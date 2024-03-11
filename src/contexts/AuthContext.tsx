@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../data/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { AuthContextType, UserFromDB } from "../types/types";
+import { useAccessToken } from "./AccessTokenContext";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -17,6 +18,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const accessToken = useAccessToken();
     const [loading, setLoading] = useState<boolean>(true);
     const updateContext = (newValues: Partial<AuthContextType>) => {
         setContextValue((prevValue) => ({
@@ -48,14 +50,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     // I used a endpoint that I had set up previously to check if a user is already
                     // in the db or he need to be added
                     const response = await fetch(
-                        `http://localhost:5050/api/users/isFound/${user.uid}`
+                        process.env.REACT_APP_API_URL +
+                            `/api/users/isFound/${user.uid}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                "content-type": "application/json",
+                                "x-access-token": accessToken,
+                            },
+                        }
                     );
 
                     // If Success then just concat the user object provided by OAuth and
                     // add to it my business logic, the user will then be of localUser type
                     if (response.status === 200) {
                         const userDataResponse = await fetch(
-                            `http://localhost:5050/api/users/${user.uid}`
+                            process.env.REACT_APP_API_URL +
+                                `/api/users/${user.uid}`,
+                            {
+                                method: "GET",
+                                headers: {
+                                    "content-type": "application/json",
+                                    "x-access-token": accessToken,
+                                },
+                            }
                         );
 
                         const [{ isPremium }]: [UserFromDB] =
@@ -78,11 +96,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         });
 
                         const response = await fetch(
-                            "http://localhost:5050/api/users/add",
+                            process.env.REACT_APP_API_URL + "/api/users/add",
                             {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
+                                    "x-access-token": accessToken,
                                 },
                                 body: JSON.stringify({
                                     userId: user.uid,
