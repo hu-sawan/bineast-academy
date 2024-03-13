@@ -35,7 +35,6 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     const [contextError, setContextError] = useState<string>("");
 
     // a simple useEffect to fetch the course details, instructors and videos
-    // TODO: separate the fetch into multiple useEffects to avoid unnecessary fetches
     useEffect(() => {
         const fetchData = async () => {
             setContextLoading(true);

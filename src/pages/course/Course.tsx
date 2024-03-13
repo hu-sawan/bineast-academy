@@ -8,21 +8,26 @@ import { CourseVideos } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 import Loading from "../../components/loading/Loading";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface NavListProps {
     courseId: string;
     videos: CourseVideos[];
+    isSmallScreen: boolean;
 }
 
 // Separated this part into a separate component to prevent unnecesary rendering when the
 // video component handled with the <Outlet /> is updated
-const NavList = memo(({ courseId, videos }: NavListProps) => {
+const NavList = memo(({ courseId, videos, isSmallScreen }: NavListProps) => {
     return (
         <div className="course__nav__list">
             {videos &&
                 videos.map(({ orderNb, title, isDone }: CourseVideos, idx) => {
                     const TEXT_OFFSET: number = 35;
-                    const isLong = title.length > TEXT_OFFSET;
+                    // on small screens don't cut title
+                    const isLong = isSmallScreen
+                        ? false
+                        : title.length > TEXT_OFFSET;
                     return (
                         <NavLink
                             data-tooltip={isLong ? title : null}
@@ -60,6 +65,7 @@ function Course() {
     const { courseId } = useParams();
     const { videos, course, contextError, setCourseId } = useCourse();
     const { user } = useAuth();
+    const { isSmallScreen } = useTheme();
 
     useEffect(() => {
         if (!videos || !course) {
@@ -93,7 +99,12 @@ function Course() {
         );
     }
 
-    const isCourseTitleLong = !course ? false : course.title.length > 65;
+    // on small screens don't cut the course title
+    const isCourseTitleLong = isSmallScreen
+        ? false
+        : !course
+        ? false
+        : course.title.length > 65;
 
     return (
         <div className="container">
@@ -155,7 +166,11 @@ function Course() {
                                 </div>
                             )}
                         </div>
-                        <NavList courseId={courseId ?? ""} videos={videos} />
+                        <NavList
+                            courseId={courseId ?? ""}
+                            videos={videos}
+                            isSmallScreen={isSmallScreen}
+                        />
                     </div>
                     <Outlet />
                 </div>

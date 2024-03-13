@@ -17,20 +17,24 @@ export const AccessTokenProvider = ({
     useEffect(() => {
         const getAccessToken = async () => {
             setLoading(true);
-            const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/api/authenticate`,
-                {
-                    method: "GET",
-                    headers: {
-                        "content-type": "application/json",
-                        "x-private-key": process.env.REACT_APP_PRIVATE_KEY,
-                    } as HeadersInit,
-                }
-            );
+            try {
+                const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/authenticate`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-private-key": process.env.REACT_APP_PRIVATE_KEY,
+                        } as HeadersInit,
+                    }
+                );
 
-            const data = await response.json();
+                const data = await response.json();
 
-            setAccessToken(data.accessToken);
+                setAccessToken(data.accessToken);
+            } catch (error) {
+                setAccessToken("");
+            }
             setLoading(false);
         };
 
