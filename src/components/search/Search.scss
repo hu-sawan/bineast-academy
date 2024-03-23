@@ -61,7 +61,7 @@
     position: absolute;
     display: flex;
     justify-content: flex-start;
-    background-color: var(--main-background-color);
+    background-color: var(--primary-background-color);
     border-radius: 5px;
     top: calc(100% + 4px);
     min-width: 250px;
@@ -72,8 +72,8 @@
         flex-grow: initial;
         width: 0;
         padding: 10px 0;
-        background-color: var(--main-background-color);
-        border-bottom: 1px solid var(--main-text-color);
+        background-color: var(--primary-background-color);
+        border-bottom: 1px solid var(--primary-text-color);
         border-radius: 0;
         transition: width 0.6s ease-out, padding 0.6s ease-out;
 
@@ -87,8 +87,8 @@
         width: fit-content;
         z-index: 10;
         cursor: pointer;
-        background-color: var(--main-background-color);
-        color: var(--main-text-color);
+        background-color: var(--primary-background-color);
+        color: var(--primary-text-color);
     }
 
     &.show {

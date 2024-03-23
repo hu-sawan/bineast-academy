@@ -1,9 +1,9 @@
 .home {
-    background-color: var(--main-background-color);
+    background-color: var(--primary-background-color);
 
     &__featured {
         padding-top: 3rem;
-        color: var(--main-text-color);
+        color: var(--primary-text-color);
 
         .container {
             padding: 10px;

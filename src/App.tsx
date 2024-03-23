@@ -7,6 +7,7 @@ import { useTheme } from "./contexts/ThemeContext";
 import Course from "./pages/course/Course";
 import Video from "./components/video/Video";
 import { CourseProvider } from "./contexts/CourseContext";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 // TODO: reduce the number of rerenderes by using memo and useCallback
 // TODO: implement lazy loading for all app components
@@ -24,20 +25,29 @@ function App() {
     }
 
     return (
-        <div>
+        <>
             <BrowserRouter basename="/bineast-academy">
-                <CourseProvider>
-                    <Nav />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path={`/course/:courseId`} element={<Course />}>
-                            <Route path=":orderNb" element={<Video />} />
-                        </Route>
-                    </Routes>
-                </CourseProvider>
-                <Footer />
+                <div>
+                    <CourseProvider>
+                        <Nav />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route
+                                path={`/course/:courseId`}
+                                element={<Course />}
+                            >
+                                <Route path=":orderNb" element={<Video />} />
+                            </Route>
+                            <Route path="*" element={<div>404</div>} />
+                        </Routes>
+                    </CourseProvider>
+                    <Footer />
+                </div>
             </BrowserRouter>
-        </div>
+            <BrowserRouter basename="/dashboard">
+                <Dashboard />
+            </BrowserRouter>
+        </>
     );
 }
 

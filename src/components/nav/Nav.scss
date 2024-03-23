@@ -1,8 +1,8 @@
 .aca-nav {
-    background-color: var(--main-background-color);
+    background-color: var(--primary-background-color);
     box-shadow: 0 0 10px var(--box-shadow-color);
     z-index: 100;
-    color: var(--main-text-color);
+    color: var(--primary-text-color);
     position: relative;
 
     .container {
@@ -57,7 +57,7 @@
             }
 
             &:hover {
-                background-color: var(--main-background-color-hover);
+                background-color: var(--primary-background-color-hover);
             }
         }
 
@@ -84,7 +84,7 @@
         }
 
         .aca-nav__control__login {
-            border: 1px solid var(--main-text-color);
+            border: 1px solid var(--primary-text-color);
             padding: 5px 20px;
             border-radius: 5px;
             cursor: pointer;
@@ -97,7 +97,7 @@
 
         .aca-nav__control__signout {
             position: absolute;
-            background-color: var(--main-background-color);
+            background-color: var(--primary-background-color);
             padding: 12px 22px;
             right: 0;
             box-shadow: 0 4px 1px var(--signout-shadow-color);
@@ -113,7 +113,7 @@
             }
 
             span {
-                border: 1px solid var(--main-text-color);
+                border: 1px solid var(--primary-text-color);
                 padding: 4px 10px;
                 border-radius: 5px;
                 font-size: 13px;
