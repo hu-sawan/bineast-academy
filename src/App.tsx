@@ -1,13 +1,15 @@
 import "./App.scss";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/home/Home";
-import Nav from "./components/nav/Nav";
-import Footer from "./components/footer/Footer";
+import { Suspense, lazy } from "react";
 import { useTheme } from "./contexts/ThemeContext";
-import Course from "./pages/course/Course";
-import Video from "./components/video/Video";
 import { CourseProvider } from "./contexts/CourseContext";
-import Dashboard from "./pages/dashboard/Dashboard";
+import Loading from "./components/loading/Loading";
+const Home = lazy(() => import("./pages/home/Home"));
+const Nav = lazy(() => import("./components/nav/Nav"));
+const Footer = lazy(() => import("./components/footer/Footer"));
+const Course = lazy(() => import("./pages/course/Course"));
+const Video = lazy(() => import("./components/video/Video"));
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 
 // TODO: reduce the number of rerenderes by using memo and useCallback
 // TODO: implement lazy loading for all app components
@@ -30,22 +32,29 @@ function App() {
                 <div>
                     <CourseProvider>
                         <Nav />
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route
-                                path={`/course/:courseId`}
-                                element={<Course />}
-                            >
-                                <Route path=":orderNb" element={<Video />} />
-                            </Route>
-                            <Route path="*" element={<div>404</div>} />
-                        </Routes>
+                        <Suspense fallback={<Loading />}>
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route
+                                    path={`/course/:courseId`}
+                                    element={<Course />}
+                                >
+                                    <Route
+                                        path=":orderNb"
+                                        element={<Video />}
+                                    />
+                                </Route>
+                                <Route path="*" element={<div>404</div>} />
+                            </Routes>
+                        </Suspense>
                     </CourseProvider>
                     <Footer />
                 </div>
             </BrowserRouter>
             <BrowserRouter basename="/dashboard">
-                <Dashboard />
+                <Suspense fallback={<Loading />}>
+                    <Dashboard />
+                </Suspense>
             </BrowserRouter>
         </>
     );

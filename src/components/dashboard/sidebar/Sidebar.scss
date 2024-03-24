@@ -5,7 +5,7 @@
     }
 
     .ps-sidebar-container {
-        background-color: var(--primary-background-color) !important;
+        background-color: var(--secondary-background-color) !important;
     }
 
     .ps-menu-button {
@@ -21,25 +21,15 @@
         }
     }
 
-    &__menu-button {
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-        color: var(--primary-text-color);
-        font-size: 20px;
-        padding: 8px;
-        border-radius: 50%;
-    }
-
     .sidebar-items {
-        &.dark .ps-menu-button:hover {
-            background-color: #ffffff5e;
+        & .ps-menu-button:hover {
+            background-color: var(--list-hover-color);
         }
-        &.light .ps-menu-button:hover {
-            background-color: #ffffff14;
+        .ps-menu-button:hover {
+            color: var(--light-blue-text-color) !important;
         }
         .ps-active {
-            color: #6870fa !important;
+            color: var(--light-blue-text-color) !important;
         }
 
         &__subtitle {

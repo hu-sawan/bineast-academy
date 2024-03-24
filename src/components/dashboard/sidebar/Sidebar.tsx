@@ -26,21 +26,20 @@ interface ItemProps {
 
 const Item = ({ title, to, icon, selected, setSelected }: ItemProps) => {
     return (
-        <Link to={to}>
-            <MenuItem
-                active={selected === title}
-                style={{
-                    color: "var(--primary-text-color)",
-                    borderRadius: "10px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                }}
-                onClick={() => setSelected(title)}
-                icon={icon}
-            >
-                <p>{title}</p>
-            </MenuItem>
-        </Link>
+        <MenuItem
+            component={<Link to={to} />}
+            active={selected === title}
+            style={{
+                color: "var(--primary-text-color)",
+                borderRadius: "10px",
+                fontSize: "14px",
+                fontWeight: "500",
+            }}
+            onClick={() => setSelected(title)}
+            icon={icon}
+        >
+            <p>{title}</p>
+        </MenuItem>
     );
 };
 
@@ -55,7 +54,7 @@ const Sidebar = () => {
             items: [
                 {
                     title: "Dashboard",
-                    to: "/dashboard",
+                    to: "/",
                     icon: <FontAwesomeIcon icon={faHome} />,
                     selected,
                     setSelected,
@@ -242,7 +241,7 @@ const Sidebar = () => {
                         }}
                     >
                         {items.map((item, index) => (
-                            <>
+                            <span key={index}>
                                 {item.subtitle && (
                                     <h6 className="sidebar-items__subtitle">
                                         {item.subtitle}
@@ -258,7 +257,7 @@ const Sidebar = () => {
                                         setSelected={setSelected}
                                     />
                                 ))}
-                            </>
+                            </span>
                         ))}
                     </div>
                 </Menu>

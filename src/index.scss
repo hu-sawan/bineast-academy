@@ -4,8 +4,11 @@
     --tooltip-background-color: rgba(77, 77, 77, 0.87);
     --primary-text-color: white;
     --light-green-text-color: #70d8bd;
+    --light-blue-text-color: #6870fa;
     --dark-hover: rgba(255, 255, 255, 0.1);
     --light-hover: rgba(0, 0, 0, 0.1);
+    --primary-button-color: #fff;
+    --hover-button-color: #ffffff14;
     --box-shadow-color: rgba(255, 255, 255, 0.1);
     --search-icon-background-color: #f0f0f0;
     --search-icon-color: #333;
@@ -16,9 +19,11 @@
     --scroll-bar-thumb-color: #4d4d4d;
     --loading-boxes-color: #333;
     .dashboard {
-        --primary-background-color: #1f2a40;
+        --primary-background-color: #141b2d;
+        --secondary-background-color: #1f2a40;
         --primary-text-color: #e0e0e0;
         --secondary-text-color: #a3a3a3;
+        --list-hover-color: #1016245e;
     }
 }
 
@@ -28,8 +33,11 @@
     --tooltip-background-color: rgba(30, 30, 30, 0.87);
     --primary-text-color: black;
     --light-green-text-color: #70d8bd;
+    --light-blue-text-color: #6870fa;
     --dark-hover: rgba(0, 0, 0, 0.1);
     --light-hover: rgba(0, 0, 0, 0.1);
+    --primary-button-color: #0000008a;
+    --hover-button-color: #0000000a;
     --box-shadow-color: rgba(0, 0, 0, 0.2);
     --search-icon-background-color: #e0e0e0;
     --search-icon-color: #333;
@@ -40,9 +48,11 @@
     --scroll-bar-thumb-color: #b3b3b3;
     --loading-boxes-color: #999;
     .dashboard {
-        --primary-background-color: #f2f0f0;
+        --primary-background-color: #fcfcfc;
+        --secondary-background-color: #f2f0f0;
         --primary-text-color: #141414;
         --secondary-text-color: #3d3d3d;
+        --list-hover-color: #00000014;
     }
 }
 
