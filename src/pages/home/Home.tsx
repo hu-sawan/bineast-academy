@@ -1,11 +1,12 @@
 import "./Home.scss";
-import { useEffect, useState } from "react";
-import CourseCard from "../../components/courseCard/CourseCard";
-import Loading from "../../components/loading/Loading";
-import ErrorCard from "../../components/error/ErrorCard";
+import { lazy, useEffect, useState } from "react";
 import { Course } from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 import { useAccessToken } from "../../contexts/AccessTokenContext";
+
+const CourseCard = lazy(() => import("../../components/courseCard/CourseCard"));
+const Loading = lazy(() => import("../../components/loading/Loading"));
+const ErrorCard = lazy(() => import("../../components/error/ErrorCard"));
 
 function Home() {
     const [courses, setCourses] = useState<Course[]>([]);

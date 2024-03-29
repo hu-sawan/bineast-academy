@@ -44,7 +44,6 @@ function App() {
                                         element={<Video />}
                                     />
                                 </Route>
-                                <Route path="*" element={<div>404</div>} />
                             </Routes>
                         </Suspense>
                     </CourseProvider>

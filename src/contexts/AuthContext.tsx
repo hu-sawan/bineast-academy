@@ -76,14 +76,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             }
                         );
 
-                        const [{ isPremium }]: [UserFromDB] =
+                        const { id, role, isPremium }: UserFromDB =
                             await userDataResponse.json();
 
                         contextValue.updateContext({
                             authContextIsDone: true,
                             authContextSuccess: `User found. Redirecting to main page in `,
                             authContextError: "",
-                            user: { ...user, isPremium: isPremium },
+                            user: { ...user, id, role, isPremium },
                         });
                     }
 
@@ -115,7 +115,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                                 authContextError: "",
                                 authContextSuccess: `User created. Redirecting to main page in `,
                                 authContextIsDone: true,
-                                user: { ...user, isPremium: false },
+                                user: {
+                                    ...user,
+                                    id: user.uid,
+                                    role: "USER",
+                                    isPremium: false,
+                                },
                             });
                         } else {
                             auth.signOut();

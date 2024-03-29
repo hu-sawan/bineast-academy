@@ -7,9 +7,7 @@ export interface UserFromDB {
     isPremium: boolean;
 }
 
-export interface LocalUser extends User {
-    isPremium: boolean;
-}
+export interface LocalUser extends User, Omit<UserFromDB, "email"> {}
 
 export interface AuthContextType {
     user: LocalUser | null;

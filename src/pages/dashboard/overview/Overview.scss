@@ -1,0 +1,17 @@
+.dashboard-overview {
+    &__content {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-auto-rows: 140px;
+        grid-gap: 20px;
+
+        .content__card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary-background-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    }
+}

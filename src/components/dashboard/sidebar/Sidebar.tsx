@@ -1,6 +1,5 @@
 import "./Sidebar.scss";
-import { useState } from "react";
-import profileImg from "../../../assets/providers/google.png";
+import { memo, useState } from "react";
 import { Sidebar as ProSideBar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +14,49 @@ import {
     faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../../contexts/ThemeContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import TextImage from "../../textImage/TextImage";
+import { LocalUser } from "../../../types/types";
+
+interface UserInfoProps {
+    user: LocalUser | null;
+}
+
+const UserInfo = memo(({ user }: UserInfoProps) => {
+    return (
+        <div
+            style={{
+                width: "35px",
+                height: "35px",
+                cursor: "pointer",
+                borderRadius: "50%",
+                overflow: "hidden",
+                color: "white",
+            }}
+        >
+            {user && user.photoURL ? (
+                <img
+                    src={user.photoURL}
+                    style={{
+                        display: "block",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                    }}
+                    alt="profile-user"
+                />
+            ) : (
+                <TextImage
+                    text={
+                        user && user.displayName
+                            ? user.displayName
+                            : "Uknown User"
+                    }
+                />
+            )}
+        </div>
+    );
+});
 
 interface ItemProps {
     title: string;
@@ -27,15 +69,15 @@ interface ItemProps {
 const Item = ({ title, to, icon, selected, setSelected }: ItemProps) => {
     return (
         <MenuItem
-            component={<Link to={to} />}
-            active={selected === title}
+            component={<Link to={`/${to}`} />}
+            active={selected === to}
             style={{
                 color: "var(--primary-text-color)",
                 borderRadius: "10px",
                 fontSize: "14px",
                 fontWeight: "500",
             }}
-            onClick={() => setSelected(title)}
+            onClick={() => setSelected(to)}
             icon={icon}
         >
             <p>{title}</p>
@@ -46,7 +88,17 @@ const Item = ({ title, to, icon, selected, setSelected }: ItemProps) => {
 const Sidebar = () => {
     const { theme } = useTheme();
     const [isOpen, SetIsOpen] = useState(true);
-    const [selected, setSelected] = useState("Dashboard");
+
+    // Get the last part of the current URL
+    const currentUrl = window.location.pathname.split("/").pop();
+
+    const [selected, setSelected] = useState<string>(
+        currentUrl === "dashboard" ? "" : currentUrl ?? ""
+    );
+
+    const { user } = useAuth();
+
+    console.log("selected", user);
 
     const items = [
         {
@@ -54,7 +106,7 @@ const Sidebar = () => {
             items: [
                 {
                     title: "Dashboard",
-                    to: "/",
+                    to: "",
                     icon: <FontAwesomeIcon icon={faHome} />,
                     selected,
                     setSelected,
@@ -65,22 +117,22 @@ const Sidebar = () => {
             subtitle: "Data",
             items: [
                 {
-                    title: "Manage Tean",
-                    to: "/team",
+                    title: "Manage Users",
+                    to: "users",
                     icon: <FontAwesomeIcon icon={faPeopleArrows} />,
                     selected,
                     setSelected,
                 },
                 {
                     title: "Contacts",
-                    to: "/contacts",
+                    to: "contacts",
                     icon: <FontAwesomeIcon icon={faAddressBook} />,
                     selected,
                     setSelected,
                 },
                 {
                     title: "Invoices",
-                    to: "/invoices",
+                    to: "invoices",
                     icon: <FontAwesomeIcon icon={faFileInvoice} />,
                     selected,
                     setSelected,
@@ -92,21 +144,21 @@ const Sidebar = () => {
             items: [
                 {
                     title: "Add User",
-                    to: "/addUser",
+                    to: "addUser",
                     icon: <FontAwesomeIcon icon={faUserPlus} />,
                     selected,
                     setSelected,
                 },
                 {
                     title: "Add Products",
-                    to: "/addProducts",
+                    to: "addProducts",
                     icon: <FontAwesomeIcon icon={faPlus} />,
                     selected,
                     setSelected,
                 },
                 {
                     title: "FAQ Page",
-                    to: "/faq",
+                    to: "faq",
                     icon: <FontAwesomeIcon icon={faQuestionCircle} />,
                     selected,
                     setSelected,
@@ -166,77 +218,49 @@ const Sidebar = () => {
                             </div>
                         )}
                     </MenuItem>
-
-                    {isOpen && (
+                    <div
+                        style={{
+                            display: `${isOpen ? "flex" : "none"}`,
+                            textAlign: "center",
+                            padding: "10% 0 10% 10%",
+                            borderTop: `1px solid var(--secondary-text-color)`,
+                            borderBottom: `1px solid var(--secondary-text-color)`,
+                            alignItems: "center",
+                        }}
+                    >
+                        <UserInfo user={user} />
                         <div
                             style={{
-                                display: "flex",
                                 textAlign: "center",
-                                padding: "10% 0 10% 10%",
-                                borderTop: `1px solid var(--secondary-text-color)`,
-                                borderBottom: `1px solid var(--secondary-text-color)`,
+                                flex: "1",
                             }}
                         >
-                            <div>
-                                <img
-                                    src={profileImg}
-                                    style={{
-                                        display: "block",
-                                        width: "35px",
-                                        height: "35px",
-                                        cursor: "pointer",
-                                        borderRadius: "50%",
-                                        objectFit: "contain",
-                                    }}
-                                    alt="profile-user"
-                                />
-                            </div>
-
-                            <div
+                            <h5
                                 style={{
-                                    textAlign: "center",
-                                    flex: "1",
+                                    color: "var(--primary-text-color)",
+                                    fontWeight: "700",
+                                    fontSize: "16px",
+                                    marginTop: "4px",
                                 }}
                             >
-                                <h5
-                                    style={{
-                                        color: "var(--primary-text-color)",
-                                        fontWeight: "700",
-                                        fontSize: "16px",
-                                        marginTop: "4px",
-                                    }}
-                                >
-                                    {/* username */}
-                                    Hussein Sawan
-                                </h5>
-                                <h6
-                                    style={{
-                                        color: "var(--light-green-text-color)",
-                                        fontWeight: "500",
-                                        fontSize: "14px",
-                                    }}
-                                >
-                                    {/* user role */}
-                                    Admin
-                                </h6>
-                            </div>
+                                {user ? user.displayName : "Unknown User"}
+                            </h5>
+                            <h6
+                                style={{
+                                    color: "var(--light-green-text-color)",
+                                    fontWeight: "500",
+                                    fontSize: "14px",
+                                    textTransform: "capitalize",
+                                }}
+                            >
+                                {user ? user.role : "user"}
+                            </h6>
                         </div>
-                    )}
+                    </div>
 
                     <div
                         className={`sidebar-items ${theme}`}
                         style={{
-                            // "& .ps-menu-button:hover": {
-                            //     backgroundColor: `${
-                            //         theme === "dark"
-                            //             ? "#1016245e"
-                            //             : "#00000014"
-                            //     } !important`,
-                            //     color: "#6870fa !important",
-                            // },
-                            // "& .ps-active": {
-                            //     color: "#6870fa !important",
-                            // },
                             padding: isOpen ? "10%" : undefined,
                         }}
                     >
