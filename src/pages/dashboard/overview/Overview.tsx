@@ -22,6 +22,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
+                        to="users"
                         value="100"
                         subtitle="Active Users"
                         icon={
@@ -36,6 +37,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
+                        to=""
                         value="20$"
                         subtitle="Monthly income"
                         icon={
@@ -53,6 +55,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
+                        to=""
                         value="5"
                         subtitle="New Subscription"
                         icon={
@@ -67,6 +70,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
+                        to=""
                         value="23"
                         subtitle="New Users"
                         icon={

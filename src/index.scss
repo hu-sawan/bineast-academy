@@ -120,14 +120,36 @@ a {
 
 .is-easy {
     background-color: #48c78e;
+
+    &.hover {
+        transition: background-color 0.1s ease-in-out;
+
+        &:hover {
+            background-color: #3d9e6e;
+        }
+    }
 }
 
 .is-medium {
     background-color: #f1c40f;
+
+    &.hover {
+        transition: background-color 0.1s ease-in-out;
+
+        &:hover {
+            background-color: #d4ad0f;
+        }
+    }
 }
 
 .is-hard {
     background-color: #e74c3c;
+
+    &.hover {
+        &:hover {
+            background-color: #c0392b;
+        }
+    }
 }
 
 ::-webkit-scrollbar {

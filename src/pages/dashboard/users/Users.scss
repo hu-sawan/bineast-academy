@@ -24,4 +24,52 @@
     & .MuiTablePagination-root {
         color: inherit;
     }
+
+    &__role {
+        width: fit-content;
+        border: none;
+        height: 100%;
+        outline: none;
+        background: transparent;
+        color: var(--primary-text-color);
+        font-size: 14px;
+        text-align: center;
+
+        option {
+            padding: 10px 0;
+            border: 0px;
+            background-color: var(--table-header-backgroundColor);
+            color: var(--primary-text-color);
+
+            &:focus {
+                border: 0;
+                outline: none;
+            }
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__confirm__role {
+        height: 100%;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        border-radius: 5px;
+
+        span {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    }
 }

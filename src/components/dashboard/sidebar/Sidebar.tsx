@@ -98,8 +98,6 @@ const Sidebar = () => {
 
     const { user } = useAuth();
 
-    console.log("selected", user);
-
     const items = [
         {
             subtitle: "",

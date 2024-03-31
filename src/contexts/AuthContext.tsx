@@ -76,8 +76,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             }
                         );
 
-                        const { id, role, isPremium }: UserFromDB =
+                        const [{ id, role, isPremium }]: [UserFromDB] =
                             await userDataResponse.json();
+
+                        console.log(id, role, isPremium);
 
                         contextValue.updateContext({
                             authContextIsDone: true,
