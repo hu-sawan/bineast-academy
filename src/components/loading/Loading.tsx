@@ -3,6 +3,8 @@ import "./Loading.scss";
 interface LoadingProps {
     onTop?: boolean;
     fill?: boolean;
+    backgroundColor?: string;
+    particlesBackgroundColor?: string;
     position?: "relative" | "absolute";
     size?: "small" | "medium" | "large";
 }
@@ -10,6 +12,8 @@ interface LoadingProps {
 function Loading({
     onTop = false,
     fill = false,
+    backgroundColor = "",
+    particlesBackgroundColor = "",
     position = "absolute",
     size = "large",
 }: LoadingProps) {
@@ -18,12 +22,21 @@ function Loading({
             className={`loading ${position} ${size} ${fill && "fill"} ${
                 onTop && "on-top"
             }`}
+            style={{ backgroundColor: `${backgroundColor}` }}
         >
             <div className="loading__animation">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div
+                    style={{ backgroundColor: particlesBackgroundColor }}
+                ></div>
+                <div
+                    style={{ backgroundColor: particlesBackgroundColor }}
+                ></div>
+                <div
+                    style={{ backgroundColor: particlesBackgroundColor }}
+                ></div>
+                <div
+                    style={{ backgroundColor: particlesBackgroundColor }}
+                ></div>
             </div>
         </div>
     );

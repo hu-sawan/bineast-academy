@@ -1,7 +1,6 @@
 import "./Home.scss";
 import { lazy, useEffect, useState } from "react";
 import { Course } from "../../types/types";
-import { useCourse } from "../../contexts/CourseContext";
 import { useAccessToken } from "../../contexts/AccessTokenContext";
 
 const CourseCard = lazy(() => import("../../components/courseCard/CourseCard"));
@@ -12,7 +11,6 @@ function Home() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const { setCourseId } = useCourse();
     const accessToken = useAccessToken();
 
     useEffect(() => {
@@ -47,7 +45,7 @@ function Home() {
         };
 
         getCourses();
-    }, []);
+    }, [accessToken]);
 
     return (
         <div className="home">
@@ -82,10 +80,9 @@ function Home() {
                                                 durationInMinutes
                                             }
                                             level={level}
-                                            img={imgUrl}
+                                            imgUrl={imgUrl}
                                             isPremium={isPremium}
                                             key={idx}
-                                            setCourseId={setCourseId}
                                         />
                                     )
                                 )}

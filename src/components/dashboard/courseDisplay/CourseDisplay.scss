@@ -1,0 +1,58 @@
+.course-display {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--secondary-background-color);
+
+    &__img {
+        width: 20%;
+        aspect-ratio: 16/9;
+        object-fit: contain;
+
+        img {
+            display: block;
+
+            width: 100%;
+            aspect-ratio: 16/9;
+        }
+    }
+
+    &__content {
+        flex: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &__details {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    &__control {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding: 0 20px;
+
+        span {
+            cursor: pointer;
+            transition: 0.1s ease-in-out;
+
+            &.edit:hover {
+                color: var(--light-blue-text-color);
+            }
+
+            &.delete {
+                color: #e74c3c;
+
+                &:hover {
+                    color: #c0392b;
+                }
+            }
+        }
+    }
+}

@@ -51,7 +51,16 @@ function App() {
                 </div>
             </BrowserRouter>
             <BrowserRouter basename="/dashboard">
-                <Suspense fallback={<Loading />}>
+                <Suspense
+                    fallback={
+                        <Loading
+                            backgroundColor={theme === "dark" ? "#141b2d" : ""}
+                            particlesBackgroundColor={
+                                theme === "dark" ? "#1f2a40" : "#f2f0f0"
+                            }
+                        />
+                    }
+                >
                     <Dashboard />
                 </Suspense>
             </BrowserRouter>

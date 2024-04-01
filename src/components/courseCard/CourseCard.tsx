@@ -1,32 +1,24 @@
 import "./CourseCard.scss";
+import { Course } from "../../types/types";
 import { Link } from "react-router-dom";
-
-interface CourseCardProps {
-    id: string;
-    img: string;
-    title: string;
-    description: string;
-    durationInMinutes: number;
-    level: string;
-    isPremium: boolean;
-    setCourseId: (couresId: string) => void;
-}
+import { useCourse } from "../../contexts/CourseContext";
 
 function CourseCard({
     id,
-    img,
+    imgUrl,
     title,
     description,
     durationInMinutes,
     level,
     isPremium,
-    setCourseId,
-}: CourseCardProps) {
+}: Course) {
     const levelObj = {
         beginner: "is-easy",
         intermediate: "is-medium",
         advanced: "is-hard",
     };
+
+    const { setCourseId } = useCourse();
 
     return (
         <div className="course-card" onClick={() => setCourseId(id)}>
@@ -37,7 +29,7 @@ function CourseCard({
             )}
             <Link to={`/course/${id}`}>
                 <div className="course-card__img">
-                    <img src={img} alt={`course ${id}`} />
+                    <img src={imgUrl} alt={`course ${id}`} />
                 </div>
                 <div className="course-card__details">
                     <h1>

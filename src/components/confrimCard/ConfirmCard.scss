@@ -1,0 +1,43 @@
+.confirm-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+
+    &.dark {
+        background-color: rgba(255, 255, 255, 0.247);
+    }
+
+    &.light {
+        background-color: rgba(0, 0, 0, 0.247);
+    }
+
+    &__wrapper {
+        border-radius: 5px;
+        background-color: var(--secondary-background-color);
+        text-align: center;
+        padding: 10px;
+        width: 200px;
+        height: 130px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &__control {
+            display: flex;
+            justify-content: space-around;
+
+            span {
+                color: white;
+                padding: 3px 8px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+        }
+    }
+}

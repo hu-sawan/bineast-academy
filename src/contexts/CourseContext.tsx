@@ -3,7 +3,7 @@ import {
     CourseVideos,
     Instructor,
     CourseContextType,
-    Course,
+    CourseContextInterface,
 } from "../types/types";
 import { useAuth } from "./AuthContext";
 import { useAccessToken } from "./AccessTokenContext";
@@ -24,7 +24,7 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     const { user } = useAuth();
     const accessToken = useAccessToken();
     const [courseId, setCourseId] = useState<string>("");
-    const [course, setCourse] = useState<Course | null>(null);
+    const [course, setCourse] = useState<CourseContextInterface | null>(null);
     const [instructors, setInstructors] = useState<Instructor[]>([
         { id: -1, instructorFullName: "Unknown", email: "N/A" },
     ]);
@@ -71,7 +71,7 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         if (courseId) {
             fetchData();
         }
-    }, [courseId, user]);
+    }, [accessToken, courseId, user]);
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -106,7 +106,7 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         // is user not logged in and the course is a premium course then don't provide videos
         if (courseId && (user || !course?.isPremium)) fetchVideos();
         else setVideos([]);
-    }, [courseId, course, user]);
+    }, [courseId, course, user, accessToken]);
 
     useEffect(() => {
         const getInstructors = async () => {

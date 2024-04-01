@@ -1,0 +1,27 @@
+.dashboard-invoices {
+    & .MuiDataGrid-root {
+        border: none;
+    }
+
+    & .MuiDataGrid-cell {
+        border-bottom: none;
+    }
+    & .MuiDataGrid-columnHeader {
+        color: var(--primary-text-color) !important;
+        background-color: var(--table-header-backgroundColor);
+        border-bottom: none;
+    }
+    & .MuiDataGrid-footerContainer {
+        color: var(--primary-text-color) !important;
+        background-color: var(--table-header-backgroundColor);
+        border-top: none;
+    }
+
+    & .MuiDataGrid-cell {
+        color: var(--primary-text-color);
+    }
+
+    & .MuiTablePagination-root {
+        color: inherit;
+    }
+}

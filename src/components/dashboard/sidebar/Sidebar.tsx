@@ -6,12 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faHome,
     faPeopleArrows,
-    faAddressBook,
     faFileInvoice,
     faUserPlus,
-    faPlus,
-    faQuestionCircle,
     faBars,
+    faGraduationCap,
+    faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../../contexts/ThemeContext";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -122,16 +121,16 @@ const Sidebar = () => {
                     setSelected,
                 },
                 {
-                    title: "Contacts",
-                    to: "contacts",
-                    icon: <FontAwesomeIcon icon={faAddressBook} />,
+                    title: "Invoices",
+                    to: "invoices",
+                    icon: <FontAwesomeIcon icon={faFileInvoice} />,
                     selected,
                     setSelected,
                 },
                 {
-                    title: "Invoices",
-                    to: "invoices",
-                    icon: <FontAwesomeIcon icon={faFileInvoice} />,
+                    title: "Courses",
+                    to: "courses",
+                    icon: <FontAwesomeIcon icon={faVideo} />,
                     selected,
                     setSelected,
                 },
@@ -148,16 +147,9 @@ const Sidebar = () => {
                     setSelected,
                 },
                 {
-                    title: "Add Products",
-                    to: "addProducts",
-                    icon: <FontAwesomeIcon icon={faPlus} />,
-                    selected,
-                    setSelected,
-                },
-                {
-                    title: "FAQ Page",
-                    to: "faq",
-                    icon: <FontAwesomeIcon icon={faQuestionCircle} />,
+                    title: "Add Instructor",
+                    to: "addInstructor",
+                    icon: <FontAwesomeIcon icon={faGraduationCap} />,
                     selected,
                     setSelected,
                 },

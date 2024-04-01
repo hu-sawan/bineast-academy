@@ -59,16 +59,27 @@ export interface Course {
         | "advanced";
     imgUrl: string;
     isPremium: boolean;
+}
+
+export interface CourseContextInterface extends Course {
     completed: number;
 }
 
 export interface CourseContextType {
-    course: Course | null;
+    course: CourseContextInterface | null;
     videos: CourseVideos[];
     instructors: Instructor[];
     contextLoading: boolean;
     contextError: string;
-    setCourse: (course: Course) => void;
+    setCourse: (course: CourseContextInterface) => void;
     setVideos: (videos: CourseVideos[]) => void;
     setCourseId: (courseId: string) => void;
+}
+
+export interface Invoice {
+    id: string;
+    userId: string;
+    endDate: string;
+    paymentStatus: string;
+    status: string;
 }

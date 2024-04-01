@@ -1,0 +1,11 @@
+.dashboard-courses {
+    &__status {
+        position: relative;
+    }
+
+    .courses {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

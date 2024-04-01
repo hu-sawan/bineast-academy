@@ -79,8 +79,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         const [{ id, role, isPremium }]: [UserFromDB] =
                             await userDataResponse.json();
 
-                        console.log(id, role, isPremium);
-
                         contextValue.updateContext({
                             authContextIsDone: true,
                             authContextSuccess: `User found. Redirecting to main page in `,

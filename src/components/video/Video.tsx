@@ -5,7 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../loading/Loading";
 import ErrorCard from "../error/ErrorCard";
-import { Course, Instructor, VideoDetails } from "../../types/types";
+import {
+    CourseContextInterface,
+    Instructor,
+    VideoDetails,
+} from "../../types/types";
 import { useCourse } from "../../contexts/CourseContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useAccessToken } from "../../contexts/AccessTokenContext";
@@ -101,7 +105,7 @@ function Video() {
          * fetched from the server.
          */
 
-        let updatedCourse: Course;
+        let updatedCourse: CourseContextInterface;
         setLoading(true);
         // if already done then delete the done status
         if (done) {
@@ -111,6 +115,7 @@ function Video() {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
+                        "x-access-token": accessToken,
                     },
                     body: JSON.stringify({
                         courseId,
@@ -143,6 +148,7 @@ function Video() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "x-access-token": accessToken,
                     },
                     body: JSON.stringify({
                         courseId,
