@@ -4,10 +4,14 @@ export interface UserFromDB {
     id: string;
     email: string;
     role: string;
+    fullName?: string;
     isPremium: boolean;
+    phoneNumber?: string;
 }
 
-export interface LocalUser extends User, Omit<UserFromDB, "email"> {}
+export interface LocalUser
+    extends Partial<User>,
+        Omit<UserFromDB, "email" | "phoneNumber"> {}
 
 export interface AuthContextType {
     user: LocalUser | null;

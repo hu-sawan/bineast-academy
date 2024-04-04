@@ -11,7 +11,7 @@ import Courses from "./courses/Courses";
 import Invoices from "./invoices/Invoices";
 
 function Dashboard() {
-    const { user } = useAuth();
+    // const { user } = useAuth();
 
     // if (!user) {
     //     return <Navigate to={"/login"} />;

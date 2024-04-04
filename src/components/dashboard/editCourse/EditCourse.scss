@@ -1,0 +1,114 @@
+.edit-course {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+
+    &.dark {
+        background-color: rgba(255, 255, 255, 0.247);
+    }
+
+    &.light {
+        background-color: rgba(0, 0, 0, 0.247);
+    }
+
+    &__wrapper {
+        position: relative;
+        padding: 40px;
+        background-color: var(--primary-background-color);
+        width: 60%;
+        border-radius: 10px;
+
+        .cancel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--primary-text-color);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__save {
+            button {
+                background-color: var(--table-header-backgroundColor);
+                color: var(--primary-text-color);
+                display: block;
+                margin-left: auto;
+                cursor: pointer;
+                outline: none;
+                border: none;
+                font-size: 16px;
+                padding: 5px 15px;
+
+                &:disabled {
+                    cursor: no-drop;
+                    opacity: 0.3;
+                }
+            }
+        }
+    }
+}
+
+.dashboard-form {
+    .input-wrapper {
+        position: relative;
+        padding-bottom: 10px;
+
+        label {
+            color: var(--primary-text-color);
+            font-size: 12px;
+        }
+
+        input:not([type="file"]) {
+            display: block;
+            width: 100%;
+            background-color: var(--secondary-background-color);
+            padding: 10px;
+            outline: none;
+            border: none;
+            color: var(--primary-text-color);
+            border-bottom: 1px solid var(--primary-text-color);
+
+            &.error,
+            &.error:focus {
+                border-bottom-color: #e74c3c;
+                color: #e74c3c;
+
+                &::placeholder {
+                    color: #e74c3c;
+                }
+            }
+
+            &:focus {
+                outline: none;
+                border: none;
+                border-bottom: 1px solid var(--primary-text-color);
+            }
+
+            &:disabled {
+                opacity: 0.2;
+                cursor: not-allowed;
+            }
+        }
+
+        &.error::after {
+            content: attr(data-error);
+            position: absolute;
+            bottom: -7px;
+            left: 0;
+            color: #e74c3c;
+            font-size: 12px;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+.dashboard-form {
+    &__user-form {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 30px;
+
+        & > div {
+            grid-column: span 4;
+        }
+
+        .two-inputs {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 30px;
+
+            .input-wrapper {
+                grid-column: span 2;
+            }
+        }
+    }
+}

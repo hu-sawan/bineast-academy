@@ -2,9 +2,11 @@ import "./CourseDisplay.scss";
 import { Course } from "../../../types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import ConfirmCard from "../../confrimCard/ConfirmCard";
+import { lazy, useEffect, useState } from "react";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
+
+const ConfirmCard = lazy(() => import("../../confrimCard/ConfirmCard"));
+const EditCourse = lazy(() => import("../editCourse/EditCourse"));
 
 interface CourseDisplayProps {
     course: Course;
@@ -14,6 +16,8 @@ interface CourseDisplayProps {
 function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
     const [isConfirm, setIsConfirm] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+
     const {
         id,
         imgUrl,
@@ -25,10 +29,6 @@ function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
     } = course;
 
     const accessToken = useAccessToken();
-
-    const handleClick = () => {
-        // logic
-    };
 
     useEffect(() => {
         const deleteCourse = async () => {
@@ -56,9 +56,9 @@ function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
         if (isDelete) deleteCourse();
     }, [isDelete, accessToken, id, setRefresh]);
 
-    function handleDeleteClick() {
-        setIsConfirm(true);
-    }
+    const handleClick = () => {
+        // logic
+    };
 
     return (
         <div className="course-display" onClick={handleClick}>
@@ -66,6 +66,13 @@ function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
                 <ConfirmCard
                     setIsConfirm={setIsConfirm}
                     setIsDelete={setIsDelete}
+                    setRefresh={setRefresh}
+                />
+            )}
+            {isEditing && (
+                <EditCourse
+                    course={course}
+                    setIsEditing={setIsEditing}
                     setRefresh={setRefresh}
                 />
             )}
@@ -90,10 +97,10 @@ function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
                 </div>
             </div>
             <div className="course-display__control">
-                <span className="edit">
+                <span className="edit" onClick={() => setIsEditing(true)}>
                     <FontAwesomeIcon icon={faEdit} />
                 </span>
-                <span className="delete" onClick={handleDeleteClick}>
+                <span className="delete" onClick={() => setIsConfirm(true)}>
                     <FontAwesomeIcon icon={faTrash} />
                 </span>
             </div>

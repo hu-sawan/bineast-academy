@@ -13,23 +13,26 @@
         overflow-y: scroll;
     }
 
-    button {
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-        color: var(--primary-button-color);
-        font-size: 18px;
-        padding: 8px;
-        border-radius: 50%;
-        min-width: 37px;
-        min-height: 37px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: 0.2s all ease-in-out;
+    .sidebar,
+    .topbar {
+        button {
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            color: var(--primary-button-color);
+            font-size: 18px;
+            padding: 8px;
+            border-radius: 50%;
+            min-width: 37px;
+            min-height: 37px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s all ease-in-out;
 
-        &:hover {
-            background-color: var(--hover-button-color);
+            &:hover {
+                background-color: var(--hover-button-color);
+            }
         }
     }
 
