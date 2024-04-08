@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { lazy, useEffect, useState } from "react";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
+import EditCourse from "../editCourse/EditCourse";
 
 const ConfirmCard = lazy(() => import("../../confrimCard/ConfirmCard"));
-const EditCourse = lazy(() => import("../editCourse/EditCourse"));
 
 interface CourseDisplayProps {
     course: Course;

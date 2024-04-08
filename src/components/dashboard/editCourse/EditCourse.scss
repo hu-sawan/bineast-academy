@@ -39,76 +39,14 @@
             gap: 10px;
         }
 
-        &__save {
-            button {
-                background-color: var(--table-header-backgroundColor);
-                color: var(--primary-text-color);
-                display: block;
-                margin-left: auto;
-                cursor: pointer;
-                outline: none;
-                border: none;
-                font-size: 16px;
-                padding: 5px 15px;
+        .three-inputs {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 30px;
 
-                &:disabled {
-                    cursor: no-drop;
-                    opacity: 0.3;
-                }
+            .input-wrapper {
+                grid-column: span 3;
             }
-        }
-    }
-}
-
-.dashboard-form {
-    .input-wrapper {
-        position: relative;
-        padding-bottom: 10px;
-
-        label {
-            color: var(--primary-text-color);
-            font-size: 12px;
-        }
-
-        input:not([type="file"]) {
-            display: block;
-            width: 100%;
-            background-color: var(--secondary-background-color);
-            padding: 10px;
-            outline: none;
-            border: none;
-            color: var(--primary-text-color);
-            border-bottom: 1px solid var(--primary-text-color);
-
-            &.error,
-            &.error:focus {
-                border-bottom-color: #e74c3c;
-                color: #e74c3c;
-
-                &::placeholder {
-                    color: #e74c3c;
-                }
-            }
-
-            &:focus {
-                outline: none;
-                border: none;
-                border-bottom: 1px solid var(--primary-text-color);
-            }
-
-            &:disabled {
-                opacity: 0.2;
-                cursor: not-allowed;
-            }
-        }
-
-        &.error::after {
-            content: attr(data-error);
-            position: absolute;
-            bottom: -7px;
-            left: 0;
-            color: #e74c3c;
-            font-size: 12px;
         }
     }
 }

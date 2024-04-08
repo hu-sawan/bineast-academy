@@ -89,73 +89,106 @@ const Sidebar = () => {
     const [isOpen, SetIsOpen] = useState(true);
 
     // Get the last part of the current URL
-    const currentUrl = window.location.pathname.split("/").pop();
+    let URLArray = window.location.pathname.split("/");
+    if (URLArray[URLArray.length - 1] === "") URLArray.pop();
+
+    const currentURL = URLArray.pop();
 
     const [selected, setSelected] = useState<string>(
-        currentUrl === "dashboard" ? "" : currentUrl ?? ""
+        currentURL === "dashboard" ? currentURL : `dashboard/${currentURL}`
     );
 
     const { user } = useAuth();
 
-    const items = [
-        {
-            subtitle: "",
-            items: [
-                {
-                    title: "Dashboard",
-                    to: "",
-                    icon: <FontAwesomeIcon icon={faHome} />,
-                    selected,
-                    setSelected,
-                },
-            ],
-        },
-        {
-            subtitle: "Data",
-            items: [
-                {
-                    title: "Manage Users",
-                    to: "users",
-                    icon: <FontAwesomeIcon icon={faPeopleArrows} />,
-                    selected,
-                    setSelected,
-                },
-                {
-                    title: "Invoices",
-                    to: "invoices",
-                    icon: <FontAwesomeIcon icon={faFileInvoice} />,
-                    selected,
-                    setSelected,
-                },
-                {
-                    title: "Courses",
-                    to: "courses",
-                    icon: <FontAwesomeIcon icon={faVideo} />,
-                    selected,
-                    setSelected,
-                },
-            ],
-        },
-        {
-            subtitle: "Pages",
-            items: [
-                {
-                    title: "Add User",
-                    to: "addUser",
-                    icon: <FontAwesomeIcon icon={faUserPlus} />,
-                    selected,
-                    setSelected,
-                },
-                {
-                    title: "Add Instructor",
-                    to: "addInstructor",
-                    icon: <FontAwesomeIcon icon={faGraduationCap} />,
-                    selected,
-                    setSelected,
-                },
-            ],
-        },
-    ];
+    const items =
+        (user?.role.toLowerCase() ?? "user") === "admin"
+            ? [
+                  {
+                      subtitle: "",
+                      items: [
+                          {
+                              title: "Dashboard",
+                              to: "dashboard",
+                              icon: <FontAwesomeIcon icon={faHome} />,
+                              selected,
+                              setSelected,
+                          },
+                      ],
+                  },
+                  {
+                      subtitle: "Data",
+                      items: [
+                          {
+                              title: "Manage Users",
+                              to: "dashboard/users",
+                              icon: <FontAwesomeIcon icon={faPeopleArrows} />,
+                              selected,
+                              setSelected,
+                          },
+                          {
+                              title: "Invoices",
+                              to: "dashboard/invoices",
+                              icon: <FontAwesomeIcon icon={faFileInvoice} />,
+                              selected,
+                              setSelected,
+                          },
+                          {
+                              title: "Courses",
+                              to: "dashboard/courses",
+                              icon: <FontAwesomeIcon icon={faVideo} />,
+                              selected,
+                              setSelected,
+                          },
+                      ],
+                  },
+                  {
+                      subtitle: "Pages",
+                      items: [
+                          {
+                              title: "Add User",
+                              to: "dashboard/addUser",
+                              icon: <FontAwesomeIcon icon={faUserPlus} />,
+                              selected,
+                              setSelected,
+                          },
+                          {
+                              title: "Add Instructor",
+                              to: "dashboard/addInstructor",
+                              icon: <FontAwesomeIcon icon={faGraduationCap} />,
+                              selected,
+                              setSelected,
+                          },
+                      ],
+                  },
+              ]
+            : user?.role === "instructor"
+            ? [
+                  {
+                      subtitle: "",
+                      items: [
+                          {
+                              title: "Dashboard",
+                              to: "",
+                              icon: <FontAwesomeIcon icon={faHome} />,
+                              selected,
+                              setSelected,
+                          },
+                      ],
+                  },
+                  {
+                      subtitle: "Data",
+                      items: [
+                          {
+                              title: "Courses",
+                              to: "dashboard/courses",
+                              icon: <FontAwesomeIcon icon={faVideo} />,
+                              selected,
+                              setSelected,
+                          },
+                      ],
+                  },
+              ]
+            : [];
 
     return (
         <div className={`sidebar`}>
@@ -233,7 +266,9 @@ const Sidebar = () => {
                                     marginTop: "4px",
                                 }}
                             >
-                                {user ? user.displayName : "Unknown User"}
+                                {user && user.displayName
+                                    ? user.displayName
+                                    : "Unknown User"}
                             </h5>
                             <h6
                                 style={{

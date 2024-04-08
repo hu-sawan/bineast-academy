@@ -1,20 +1,19 @@
 import "./App.scss";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { useTheme } from "./contexts/ThemeContext";
 import { CourseProvider } from "./contexts/CourseContext";
 import Loading from "./components/loading/Loading";
-const Home = lazy(() => import("./pages/home/Home"));
-const Nav = lazy(() => import("./components/nav/Nav"));
-const Footer = lazy(() => import("./components/footer/Footer"));
-const Course = lazy(() => import("./pages/course/Course"));
-const Video = lazy(() => import("./components/video/Video"));
+import { useAuth } from "./contexts/AuthContext";
+
+const Academy = lazy(() => import("./Academy"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 
 // TODO: reduce the number of rerenderes by using memo and useCallback
 // TODO: implement lazy loading for all app components
 function App() {
     const { theme } = useTheme();
+    const { user } = useAuth();
 
     const html = document.documentElement;
 
@@ -28,41 +27,27 @@ function App() {
 
     return (
         <>
-            <BrowserRouter basename="/bineast-academy">
-                <div>
-                    <CourseProvider>
-                        <Nav />
-                        <Suspense fallback={<Loading />}>
-                            <Routes>
-                                <Route path="/" element={<Home />} />
-                                <Route
-                                    path={`/course/:courseId`}
-                                    element={<Course />}
-                                >
-                                    <Route
-                                        path=":orderNb"
-                                        element={<Video />}
-                                    />
-                                </Route>
-                            </Routes>
-                        </Suspense>
-                    </CourseProvider>
-                    <Footer />
-                </div>
-            </BrowserRouter>
-            <BrowserRouter basename="/dashboard">
-                <Suspense
-                    fallback={
-                        <Loading
-                            backgroundColor={theme === "dark" ? "#141b2d" : ""}
-                            particlesBackgroundColor={
-                                theme === "dark" ? "#1f2a40" : "#f2f0f0"
-                            }
-                        />
-                    }
-                >
-                    <Dashboard />
-                </Suspense>
+            <BrowserRouter basename="bineast-academy">
+                <CourseProvider>
+                    <Suspense fallback={<Loading />}>
+                        <Routes>
+                            <Route
+                                path="/dashboard/*"
+                                element={
+                                    user &&
+                                    (user.role.toLowerCase() === "admin" ||
+                                        user.role.toLowerCase() ===
+                                            "instructor") ? (
+                                        <Dashboard />
+                                    ) : (
+                                        <Navigate to="/login" replace />
+                                    )
+                                }
+                            />
+                            <Route path="/*" element={<Academy />} />
+                        </Routes>
+                    </Suspense>
+                </CourseProvider>
             </BrowserRouter>
         </>
     );

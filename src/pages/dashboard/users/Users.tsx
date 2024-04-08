@@ -24,6 +24,8 @@ const UserRole = ({ userId, role }: UserRoleProps) => {
 
     const accessToken = useAccessToken();
 
+    role = role.toUpperCase();
+
     const roleIcons: { [key: string]: JSX.Element } = {
         ADMIN: <FontAwesomeIcon style={{ fontSize: "11px" }} icon={faLock} />,
         INSTRUCTOR: (

@@ -6,12 +6,17 @@ import { Course } from "../../../types/types";
 import Loading from "../../../components/loading/Loading";
 import CourseDisplay from "../../../components/dashboard/courseDisplay/CourseDisplay";
 import ErrorCard from "../../../components/error/ErrorCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../../contexts/AuthContext";
 
 function Courses() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [refresh, setRefresh] = useState<boolean>(false);
+
+    const { user } = useAuth();
 
     const accessToken = useAccessToken();
 
@@ -51,10 +56,18 @@ function Courses() {
 
     return (
         <div className="dashboard-courses">
-            <Header
-                title="Courses"
-                subtitle="In this page you can manage courses"
-            />
+            <div className="dashboard-courses__header">
+                <Header
+                    title="Courses"
+                    subtitle="In this page you can manage courses"
+                />
+                {user?.role.toLowerCase() === "instructor" && (
+                    <div className="dashboard-courses__add">
+                        <FontAwesomeIcon icon={faPlus} />
+                        Add Course
+                    </div>
+                )}
+            </div>
             <div className="courses">
                 {loading || error ? (
                     <div className="dashboard-courses__status">

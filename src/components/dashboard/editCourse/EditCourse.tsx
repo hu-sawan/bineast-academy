@@ -6,7 +6,14 @@ import { Course } from "../../../types/types";
 import { Form, Field, Formik } from "formik";
 import * as yup from "yup";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
+import FileInput from "../fileInput/FileInput";
+import { useState } from "react";
 
+interface FormCourse extends Course {
+    price: "free" | "premium";
+    // TODO: remove those properties
+    // visibility: "public" | "private";
+}
 interface EditCourseProps {
     course: Course;
     setIsEditing: (state: boolean) => void;
@@ -14,31 +21,53 @@ interface EditCourseProps {
 }
 
 function EditCourse({ course, setIsEditing, setRefresh }: EditCourseProps) {
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
     const { theme } = useTheme();
     const accessToken = useAccessToken();
 
-    const handleFormSubmit = (values: Course) => {
+    const formCourse: FormCourse = {
+        ...course,
+        level: course.level.toLowerCase() as
+            | "beginner"
+            | "intermediate"
+            | "advanced",
+        price: course.isPremium ? "premium" : "free",
+        // visibility: "private",
+    };
+
+    const handleFormSubmit = (values: FormCourse) => {
+        const formData = new FormData();
+
+        formData.append("title", values.title);
+        formData.append("description", values.description);
+        formData.append("level", values.level);
+        // formData.append("visibility", values.visibility);
+        formData.append("price", values.price);
+        formData.append("tags", values.tags ?? "");
+        formData.append("thumbnail", thumbnail ?? "");
+
         return new Promise<void>((resolve, reject) => {
             fetch(process.env.REACT_APP_API_URL + "/api/courses/" + course.id, {
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-access-token": accessToken,
-                },
-                body: JSON.stringify(values),
+                headers: { "x-access-token": accessToken },
+                body: formData,
             })
                 .then((response) => {
                     if (response.ok) {
-                        console.log("Course updated");
-                        resolve();
                         setIsEditing(false);
-                        setRefresh((prev: boolean) => !prev);
+                        resolve();
+                        setTimeout(() => {
+                            setRefresh((prev: boolean) => !prev);
+                        }, 1000);
                     } else {
-                        reject(new Error("Failed to create course"));
+                        reject(new Error(response.statusText));
                     }
                 })
                 .catch((error) => {
-                    reject(error);
+                    if (error instanceof Error) {
+                        reject(error.message);
+                    }
+                    reject("Something wrong happened while editing course");
                 });
         });
     };
@@ -57,7 +86,7 @@ function EditCourse({ course, setIsEditing, setRefresh }: EditCourseProps) {
                     />
                 </span>
                 <Formik
-                    initialValues={course}
+                    initialValues={formCourse}
                     onSubmit={handleFormSubmit}
                     validationSchema={checkoutSchema}
                 >
@@ -113,25 +142,80 @@ function EditCourse({ course, setIsEditing, setRefresh }: EditCourseProps) {
                                 />
                             </div>
                             <div className="input-wrapper">
-                                <label htmlFor="durationInMinutes">
-                                    Duration In Minutes:
+                                <label htmlFor="tags">
+                                    Tags:{" "}
+                                    <span className="addition">
+                                        (separated by ' , ')
+                                    </span>
                                 </label>
                                 <Field
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    name="durationInMinutes"
+                                    name="tags"
                                     type="text"
-                                    disabled
                                 />
                             </div>
-                            <div className="edit-course__wrapper__save">
+                            <div className="three-inputs">
+                                <div className="input-wrapper">
+                                    <label htmlFor="level">Level:</label>
+                                    <Field name="level" as="select">
+                                        <option value="beginner">
+                                            Beginner
+                                        </option>
+                                        <option value="advanced">
+                                            Advanced
+                                        </option>
+                                        <option value="intermediate">
+                                            Intermediate
+                                        </option>
+                                    </Field>
+                                </div>
+                                <div className="input-wrapper">
+                                    <label htmlFor="price">Price</label>
+                                    <Field name="price" as="select">
+                                        <option value="free">Free</option>
+                                        <option value="premium">Premium</option>
+                                    </Field>
+                                </div>
+                                <div className="input-wrapper">
+                                    <label htmlFor="visibility">
+                                        Visibility:
+                                    </label>
+                                    <Field name="visibility" as="select">
+                                        <option value="public">Public</option>
+                                        <option value="private">Private</option>
+                                    </Field>
+                                </div>
+                                <div className="input-wrapper">
+                                    <label htmlFor="durationInMinutes">
+                                        Duration In Minutes:
+                                    </label>
+                                    <Field
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        name="durationInMinutes"
+                                        type="text"
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                            <FileInput
+                                displayText="choose new thumbnail"
+                                setFile={setThumbnail}
+                            />
+                            <div className="dashboard-form__save">
                                 <button
                                     type="submit"
                                     disabled={
                                         !isValid ||
                                         isSubmitting ||
-                                        JSON.stringify(course) ===
-                                            JSON.stringify(values)
+                                        // ! Check again
+                                        JSON.stringify({
+                                            ...course,
+                                            price: course.isPremium
+                                                ? "premium"
+                                                : "free",
+                                        }) === JSON.stringify(values)
                                     }
                                 >
                                     Update

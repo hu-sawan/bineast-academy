@@ -1,6 +1,26 @@
 .dashboard-courses {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     &__status {
         position: relative;
+    }
+
+    &__add {
+        display: flex;
+        padding: 10px 20px;
+        gap: 10px;
+        border: 2px solid var(--table-header-backgroundColor);
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--table-header-backgroundColor);
+        }
     }
 
     .courses {

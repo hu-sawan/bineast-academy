@@ -1,24 +1,63 @@
 import "./AddInstructor.scss";
-import "../../../components/dashboard/editCourse/EditCourse.scss";
 import Header from "../../../components/dashboard/header/Header";
-import { Field, Formik, Form } from "formik";
+import { Field, Formik, Form, FormikHelpers } from "formik";
 import * as yup from "yup";
+import { useState } from "react";
+import { useAccessToken } from "../../../contexts/AccessTokenContext";
 
 function AddUser() {
-    // TODO: generate id in the backend and check that isPremium is false
-    const emptyUser = {
-        id: "",
+    const [error, setError] = useState<string>("");
+    const accessToken = useAccessToken();
+
+    interface Instructor {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phoneNumber: string;
+    }
+
+    const emptyInstructor: Instructor = {
         firstName: "",
         lastName: "",
         email: "",
-        role: "",
         phoneNumber: "",
-        isPremium: false,
     };
 
-    const handleFormSubmit = () => {
+    const handleFormSubmit = (
+        values: Instructor,
+        { resetForm }: FormikHelpers<Instructor>
+    ) => {
         return new Promise<void>((resolve, reject) => {
-            resolve();
+            setError("");
+            const { firstName, lastName, email, phoneNumber } = values;
+            const fullName = firstName + " " + lastName;
+            fetch(process.env.REACT_APP_API_URL + "/api/instructors/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": accessToken,
+                },
+                body: JSON.stringify({ fullName, email, phoneNumber }),
+            })
+                .then(async (response) => {
+                    if (response.ok) {
+                        resolve();
+                        resetForm();
+                    } else {
+                        const data = await response.json();
+
+                        throw new Error(data.message);
+                    }
+                })
+                .catch((error) => {
+                    if (error instanceof Error) {
+                        setError(error.message);
+                    } else {
+                        setError("Something wrong happened, please try again");
+                    }
+
+                    reject();
+                });
         });
     };
 
@@ -30,9 +69,10 @@ function AddUser() {
             />
 
             <Formik
-                initialValues={emptyUser}
+                initialValues={emptyInstructor}
                 onSubmit={handleFormSubmit}
                 validationSchema={validationSchema}
+                validateOnMount={true}
             >
                 {({
                     isSubmitting,
@@ -44,6 +84,9 @@ function AddUser() {
                     handleSubmit,
                 }) => (
                     <Form className="dashboard-form" onSubmit={handleSubmit}>
+                        {error && (
+                            <div className="dashboard-form__error">{error}</div>
+                        )}
                         <div className="dashboard-form__user-form">
                             <div className="two-inputs">
                                 <div
@@ -162,10 +205,14 @@ function AddUser() {
                                     placeholder="Phone Number"
                                 />
                             </div>
-                            <div className="edit-course__wrapper__save">
+                            <div className="dashboard-form__save">
                                 <button
                                     type="submit"
-                                    disabled={!isValid || isSubmitting}
+                                    disabled={
+                                        Object.keys(errors).length !== 0 ||
+                                        !isValid ||
+                                        isSubmitting
+                                    }
                                 >
                                     Add Instructor
                                 </button>

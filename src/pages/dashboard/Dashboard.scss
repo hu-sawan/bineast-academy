@@ -40,3 +40,139 @@
         margin: 20px;
     }
 }
+
+.dashboard-form {
+    &__error {
+        margin: 10px 0;
+        text-align: center;
+        color: #e74c3c;
+    }
+
+    .input-wrapper {
+        position: relative;
+        padding-bottom: 10px;
+
+        label {
+            color: var(--primary-text-color);
+            font-size: 12px;
+
+            .addition {
+                opacity: 0.5;
+            }
+        }
+
+        input:not([type="file"]) {
+            display: block;
+            width: 100%;
+            background-color: var(--secondary-background-color);
+            padding: 10px;
+            outline: none;
+            border: none;
+            color: var(--primary-text-color);
+            border-bottom: 1px solid var(--primary-text-color);
+
+            &.error,
+            &.error:focus {
+                border-bottom-color: #e74c3c;
+                color: #e74c3c;
+
+                &::placeholder {
+                    color: #e74c3c;
+                }
+            }
+
+            &:focus {
+                outline: none;
+                border: none;
+                border-bottom: 1px solid var(--primary-text-color);
+            }
+
+            &:disabled {
+                opacity: 0.2;
+                cursor: not-allowed;
+            }
+        }
+
+        &.error::after {
+            content: attr(data-error);
+            position: absolute;
+            bottom: -7px;
+            left: 0;
+            color: #e74c3c;
+            font-size: 12px;
+        }
+
+        &.contain-file {
+            label {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: fit-content;
+                text-transform: capitalize;
+                padding: 10px;
+                background-color: var(--secondary-background-color);
+                border: 1px solid var(--primary-text-color);
+                border-radius: 5px;
+                gap: 10px;
+                cursor: pointer;
+                color: var(--primary-text-color);
+                color: var(--primary-text-color);
+                transition: 0.3s all ease-in-out;
+
+                &:hover {
+                    border-color: var(--light-blue-text-color);
+                    color: var(--light-blue-text-color);
+                }
+            }
+            input[type="file"] {
+                display: none;
+                height: 0.1px;
+                width: 0.1px;
+                position: absolute;
+                overflow: hidden;
+                z-index: -1;
+                opacity: 0;
+            }
+            .message {
+                color: var(--primary-text-color);
+                font-size: 12px;
+                margin-top: 2px;
+            }
+        }
+
+        select {
+            display: block;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            background-color: var(--secondary-background-color);
+            color: var(--primary-text-color);
+            border: none;
+            border-bottom: 1px solid var(--primary-text-color);
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    &__save {
+        button {
+            background-color: var(--table-header-backgroundColor);
+            color: var(--primary-text-color);
+            display: block;
+            margin-left: auto;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            font-size: 16px;
+            padding: 5px 15px;
+
+            &:disabled {
+                cursor: no-drop;
+                opacity: 0.3;
+            }
+        }
+    }
+}

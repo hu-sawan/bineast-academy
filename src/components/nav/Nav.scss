@@ -28,6 +28,19 @@
         align-items: center;
         gap: 10px;
 
+        &__dashboard {
+            background-color: var(--primary-background-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            @media (max-width: 640px) {
+                padding: 8px 15px;
+                font-size: 18px;
+            }
+        }
+
         &__subscription {
             background-color: purple;
             display: flex;

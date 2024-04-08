@@ -63,6 +63,7 @@ export interface Course {
         | "advanced";
     imgUrl: string;
     isPremium: boolean;
+    tags?: string;
 }
 
 export interface CourseContextInterface extends Course {

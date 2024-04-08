@@ -26,7 +26,6 @@ function Invoices() {
 
                 const data = await response.json();
 
-                console.log(data);
                 setInvoices(data);
             } catch (error) {}
         };

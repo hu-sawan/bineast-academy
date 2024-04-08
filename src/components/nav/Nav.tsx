@@ -5,11 +5,17 @@ import lightLogo from "../../assets/logo/LightThemeLogoLandscape-nobg.png";
 import { auth } from "../../data/firebase";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faMoon, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+    faSun,
+    faMoon,
+    faStar,
+    faUpRightFromSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import Search from "../search/Search";
 import Login from "../loginpopup/Login";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAccessToken } from "../../contexts/AccessTokenContext";
+import { NavLink } from "react-router-dom";
 
 function Nav() {
     const [active, setActive] = useState<boolean>(false);
@@ -68,6 +74,19 @@ function Nav() {
                     </div>
                     <Search />
                     <div className="aca-nav__control">
+                        {user &&
+                            (user.role.toLowerCase() === "admin" ||
+                                user.role.toLowerCase() === "instructor") && (
+                                <NavLink
+                                    data-tooltip="Go to Dashboard"
+                                    to="/dashboard"
+                                    className="aca-nav__control__dashboard tooltip bottom"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faUpRightFromSquare}
+                                    />
+                                </NavLink>
+                            )}
                         {user && !user.isPremium ? (
                             <div
                                 className="aca-nav__control__subscription tooltip bottom"
