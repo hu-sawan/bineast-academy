@@ -1,0 +1,2 @@
+.dashboard-overview__content{grid-gap:20px;display:grid;grid-auto-rows:140px;grid-template-columns:repeat(12,1fr)}.dashboard-overview__content .content__card{align-items:center;background-color:var(--secondary-background-color);border-radius:10px;display:flex;justify-content:center;overflow:hidden}.stat-box{color:var(--light-green-text-color)}.stat-box__header{align-items:center;display:flex;font-size:24px;justify-content:space-between;margin-bottom:10px}
+/*# sourceMappingURL=484.d2d527bb.chunk.css.map*/
