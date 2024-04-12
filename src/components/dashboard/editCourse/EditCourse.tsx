@@ -16,11 +16,17 @@ interface FormCourse extends Course {
 }
 interface EditCourseProps {
     course: Course;
+    isAdding?: boolean;
     setIsEditing: (state: boolean) => void;
     setRefresh: (state: any) => void;
 }
 
-function EditCourse({ course, setIsEditing, setRefresh }: EditCourseProps) {
+function EditCourse({
+    course,
+    setIsEditing,
+    setRefresh,
+    isAdding = false,
+}: EditCourseProps) {
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const { theme } = useTheme();
     const accessToken = useAccessToken();
@@ -42,34 +48,68 @@ function EditCourse({ course, setIsEditing, setRefresh }: EditCourseProps) {
         formData.append("description", values.description);
         formData.append("level", values.level);
         // formData.append("visibility", values.visibility);
-        formData.append("price", values.price);
-        formData.append("tags", values.tags ?? "");
+        formData.append(
+            "isPremium",
+            values.price === "premium" ? "true" : "false"
+        );
         formData.append("thumbnail", thumbnail ?? "");
+        formData.append("tags", values.tags ?? "");
 
-        return new Promise<void>((resolve, reject) => {
-            fetch(process.env.REACT_APP_API_URL + "/api/courses/" + course.id, {
-                method: "PATCH",
-                headers: { "x-access-token": accessToken },
-                body: formData,
-            })
-                .then((response) => {
-                    if (response.ok) {
-                        setIsEditing(false);
-                        resolve();
-                        setTimeout(() => {
-                            setRefresh((prev: boolean) => !prev);
-                        }, 1000);
-                    } else {
-                        reject(new Error(response.statusText));
-                    }
+        if (isAdding) {
+            return new Promise<void>((resolve, reject) => {
+                fetch(process.env.REACT_APP_API_URL + "/api/courses/add", {
+                    method: "POST",
+                    headers: { "x-access-token": accessToken },
+                    body: formData,
                 })
-                .catch((error) => {
-                    if (error instanceof Error) {
-                        reject(error.message);
+                    .then((response) => {
+                        if (response.ok) {
+                            setIsEditing(false);
+                            resolve();
+                            setTimeout(() => {
+                                setRefresh((prev: boolean) => !prev);
+                            }, 1000);
+                        } else {
+                            reject(new Error(response.statusText));
+                        }
+                    })
+                    .catch((error) => {
+                        if (error instanceof Error) {
+                            console.log(error.message);
+                            reject(error.message);
+                        }
+                        reject("Something wrong happened while editing course");
+                    });
+            });
+        } else {
+            return new Promise<void>((resolve, reject) => {
+                fetch(
+                    process.env.REACT_APP_API_URL + "/api/courses/" + course.id,
+                    {
+                        method: "PATCH",
+                        headers: { "x-access-token": accessToken },
+                        body: formData,
                     }
-                    reject("Something wrong happened while editing course");
-                });
-        });
+                )
+                    .then((response) => {
+                        if (response.ok) {
+                            setIsEditing(false);
+                            resolve();
+                            setTimeout(() => {
+                                setRefresh((prev: boolean) => !prev);
+                            }, 1000);
+                        } else {
+                            reject(new Error(response.statusText));
+                        }
+                    })
+                    .catch((error) => {
+                        if (error instanceof Error) {
+                            reject(error.message);
+                        }
+                        reject("Something wrong happened while editing course");
+                    });
+            });
+        }
     };
 
     return (
@@ -218,7 +258,7 @@ function EditCourse({ course, setIsEditing, setRefresh }: EditCourseProps) {
                                         }) === JSON.stringify(values)
                                     }
                                 >
-                                    Update
+                                    {isAdding ? "Add" : "Update"}
                                 </button>
                             </div>
                         </Form>

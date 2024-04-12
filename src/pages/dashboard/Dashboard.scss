@@ -38,6 +38,10 @@
 
     &-section {
         margin: 20px;
+
+        &__status {
+            position: relative;
+        }
     }
 }
 

@@ -116,7 +116,7 @@ const Sidebar = () => {
                       ],
                   },
                   {
-                      subtitle: "Data",
+                      subtitle: "Pages",
                       items: [
                           {
                               title: "Manage Users",
@@ -142,7 +142,7 @@ const Sidebar = () => {
                       ],
                   },
                   {
-                      subtitle: "Pages",
+                      subtitle: "Data",
                       items: [
                           {
                               title: "Add User",
@@ -176,7 +176,7 @@ const Sidebar = () => {
                       ],
                   },
                   {
-                      subtitle: "Data",
+                      subtitle: "Pages",
                       items: [
                           {
                               title: "Courses",

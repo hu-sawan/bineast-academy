@@ -24,7 +24,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         if (storageValue) {
             return JSON.parse(storageValue);
         }
-        localStorage.setItem("theme", "dark");
+        localStorage.setItem("theme", JSON.stringify("dark"));
         return "dark";
     });
     const [isSmallScreen, setIsSmall] = useState<boolean>(false);

@@ -14,21 +14,10 @@ const Topbar = lazy(() => import("../../components/dashboard/topbar/Topbar"));
 const Sidebar = lazy(
     () => import("../../components/dashboard/sidebar/Sidebar")
 );
+const Videos = lazy(() => import("./videos/Videos"));
 
 function Dashboard() {
     const { theme } = useTheme();
-
-    // const { user } = useAuth();
-
-    // if (!user) {
-    //     return <Navigate to={"/login"} />;
-    // }
-
-    // if (
-    //     user.role.toLowerCase() !== "admin" &&
-    //     user.role.toLowerCase() !== "instructor"
-    // )
-    //     return <div>NOT AUTHORIZED</div>;
 
     return (
         <div className="dashboard">
@@ -38,14 +27,16 @@ function Dashboard() {
                 <div className="dashboard-section">
                     <Suspense
                         fallback={
-                            <Loading
-                                backgroundColor={
-                                    theme === "dark" ? "#141b2d" : ""
-                                }
-                                particlesBackgroundColor={
-                                    theme === "dark" ? "#1f2a40" : "#f2f0f0"
-                                }
-                            />
+                            <div className="dashboard-section__status">
+                                <Loading
+                                    backgroundColor={
+                                        theme === "dark" ? "#141b2d" : ""
+                                    }
+                                    particlesBackgroundColor={
+                                        theme === "dark" ? "#1f2a40" : "#f2f0f0"
+                                    }
+                                />
+                            </div>
                         }
                     >
                         <Routes>
@@ -56,9 +47,11 @@ function Dashboard() {
                                 path="addInstructor"
                                 element={<AddInstructor />}
                             />
-                            <Route path="courses" element={<Courses />}>
-                                <Route path=":courseId" element={<></>} />
-                            </Route>
+                            <Route path="courses" element={<Courses />} />
+                            <Route
+                                path="courses/:courseId"
+                                element={<Videos />}
+                            />
                             <Route path="invoices" element={<Invoices />} />
                         </Routes>
                     </Suspense>

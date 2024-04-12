@@ -99,7 +99,7 @@ const UserRole = ({ userId, role }: UserRoleProps) => {
                 alignItems: "center",
             }}
         >
-            <span className="icon">{roleIcons[role]}</span>
+            <span className="icon">{roleIcons[choice]}</span>
             <select
                 className="users-table__role"
                 value={choice}

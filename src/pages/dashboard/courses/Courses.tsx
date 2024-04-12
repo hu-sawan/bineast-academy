@@ -9,12 +9,14 @@ import ErrorCard from "../../../components/error/ErrorCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../../contexts/AuthContext";
+import EditCourse from "../../../components/dashboard/editCourse/EditCourse";
 
 function Courses() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [refresh, setRefresh] = useState<boolean>(false);
+    const [isAdding, setIsAdding] = useState<boolean>(false);
 
     const { user } = useAuth();
 
@@ -61,14 +63,34 @@ function Courses() {
                     title="Courses"
                     subtitle="In this page you can manage courses"
                 />
-                {user?.role.toLowerCase() === "instructor" && (
-                    <div className="dashboard-courses__add">
+                {
+                    <div
+                        className="dashboard-courses__add"
+                        onClick={() => setIsAdding(true)}
+                    >
                         <FontAwesomeIcon icon={faPlus} />
                         Add Course
                     </div>
-                )}
+                }
             </div>
             <div className="courses">
+                {isAdding && (
+                    <EditCourse
+                        setIsEditing={setIsAdding}
+                        course={{
+                            title: "",
+                            description: "",
+                            id: "",
+                            durationInMinutes: 0,
+                            isPremium: false,
+                            imgUrl: "",
+                            level: "beginner",
+                            tags: "",
+                        }}
+                        setRefresh={setRefresh}
+                        isAdding={true}
+                    />
+                )}
                 {loading || error ? (
                     <div className="dashboard-courses__status">
                         {loading ? <Loading /> : <ErrorCard message={error} />}
