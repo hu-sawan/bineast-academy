@@ -13,6 +13,7 @@
             display: block;
 
             width: 100%;
+            height: 100%;
             aspect-ratio: 16/9;
         }
     }
@@ -28,6 +29,21 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        gap: 5px;
+
+        .video-display__content__title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .visibility {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                height: 2em;
+            }
+        }
 
         &__details {
             display: flex;

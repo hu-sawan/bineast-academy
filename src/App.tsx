@@ -5,6 +5,7 @@ import { useTheme } from "./contexts/ThemeContext";
 import { CourseProvider } from "./contexts/CourseContext";
 import Loading from "./components/loading/Loading";
 import { useAuth } from "./contexts/AuthContext";
+import AccessDenied from "./components/accessDenied/AccessDenied";
 
 const Academy = lazy(() => import("./Academy"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
@@ -34,11 +35,14 @@ function App() {
                             <Route
                                 path="/dashboard/*"
                                 element={
-                                    user &&
-                                    (user.role.toLowerCase() === "admin" ||
+                                    user ? (
+                                        user.role.toLowerCase() === "admin" ||
                                         user.role.toLowerCase() ===
-                                            "instructor") ? (
-                                        <Dashboard />
+                                            "instructor" ? (
+                                            <Dashboard />
+                                        ) : (
+                                            <AccessDenied />
+                                        )
                                     ) : (
                                         <Navigate to="/login" replace />
                                     )

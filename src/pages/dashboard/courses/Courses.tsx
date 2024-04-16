@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../../contexts/AuthContext";
 import EditCourse from "../../../components/dashboard/editCourse/EditCourse";
+import { useTheme } from "../../../contexts/ThemeContext";
 
 function Courses() {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -21,14 +22,19 @@ function Courses() {
     const { user } = useAuth();
 
     const accessToken = useAccessToken();
+    const { theme } = useTheme();
 
     useEffect(() => {
         const getCourses = async () => {
+            const ENDPOINT =
+                user?.role.toLowerCase() === "admin"
+                    ? "/api/courses/admin"
+                    : `/api/courses/instructor/${user?.id}`;
             try {
                 setError("");
                 setLoading(true);
                 const response = await fetch(
-                    process.env.REACT_APP_API_URL + "/api/courses",
+                    process.env.REACT_APP_API_URL + ENDPOINT,
                     {
                         method: "GET",
                         headers: {
@@ -54,7 +60,7 @@ function Courses() {
             }
         };
         getCourses();
-    }, [refresh, accessToken]);
+    }, [refresh, accessToken, user?.role, user?.id]);
 
     return (
         <div className="dashboard-courses">
@@ -63,7 +69,7 @@ function Courses() {
                     title="Courses"
                     subtitle="In this page you can manage courses"
                 />
-                {
+                {user?.role.toLowerCase() === "instructor" && (
                     <div
                         className="dashboard-courses__add"
                         onClick={() => setIsAdding(true)}
@@ -71,7 +77,7 @@ function Courses() {
                         <FontAwesomeIcon icon={faPlus} />
                         Add Course
                     </div>
-                }
+                )}
             </div>
             <div className="courses">
                 {isAdding && (
@@ -85,6 +91,7 @@ function Courses() {
                             isPremium: false,
                             imgUrl: "",
                             level: "beginner",
+                            visibility: "public",
                             tags: "",
                         }}
                         setRefresh={setRefresh}
@@ -93,7 +100,18 @@ function Courses() {
                 )}
                 {loading || error ? (
                     <div className="dashboard-courses__status">
-                        {loading ? <Loading /> : <ErrorCard message={error} />}
+                        {loading ? (
+                            <Loading
+                                backgroundColor={
+                                    theme === "dark" ? "#141b2d" : ""
+                                }
+                                particlesBackgroundColor={
+                                    theme === "dark" ? "#1f2a40" : "#f2f0f0"
+                                }
+                            />
+                        ) : (
+                            <ErrorCard message={error} />
+                        )}
                     </div>
                 ) : (
                     courses.map((course) => (

@@ -4,10 +4,11 @@ import { useRef } from "react";
 
 interface FileInputProps {
     displayText: string;
+    accept?: string;
     setFile: (file: File) => void;
 }
 
-function FileInput({ displayText, setFile }: FileInputProps) {
+function FileInput({ displayText, setFile, accept }: FileInputProps) {
     const messageRef = useRef<HTMLDivElement>(null);
     return (
         <div className="input-wrapper contain-file">
@@ -19,7 +20,8 @@ function FileInput({ displayText, setFile }: FileInputProps) {
                 className="file-input"
                 id="file-input"
                 type="file"
-                accept=".png, .jpeg, .jpg"
+                name="file"
+                accept={accept}
                 onChange={(e) => {
                     messageRef.current!.innerText = e.target.files![0].name;
                     setFile(e.target.files![0]);

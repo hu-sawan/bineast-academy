@@ -22,13 +22,17 @@ export interface AuthContextType {
     updateContext: (newValues: Partial<AuthContextType>) => void;
 }
 
-export interface VideoDetails {
+export interface Video {
+    id: string;
     orderNb: number;
     courseId: string;
     title: string;
     description: string;
     videoUrl: string;
     durationInMinutes: number;
+}
+
+export interface VideoDetails extends Video {
     isDone: boolean;
 }
 
@@ -39,13 +43,7 @@ export interface Instructor {
     phoneNumber?: string;
 }
 
-export interface CourseVideos {
-    orderNb: number;
-    courseId: string;
-    durationInMinutes: number;
-    title: string;
-    description: string;
-    videoUrl: string;
+export interface CourseVideos extends Video {
     isDone: boolean;
 }
 
@@ -63,6 +61,7 @@ export interface Course {
         | "advanced";
     imgUrl: string;
     isPremium: boolean;
+    visibility?: string;
     tags?: string;
 }
 

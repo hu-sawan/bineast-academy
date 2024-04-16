@@ -13,7 +13,6 @@ $sizes: (
 
 .loading {
     width: 100%;
-    min-height: 80vh;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -28,6 +27,7 @@ $sizes: (
     }
 
     &.absolute {
+        min-height: 80vh;
         position: absolute;
         top: 0;
         left: 0;

@@ -161,14 +161,14 @@ const Sidebar = () => {
                       ],
                   },
               ]
-            : user?.role === "instructor"
+            : user?.role.toLowerCase() === "instructor"
             ? [
                   {
                       subtitle: "",
                       items: [
                           {
                               title: "Dashboard",
-                              to: "",
+                              to: "dashboard",
                               icon: <FontAwesomeIcon icon={faHome} />,
                               selected,
                               setSelected,

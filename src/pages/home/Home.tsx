@@ -57,7 +57,7 @@ function Home() {
                                 {loading && <Loading />}
                                 {error && <ErrorCard message={error} />}
                             </div>
-                        ) : (
+                        ) : courses.length ? (
                             <div className="home__featured__content">
                                 {courses.map(
                                     (
@@ -86,6 +86,10 @@ function Home() {
                                         />
                                     )
                                 )}
+                            </div>
+                        ) : (
+                            <div className="home__featured__status">
+                                <ErrorCard message={"No courses available"} />
                             </div>
                         )}
                     </div>

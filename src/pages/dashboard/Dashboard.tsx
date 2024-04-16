@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import Loading from "../../components/loading/Loading";
+import AccessDenied from "../../components/accessDenied/AccessDenied";
+import { useAuth } from "../../contexts/AuthContext";
 // import { useAuth } from "../../contexts/AuthContext";
 const Users = lazy(() => import("./users/Users"));
 const AddUser = lazy(() => import("./addUser/AddUser"));
@@ -18,6 +20,7 @@ const Videos = lazy(() => import("./videos/Videos"));
 
 function Dashboard() {
     const { theme } = useTheme();
+    const { user } = useAuth();
 
     return (
         <div className="dashboard">
@@ -41,18 +44,51 @@ function Dashboard() {
                     >
                         <Routes>
                             <Route path="/" element={<Overview />} />
-                            <Route path="users" element={<Users />} />
-                            <Route path="addUser" element={<AddUser />} />
+                            <Route
+                                path="users"
+                                element={
+                                    user?.role.toLowerCase() === "admin" ? (
+                                        <Users />
+                                    ) : (
+                                        <AccessDenied />
+                                    )
+                                }
+                            />
+                            <Route
+                                path="addUser"
+                                element={
+                                    user?.role.toLowerCase() === "admin" ? (
+                                        <AddUser />
+                                    ) : (
+                                        <AccessDenied />
+                                    )
+                                }
+                            />
                             <Route
                                 path="addInstructor"
-                                element={<AddInstructor />}
+                                element={
+                                    user?.role.toLowerCase() === "admin" ? (
+                                        <AddInstructor />
+                                    ) : (
+                                        <AccessDenied />
+                                    )
+                                }
                             />
                             <Route path="courses" element={<Courses />} />
                             <Route
                                 path="courses/:courseId"
                                 element={<Videos />}
                             />
-                            <Route path="invoices" element={<Invoices />} />
+                            <Route
+                                path="invoices"
+                                element={
+                                    user?.role.toLowerCase() === "admin" ? (
+                                        <Invoices />
+                                    ) : (
+                                        <AccessDenied />
+                                    )
+                                }
+                            />
                         </Routes>
                     </Suspense>
                 </div>

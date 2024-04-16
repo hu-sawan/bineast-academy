@@ -2,15 +2,92 @@ import "./EditVideo.scss";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTheme } from "../../../contexts/ThemeContext";
+import { Video } from "../../../types/types";
+import { Field, Form, Formik } from "formik";
+import * as yup from "yup";
+import { useAccessToken } from "../../../contexts/AccessTokenContext";
+import FileInput from "../fileInput/FileInput";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface EditVideoProps {
-    video: any;
+    video: Video;
+    isAdding?: boolean;
     setIsEditing: (state: boolean) => void;
     setRefresh: (state: any) => void;
 }
 
-function EditVideo({ video, setIsEditing, setRefresh }: EditVideoProps) {
+function EditVideo({
+    video,
+    setIsEditing,
+    setRefresh,
+    isAdding = false,
+}: EditVideoProps) {
+    const [videoFile, setVideoFile] = useState<File | null>(null);
     const { theme } = useTheme();
+
+    const { courseId } = useParams();
+
+    const accessToken = useAccessToken();
+
+    const handleFormSubmit = (values: Video) => {
+        const updateVideo = async (values: Video) => {
+            try {
+                const response = await fetch(
+                    process.env.REACT_APP_API_URL + `/api/videos/${video.id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                        body: JSON.stringify(values),
+                    }
+                );
+
+                if (response.ok) {
+                    setRefresh((prev: boolean) => !prev);
+                    setIsEditing(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        // TODO: check implementaion
+        const addVideo = async (values: Video) => {
+            try {
+                const formData = new FormData();
+                formData.append("courseId", courseId!);
+                formData.append("video", videoFile!);
+                formData.append("title", values.title);
+                formData.append("description", values.description);
+                formData.append("courseId", video.courseId);
+
+                const response = await fetch(
+                    process.env.REACT_APP_API_URL + "/api/videos",
+                    {
+                        method: "POST",
+                        headers: {
+                            "x-access-token": accessToken,
+                        },
+                        body: formData,
+                    }
+                );
+
+                if (response.ok) {
+                    setRefresh((prev: boolean) => !prev);
+                    setIsEditing(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (isAdding) addVideo(values);
+        else updateVideo(values);
+    };
+
     return (
         <div className={`edit-video ${theme}`}>
             <div className="edit-video__wrapper">
@@ -24,9 +101,144 @@ function EditVideo({ video, setIsEditing, setRefresh }: EditVideoProps) {
                         icon={faXmark}
                     />
                 </span>
+                <Formik
+                    initialValues={video}
+                    onSubmit={handleFormSubmit}
+                    validationSchema={checkoutSchema}
+                >
+                    {({
+                        isSubmitting,
+                        values,
+                        errors,
+                        isValid,
+                        handleBlur,
+                        handleChange,
+                        handleSubmit,
+                    }) => (
+                        <Form
+                            className="dashboard-form"
+                            onSubmit={handleSubmit}
+                        >
+                            <div
+                                data-error={errors.title ? errors.title : ""}
+                                className={`input-wrapper ${
+                                    errors.title ? "error" : ""
+                                }`}
+                            >
+                                <label htmlFor="title">Video Title:</label>
+                                <Field
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={errors.title ? "error" : ""}
+                                    name="title"
+                                    type="text"
+                                    placeholder="Video Title"
+                                />
+                            </div>
+                            <div
+                                className={`input-wrapper ${
+                                    errors.description ? "error" : ""
+                                }`}
+                                data-error={
+                                    errors.description ? errors.description : ""
+                                }
+                            >
+                                {/* TODO: replace it with a md editor */}
+                                <label htmlFor="description">
+                                    Video Description:
+                                </label>
+                                <Field
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={
+                                        errors.description ? "error" : ""
+                                    }
+                                    name="description"
+                                    type="text"
+                                    placeholder="Video Description"
+                                />
+                            </div>
+                            {!isAdding && (
+                                <div className="two-inputs">
+                                    <div className="input-wrapper">
+                                        <label htmlFor="durationInMinutes">
+                                            Duration In Minutes:
+                                        </label>
+                                        <Field
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            name="durationInMinutes"
+                                            type="text"
+                                            disabled
+                                        />
+                                    </div>
+                                    <div
+                                        className={`input-wrapper ${
+                                            errors.orderNb ? "error" : ""
+                                        }`}
+                                        data-error={
+                                            errors.orderNb ? errors.orderNb : ""
+                                        }
+                                    >
+                                        <label htmlFor="orderNb">
+                                            Change Video Order:
+                                        </label>
+                                        <Field
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            name="orderNb"
+                                            className={
+                                                errors.orderNb ? "error" : ""
+                                            }
+                                            type="text"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                            {isAdding && (
+                                <FileInput
+                                    displayText="upload video"
+                                    setFile={setVideoFile}
+                                    accept=".mp4, .webm, .ogg, .ogv, .avi, .flv, .mov, .wmv, .mkv, .3gp, .3g2, .m4v, .mpg, .mpeg, .m2v, .m4v, .svi, .divx, .vob, .f4v, .asf, .qt, .m2ts, .mts, .ts, .mxf, .roq, .nsv, .flv, .f4v, .f4p, .f4a, .f4b, .f4r, .f4x, .3gp2, .3gpp, .3gp"
+                                />
+                            )}
+                            <div className="dashboard-form__save">
+                                <button
+                                    type="submit"
+                                    disabled={
+                                        !isValid ||
+                                        isSubmitting ||
+                                        (JSON.stringify({
+                                            ...values,
+                                            orderNb: parseInt(
+                                                values.orderNb.toString()
+                                            ),
+                                        }) === JSON.stringify(video) &&
+                                            (isAdding ? !videoFile : true)) ||
+                                        (isAdding ? !videoFile : false)
+                                    }
+                                >
+                                    {isAdding ? "Add" : "Update"}
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
             </div>
         </div>
     );
 }
+
+const checkoutSchema = yup.object().shape({
+    title: yup
+        .string()
+        .max(65, "Title length must not exceed 65 characters")
+        .required("Course Title cannot be empty"),
+    description: yup.string().required("Required"),
+    orderNb: yup
+        .number()
+        .typeError("Order number must be a number")
+        .required("Required"),
+});
 
 export default EditVideo;

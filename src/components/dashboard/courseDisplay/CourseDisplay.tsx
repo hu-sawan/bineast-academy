@@ -1,7 +1,12 @@
 import "./CourseDisplay.scss";
 import { Course } from "../../../types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+    faEdit,
+    faTrash,
+    faEye,
+    faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import { lazy, useEffect, useState } from "react";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
 import EditCourse from "../editCourse/EditCourse";
@@ -30,6 +35,7 @@ function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
         durationInMinutes,
         level,
         isPremium,
+        visibility,
     } = course;
 
     const accessToken = useAccessToken();
@@ -84,9 +90,21 @@ function CourseDisplay({ course, setRefresh }: CourseDisplayProps) {
                     <img src={imgUrl} alt={title} />
                 </div>
                 <div className="course-display__content">
-                    <div>
-                        <h1>{title}</h1>
-                        <p>{description}</p>
+                    <div className="video-display__content__title">
+                        <div>
+                            <h1>{title}</h1>
+                            <p>{description}</p>
+                        </div>
+                        <div
+                            data-tooltip={`${visibility}`}
+                            className="visibility tooltip bottom"
+                        >
+                            {visibility?.toLowerCase() === "public" ? (
+                                <FontAwesomeIcon icon={faEye} />
+                            ) : (
+                                <FontAwesomeIcon icon={faEyeSlash} />
+                            )}
+                        </div>
                     </div>
                     <div className="course-display__content__details">
                         <div className="course-display__content__details__duration">

@@ -3,6 +3,11 @@
     margin-top: min(15%, 120px);
     padding: 6rem 3rem 1.5rem;
 
+    @media (max-width: 640px) {
+        padding: 3rem 1.5rem 0.75rem;
+        margin-top: min(15%, 120px);
+    }
+
     .aca-footer__separator {
         display: flex;
         justify-content: center;

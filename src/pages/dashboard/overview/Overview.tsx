@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faUser,
-    faUserPlus,
     faStar,
     faChartLine,
     faVideo,
@@ -67,7 +66,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
-                        to="users"
+                        to="dashboard/users"
                         value={usersCount.toString()}
                         subtitle="Total Users"
                         icon={
@@ -82,7 +81,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
-                        to=""
+                        to="dashboard/invoices"
                         value={`${monthlyIncome}$`}
                         subtitle="Monthly income"
                         icon={
@@ -100,7 +99,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
-                        to=""
+                        to="dashboard/invoices"
                         value={totalSubscriptions.toString()}
                         subtitle="Total Subscription"
                         icon={
@@ -115,7 +114,7 @@ function Overview() {
                     }}
                 >
                     <StatBox
-                        to=""
+                        to="dashboard/courses"
                         value={totalCourses.toString()}
                         subtitle="Total Courses"
                         icon={
@@ -130,7 +129,7 @@ function Overview() {
                         gridRow: "span 2",
                     }}
                 >
-                    <h3>Card 5</h3>
+                    <h3>Comming Soon...</h3>
                 </div>
                 <div
                     className="content__card"
@@ -139,7 +138,7 @@ function Overview() {
                         gridRow: "span 2",
                     }}
                 >
-                    <h3>Card 6</h3>
+                    <h3>Comming Soon...</h3>
                 </div>
                 <div
                     className="content__card"
@@ -147,7 +146,7 @@ function Overview() {
                         gridColumn: "span 3",
                     }}
                 >
-                    <h3>Card 7</h3>
+                    <h3>Comming Soon...</h3>
                 </div>
                 <div
                     className="content__card"
@@ -155,7 +154,7 @@ function Overview() {
                         gridColumn: "span 3",
                     }}
                 >
-                    <h3>Card 8</h3>
+                    <h3>Comming Soon...</h3>
                 </div>
             </div>
         </div>

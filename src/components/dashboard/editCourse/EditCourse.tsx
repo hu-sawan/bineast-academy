@@ -8,11 +8,10 @@ import * as yup from "yup";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
 import FileInput from "../fileInput/FileInput";
 import { useState } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
 
 interface FormCourse extends Course {
     price: "free" | "premium";
-    // TODO: remove those properties
-    // visibility: "public" | "private";
 }
 interface EditCourseProps {
     course: Course;
@@ -30,6 +29,7 @@ function EditCourse({
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const { theme } = useTheme();
     const accessToken = useAccessToken();
+    const { user } = useAuth();
 
     const formCourse: FormCourse = {
         ...course,
@@ -38,7 +38,6 @@ function EditCourse({
             | "intermediate"
             | "advanced",
         price: course.isPremium ? "premium" : "free",
-        // visibility: "private",
     };
 
     const handleFormSubmit = (values: FormCourse) => {
@@ -47,7 +46,8 @@ function EditCourse({
         formData.append("title", values.title);
         formData.append("description", values.description);
         formData.append("level", values.level);
-        // formData.append("visibility", values.visibility);
+        formData.append("visibility", values.visibility!);
+        formData.append("userId", user?.id ?? "");
         formData.append(
             "isPremium",
             values.price === "premium" ? "true" : "false"
@@ -242,6 +242,7 @@ function EditCourse({
                             <FileInput
                                 displayText="choose new thumbnail"
                                 setFile={setThumbnail}
+                                accept=".png, .jpeg, .jpg"
                             />
                             <div className="dashboard-form__save">
                                 <button
@@ -250,12 +251,19 @@ function EditCourse({
                                         !isValid ||
                                         isSubmitting ||
                                         // ! Check again
-                                        JSON.stringify({
+                                        (JSON.stringify({
                                             ...course,
                                             price: course.isPremium
                                                 ? "premium"
                                                 : "free",
-                                        }) === JSON.stringify(values)
+                                        }) ===
+                                            JSON.stringify({
+                                                ...values,
+                                                price: course.isPremium
+                                                    ? "premium"
+                                                    : "free",
+                                            }) &&
+                                            !thumbnail)
                                     }
                                 >
                                     {isAdding ? "Add" : "Update"}

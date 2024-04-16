@@ -5,21 +5,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useEffect, useState } from "react";
-import { CourseVideos } from "../../../types/types";
+import { Video } from "../../../types/types";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
 import Loading from "../../../components/loading/Loading";
 import ErrorCard from "../../../components/error/ErrorCard";
 import VideoDisplay from "../../../components/dashboard/videoDisplay/VideoDisplay";
+import EditVideo from "../../../components/dashboard/editVideo/EditVideo";
+import { useTheme } from "../../../contexts/ThemeContext";
 
 function Videos() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [videos, setVideos] = useState<CourseVideos[]>([]);
+    const [videos, setVideos] = useState<Video[]>([]);
+    const [isAdding, setIsAdding] = useState<boolean>(false);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [prevLocation, setPrevLocation] = useState<string>("");
     const { courseId } = useParams();
     const { user } = useAuth();
     const accessToken = useAccessToken();
+    const { theme } = useTheme();
 
     const location = useLocation();
 
@@ -88,23 +92,54 @@ function Videos() {
                         title="Videos"
                         subtitle="In this page you can view and add videos to the selected course"
                     />
-                    {
-                        <div className="dashboard-course__add">
+                    {user?.role.toLowerCase() === "instructor" && (
+                        <div
+                            className="dashboard-course__add"
+                            onClick={() => setIsAdding(true)}
+                        >
                             <FontAwesomeIcon icon={faPlus} />
                             Add Video
                         </div>
-                    }
+                    )}
                 </div>
             </div>
             <div className="dashboard-course__videos">
+                {isAdding && (
+                    <EditVideo
+                        video={{
+                            id: "",
+                            orderNb: 0,
+                            courseId: courseId ?? "",
+                            durationInMinutes: 0,
+                            title: "",
+                            description: "",
+                            videoUrl: "",
+                        }}
+                        isAdding={isAdding}
+                        setIsEditing={setIsAdding}
+                        setRefresh={setRefresh}
+                    />
+                )}
                 {loading || error ? (
                     <div className="dashboard-course__videos__status">
-                        {loading ? <Loading /> : <ErrorCard message={error} />}
+                        {loading ? (
+                            <Loading
+                                backgroundColor={
+                                    theme === "dark" ? "#141b2d" : ""
+                                }
+                                particlesBackgroundColor={
+                                    theme === "dark" ? "#1f2a40" : "#f2f0f0"
+                                }
+                            />
+                        ) : (
+                            <ErrorCard message={error} />
+                        )}
                     </div>
                 ) : (
-                    videos.map((video) => {
+                    videos.map((video, idx) => {
                         return (
                             <VideoDisplay
+                                key={idx}
                                 video={video}
                                 videos={videos}
                                 setRefresh={setRefresh}

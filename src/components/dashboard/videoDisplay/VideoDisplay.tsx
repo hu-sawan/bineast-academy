@@ -1,6 +1,6 @@
 import "./VideoDisplay.scss";
 import { useEffect, useState } from "react";
-import { CourseVideos } from "../../../types/types";
+import { Video } from "../../../types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
@@ -9,44 +9,44 @@ import ConfirmCard from "../../confrimCard/ConfirmCard";
 import { useAccessToken } from "../../../contexts/AccessTokenContext";
 
 interface VideoDisplayProps {
-    video: CourseVideos;
-    videos: CourseVideos[];
+    video: Video;
+    videos: Video[];
     setRefresh: (state: any) => void;
 }
 
 function VideoDisplay({ video, videos, setRefresh }: VideoDisplayProps) {
-    const { title, description, durationInMinutes, orderNb } = video;
+    const { title, description, durationInMinutes } = video;
     const [isConfirm, setIsConfirm] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
-    // const accessToken = useAccessToken();
+    const accessToken = useAccessToken();
 
-    // useEffect(() => {
-    //     const deleteCourse = async () => {
-    //         try {
-    //             const response = await fetch(
-    //                 process.env.REACT_APP_API_URL + `/api/courses/${id}`,
-    //                 {
-    //                     method: "DELETE",
-    //                     headers: {
-    //                         "content-type": "application/json",
-    //                         "x-access-token": accessToken,
-    //                     },
-    //                 }
-    //             );
+    useEffect(() => {
+        const deleteCourse = async () => {
+            try {
+                const response = await fetch(
+                    process.env.REACT_APP_API_URL + `/api/videos/${video.id}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "content-type": "application/json",
+                            "x-access-token": accessToken,
+                        },
+                    }
+                );
 
-    //             if (response.ok) {
-    //                 setRefresh((prev: boolean) => !prev);
-    //                 setIsDelete(false);
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
+                if (response.ok) {
+                    setRefresh((prev: boolean) => !prev);
+                    setIsDelete(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-    //     if (isDelete) deleteCourse();
-    // }, [isDelete, accessToken, id, setRefresh]);
+        if (isDelete) deleteCourse();
+    }, [isDelete, accessToken, video.id, setRefresh]);
 
     return (
         <div className="video-display">

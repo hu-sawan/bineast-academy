@@ -32,5 +32,21 @@
             font-size: 24px;
             cursor: pointer;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+
+    .two-inputs {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 30px;
+
+        .input-wrapper {
+            grid-column: span 4;
+        }
     }
 }
