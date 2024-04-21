@@ -34,18 +34,20 @@ const NavList = memo(({ courseId, videos, isSmallScreen }: NavListProps) => {
                             key={orderNb}
                             to={`/course/${courseId}/${orderNb}`}
                             className={({ isActive }) => {
-                                let class_name = "";
+                                let classArr = [];
 
-                                if (isActive) class_name += "active ";
+                                if (isActive) classArr.push("active");
 
                                 if (isLong)
-                                    class_name += `tooltip ${
-                                        idx === 0 ? "bottom " : "top "
-                                    }`;
+                                    classArr.push(
+                                        `tooltip ${
+                                            idx === 0 ? "bottom" : "top"
+                                        }`
+                                    );
 
-                                if (isDone) class_name += "done ";
+                                if (isDone) classArr.push("done");
 
-                                return class_name;
+                                return classArr.join(" ");
                             }}
                         >
                             <span className="course__nav__id">{orderNb}</span>
@@ -63,7 +65,10 @@ const NavList = memo(({ courseId, videos, isSmallScreen }: NavListProps) => {
 
 function Course() {
     const { courseId } = useParams();
-    const { videos, course, contextError, setCourseId } = useCourse();
+    const { videos, course, contextLoading, contextError, setCourseId } =
+        useCourse();
+    console.log("videos: ", videos);
+    console.log("course: ", course);
     const { user } = useAuth();
     const { isSmallScreen } = useTheme();
 
@@ -114,9 +119,8 @@ function Course() {
                         <ErrorCard message={contextError} fill={true} />
                     )}
                     <div className="course__nav">
-                        {!contextError && (!course || !videos) && (
-                            <Loading fill={true} onTop={true} />
-                        )}
+                        {contextError && <ErrorCard message={contextError} />}
+                        {contextLoading && <Loading fill={true} onTop={true} />}
                         <div className="course__nav__head">
                             <div className="course__nav__head__title">
                                 <Link

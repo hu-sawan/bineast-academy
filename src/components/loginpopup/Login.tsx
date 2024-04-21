@@ -135,7 +135,11 @@ function Login({ close }: Props) {
                         <img src={googleLogo} alt="google" />{" "}
                         <div>
                             {authContextLoading ? (
-                                <Loading position="relative" size="small" />
+                                <Loading
+                                    position="relative"
+                                    size="small"
+                                    minHeight={false}
+                                />
                             ) : (
                                 "Google"
                             )}

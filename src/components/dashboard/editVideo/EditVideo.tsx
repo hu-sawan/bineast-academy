@@ -9,6 +9,7 @@ import { useAccessToken } from "../../../contexts/AccessTokenContext";
 import FileInput from "../fileInput/FileInput";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import Loading from "../../loading/Loading";
 
 interface EditVideoProps {
     video: Video;
@@ -24,6 +25,7 @@ function EditVideo({
     isAdding = false,
 }: EditVideoProps) {
     const [videoFile, setVideoFile] = useState<File | null>(null);
+    const [loading, setLoading] = useState(false);
     const { theme } = useTheme();
 
     const { courseId } = useParams();
@@ -36,7 +38,7 @@ function EditVideo({
                 const response = await fetch(
                     process.env.REACT_APP_API_URL + `/api/videos/${video.id}`,
                     {
-                        method: "PUT",
+                        method: "PATCH",
                         headers: {
                             "content-type": "application/json",
                             "x-access-token": accessToken,
@@ -57,15 +59,15 @@ function EditVideo({
         // TODO: check implementaion
         const addVideo = async (values: Video) => {
             try {
+                setLoading(true);
                 const formData = new FormData();
                 formData.append("courseId", courseId!);
                 formData.append("video", videoFile!);
                 formData.append("title", values.title);
                 formData.append("description", values.description);
-                formData.append("courseId", video.courseId);
 
                 const response = await fetch(
-                    process.env.REACT_APP_API_URL + "/api/videos",
+                    process.env.REACT_APP_API_URL + "/api/videos/add",
                     {
                         method: "POST",
                         headers: {
@@ -76,12 +78,15 @@ function EditVideo({
                 );
 
                 if (response.ok) {
+                    setLoading(false);
                     setRefresh((prev: boolean) => !prev);
                     setIsEditing(false);
                 }
             } catch (error) {
+                setLoading(false);
                 console.log(error);
             }
+            setLoading(false);
         };
 
         if (isAdding) addVideo(values);
@@ -91,6 +96,16 @@ function EditVideo({
     return (
         <div className={`edit-video ${theme}`}>
             <div className="edit-video__wrapper">
+                {loading && (
+                    <Loading
+                        fill={true}
+                        onTop={true}
+                        minHeight={false}
+                        particlesBackgroundColor="#3e4396"
+                        borderRadius="10px"
+                        message="Uploading Video Please Don't Close or Refresh This Page"
+                    />
+                )}
                 <span
                     data-tooltip="Cancel"
                     className="tooltip bottom cancel"

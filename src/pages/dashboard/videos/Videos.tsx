@@ -40,11 +40,7 @@ function Videos() {
         const fetchVideos = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5050/api/videos/${courseId}/${
-                        user && user.role.toLowerCase() === "instructor"
-                            ? user.id
-                            : ""
-                    }`,
+                    `http://localhost:5050/api/videos/${courseId}`,
                     {
                         method: "GET",
                         headers: {

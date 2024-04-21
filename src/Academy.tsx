@@ -35,6 +35,7 @@ function Academy() {
                         </div>
                     }
                 />
+                <Route path="/login" element={<div>Login here</div>} />
                 <Route path="/" element={<Home />} />
             </Routes>
             <Footer />

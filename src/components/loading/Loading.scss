@@ -27,10 +27,16 @@ $sizes: (
     }
 
     &.absolute {
-        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
         position: absolute;
         top: 0;
         left: 0;
+    }
+
+    &.min-height {
+        min-height: 80vh;
     }
 
     @each $class, $size in $sizes {
