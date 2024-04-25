@@ -38,7 +38,7 @@ export interface VideoDetails extends Video {
 
 export interface Instructor {
     id: number;
-    instructorFullName: string;
+    fullName: string;
     email: string;
     phoneNumber?: string;
 }
@@ -72,10 +72,12 @@ export interface CourseContextInterface extends Course {
 export interface CourseContextType {
     course: CourseContextInterface | null;
     videos: CourseVideos[];
+    activeVideoIdx: number;
     instructors: Instructor[];
     contextLoading: boolean;
     contextError: string;
     setCourse: (course: CourseContextInterface) => void;
+    setActiveVideoIdx: (idx: number) => void;
     setVideos: (videos: CourseVideos[]) => void;
     setCourseId: (courseId: string) => void;
 }

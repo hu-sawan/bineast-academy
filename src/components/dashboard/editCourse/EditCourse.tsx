@@ -259,9 +259,9 @@ function EditCourse({
                                         }) ===
                                             JSON.stringify({
                                                 ...values,
-                                                price: course.isPremium
-                                                    ? "premium"
-                                                    : "free",
+                                                price: values.price.toLowerCase() as
+                                                    | "free"
+                                                    | "premium",
                                             }) &&
                                             !thumbnail)
                                     }

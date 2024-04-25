@@ -15,14 +15,24 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useAccessToken } from "../../contexts/AccessTokenContext";
 
 function Video() {
-    const { courseId, orderNb } = useParams();
-    const { course, videos, instructors, setVideos, setCourse } = useCourse();
+    const { courseId, videoId } = useParams();
+
+    const {
+        course,
+        videos,
+        instructors,
+        activeVideoIdx,
+        setActiveVideoIdx,
+        setVideos,
+        setCourse,
+    } = useCourse();
+
     const [video, setVideo] = useState<VideoDetails | null>(null);
     const [isNextDisabled, setIsNextDisabled] = useState<boolean>(
-        orderNb === `${videos.length}` ? true : false
+        activeVideoIdx === videos.length - 1 ? true : false
     );
     const [isPrevDisabled, setIsPrevDisabled] = useState<boolean>(
-        orderNb === "1" ? true : false
+        activeVideoIdx === 0 ? true : false
     );
 
     const [done, setDone] = useState<boolean>(video?.isDone ?? false);
@@ -42,7 +52,7 @@ function Video() {
                 setVideo(null);
                 const response = await fetch(
                     process.env.REACT_APP_API_URL +
-                        `/api/videos/details/${courseId}/${orderNb}/${user?.uid}`,
+                        `/api/videos/details/${courseId}/${videoId}/${user?.uid}`,
                     {
                         method: "GET",
                         headers: {
@@ -68,22 +78,22 @@ function Video() {
 
         getVideo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [courseId, orderNb, user]);
+    }, [courseId, videoId, user]);
 
     // A simple useEffect to decide if the prev, next buttons are disabled
     useEffect(() => {
-        if (orderNb === "1") {
+        if (activeVideoIdx === 0) {
             setIsPrevDisabled(true);
         } else {
             setIsPrevDisabled(false);
         }
 
-        if (orderNb === `${videos.length}`) {
+        if (activeVideoIdx === videos.length - 1) {
             setIsNextDisabled(true);
         } else {
             setIsNextDisabled(false);
         }
-    }, [orderNb, videos.length]);
+    }, [activeVideoIdx, videos.length]);
 
     // This useEffect synchronizes the data retrieved from the backend with the component's state.
     useEffect(() => {
@@ -119,7 +129,7 @@ function Video() {
                     },
                     body: JSON.stringify({
                         courseId,
-                        orderNb,
+                        videoId,
                         userId: user?.uid ?? null,
                     }),
                 }
@@ -152,7 +162,7 @@ function Video() {
                     },
                     body: JSON.stringify({
                         courseId,
-                        orderNb,
+                        videoId,
                         userId: user?.uid ?? null,
                     }),
                 }
@@ -174,10 +184,7 @@ function Video() {
         }
 
         const updatedVideos = videos.map((video) => {
-            if (
-                video.courseId === courseId &&
-                video.orderNb === parseInt(orderNb ?? "0")
-            ) {
+            if (video.courseId === courseId && video.id === videoId) {
                 return { ...video, isDone: !video.isDone };
             }
 
@@ -192,18 +199,16 @@ function Video() {
 
     const handlePrevClick = () => {
         // set true to avoid race condition
-        setIsPrevDisabled(true);
-
-        const prevOrderNb = parseInt(orderNb ?? "0") - 1;
-        navigate(`/course/${courseId}/${prevOrderNb}`);
+        setActiveVideoIdx(activeVideoIdx - 1);
+        navigate(`/course/${courseId}/${videos[activeVideoIdx - 1].id}`);
     };
 
     const handleNextClick = () => {
         // set true to avoid race condition
         setIsNextDisabled(true);
 
-        const nextOrderNb = parseInt(orderNb ?? "0") + 1;
-        navigate(`/course/${courseId}/${nextOrderNb}`);
+        setActiveVideoIdx(activeVideoIdx + 1);
+        navigate(`/course/${courseId}/${videos[activeVideoIdx + 1].id}`);
     };
 
     if (error)
@@ -233,14 +238,12 @@ function Video() {
                     </video>
                     <div className="video__instructor">
                         Instructor(s):{" "}
-                        {instructors.map(
-                            ({ instructorFullName }: Instructor, idx) => {
-                                return (
-                                    instructorFullName +
-                                    (idx === instructors.length - 1 ? "" : ", ")
-                                );
-                            }
-                        )}
+                        {instructors.map(({ fullName }: Instructor, idx) => {
+                            return (
+                                (fullName === null ? "unknown" : fullName) +
+                                (idx === instructors.length - 1 ? "" : ", ")
+                            );
+                        })}
                     </div>
                     <div className="video__description">
                         {video.description}

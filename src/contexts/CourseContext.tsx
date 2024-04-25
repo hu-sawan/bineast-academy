@@ -26,8 +26,9 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
     const [courseId, setCourseId] = useState<string>("");
     const [course, setCourse] = useState<CourseContextInterface | null>(null);
     const [instructors, setInstructors] = useState<Instructor[]>([
-        { id: -1, instructorFullName: "Unknown", email: "N/A" },
+        { id: -1, fullName: "Unknown", email: "N/A" },
     ]);
+    const [activeVideoIdx, setActiveVideoIdx] = useState<number>(0);
 
     const [videos, setVideos] = useState<CourseVideos[]>([]);
 
@@ -140,9 +141,11 @@ export const CourseProvider = ({ children }: { children: React.ReactNode }) => {
         course,
         instructors,
         videos,
+        activeVideoIdx,
         contextError,
         contextLoading,
         setCourse,
+        setActiveVideoIdx,
         setVideos,
         setCourseId,
     };

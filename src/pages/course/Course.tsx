@@ -19,46 +19,55 @@ interface NavListProps {
 // Separated this part into a separate component to prevent unnecesary rendering when the
 // video component handled with the <Outlet /> is updated
 const NavList = memo(({ courseId, videos, isSmallScreen }: NavListProps) => {
+    const { setActiveVideoIdx } = useCourse();
     return (
         <div className="course__nav__list">
             {videos &&
-                videos.map(({ orderNb, title, isDone }: CourseVideos, idx) => {
-                    const TEXT_OFFSET: number = 35;
-                    // on small screens don't cut title
-                    const isLong = isSmallScreen
-                        ? false
-                        : title.length > TEXT_OFFSET;
-                    return (
-                        <NavLink
-                            data-tooltip={isLong ? title : null}
-                            key={orderNb}
-                            to={`/course/${courseId}/${orderNb}`}
-                            className={({ isActive }) => {
-                                let classArr = [];
+                videos.map(
+                    ({ id, title, isDone = false }: CourseVideos, idx) => {
+                        const TEXT_OFFSET: number = 35;
+                        // on small screens don't cut title
+                        const isLong = isSmallScreen
+                            ? false
+                            : title.length > TEXT_OFFSET;
+                        return (
+                            <NavLink
+                                data-tooltip={isLong ? title : null}
+                                key={id}
+                                to={`/course/${courseId}/${id}`}
+                                onClick={() => setActiveVideoIdx(idx)}
+                                className={({ isActive }) => {
+                                    let classArr = [];
 
-                                if (isActive) classArr.push("active");
+                                    if (isActive) classArr.push("active");
 
-                                if (isLong)
-                                    classArr.push(
-                                        `tooltip ${
-                                            idx === 0 ? "bottom" : "top"
-                                        }`
-                                    );
+                                    if (isLong)
+                                        classArr.push(
+                                            `tooltip ${
+                                                idx === 0 ? "bottom" : "top"
+                                            }`
+                                        );
 
-                                if (isDone) classArr.push("done");
+                                    if (isDone) classArr.push("done");
 
-                                return classArr.join(" ");
-                            }}
-                        >
-                            <span className="course__nav__id">{orderNb}</span>
-                            <span className="course__nav__title">
-                                {isLong
-                                    ? `${title.slice(0, TEXT_OFFSET + 1)}...`
-                                    : title}
-                            </span>
-                        </NavLink>
-                    );
-                })}
+                                    return classArr.join(" ");
+                                }}
+                            >
+                                <span className="course__nav__id">
+                                    {idx + 1}
+                                </span>
+                                <span className="course__nav__title">
+                                    {isLong
+                                        ? `${title.slice(
+                                              0,
+                                              TEXT_OFFSET + 1
+                                          )}...`
+                                        : title}
+                                </span>
+                            </NavLink>
+                        );
+                    }
+                )}
         </div>
     );
 });
@@ -67,8 +76,6 @@ function Course() {
     const { courseId } = useParams();
     const { videos, course, contextLoading, contextError, setCourseId } =
         useCourse();
-    console.log("videos: ", videos);
-    console.log("course: ", course);
     const { user } = useAuth();
     const { isSmallScreen } = useTheme();
 

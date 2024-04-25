@@ -1,5 +1,7 @@
 import { lazy } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import SuccessCard from "./components/statusCard/StatusCard";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Home = lazy(() => import("./pages/home/Home"));
 const Nav = lazy(() => import("./components/nav/Nav"));
@@ -13,26 +15,28 @@ function Academy() {
             <Nav />
             <Routes>
                 <Route path={`/course/:courseId`} element={<Course />}>
-                    <Route path=":orderNb" element={<Video />} />
+                    <Route path=":videoId" element={<Video />} />
                 </Route>
                 <Route
                     path="/success"
                     element={
-                        <div>
-                            <h1>Success</h1>
-                            <p>Thank you for your purchase</p>
-                            return to <Link to="/">Home</Link>
-                        </div>
+                        <SuccessCard
+                            message="Thank you for your subscription"
+                            title="Success"
+                            color="#88b04b"
+                            icon={faCheck}
+                        />
                     }
                 />
                 <Route
                     path="/cancel"
                     element={
-                        <div>
-                            <h1>Cancel</h1>
-                            <p>Your purchase was cancelled</p>
-                            return to <Link to="/">Home</Link>
-                        </div>
+                        <SuccessCard
+                            message="Your purchase was cancelled"
+                            title="Cancelled"
+                            color="#e74c3ca1"
+                            icon={faXmark}
+                        />
                     }
                 />
                 <Route path="/login" element={<div>Login here</div>} />
