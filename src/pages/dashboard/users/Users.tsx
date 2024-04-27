@@ -7,6 +7,7 @@ import {
     faCircleCheck,
     faGraduationCap,
     faLock,
+    faTrash,
     faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { UserFromDB } from "../../../types/types";
@@ -117,8 +118,28 @@ const UserRole = ({ userId, role }: UserRoleProps) => {
 
 const Users = () => {
     const [users, setUsers] = useState<UserFromDB[]>([]);
+    const [refresh, setRefresh] = useState(false);
 
     const accessToken = useAccessToken();
+
+    const handleDeleteUser = async (userId: string) => {
+        try {
+            const response = await fetch(
+                process.env.REACT_APP_API_URL + "/api/users/" + userId,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "content-type": "application/json",
+                        "x-access-token": accessToken,
+                    },
+                }
+            );
+
+            if (response.ok) {
+                setRefresh((prev: boolean) => !prev);
+            }
+        } catch (error) {}
+    };
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -140,7 +161,7 @@ const Users = () => {
         };
 
         fetchUsers();
-    }, [accessToken]);
+    }, [refresh, accessToken]);
 
     const columns: GridColDef<UserFromDB>[] = [
         { field: "id", headerName: "ID" },
@@ -167,6 +188,22 @@ const Users = () => {
                                 color: isPremium ? "#3fb24b" : "grey",
                             }}
                             icon={faCircleCheck}
+                        />
+                    </div>
+                );
+            },
+        },
+        {
+            field: "deleteUser",
+            headerName: "Delete",
+            flex: 1,
+            renderCell: ({ row: { id } }) => {
+                return (
+                    <div>
+                        <FontAwesomeIcon
+                            onClick={() => handleDeleteUser(id)}
+                            className="delete-icon"
+                            icon={faTrash}
                         />
                     </div>
                 );

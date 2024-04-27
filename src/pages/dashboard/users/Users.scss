@@ -72,4 +72,13 @@
             cursor: pointer;
         }
     }
+
+    .delete-icon {
+        color: #e74c3c;
+        cursor: pointer;
+
+        &:hover {
+            color: #c0392b;
+        }
+    }
 }

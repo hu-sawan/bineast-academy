@@ -43,7 +43,10 @@ function EditVideo({
                             "content-type": "application/json",
                             "x-access-token": accessToken,
                         },
-                        body: JSON.stringify(values),
+                        body: JSON.stringify({
+                            ...values,
+                            prevOrderNb: video.orderNb,
+                        }),
                     }
                 );
 
