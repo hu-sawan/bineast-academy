@@ -127,6 +127,30 @@ function Login({ close }: Props) {
                             (authContextIsDone ? counter : null)}
                     </p>
                 )}
+                <form>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        disabled={authContextLoading}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        disabled={authContextLoading}
+                    />
+                    <button type="submit" disabled={authContextLoading}>
+                        {authContextLoading ? (
+                            <Loading
+                                position="relative"
+                                size="small"
+                                minHeight={false}
+                            />
+                        ) : (
+                            "Login"
+                        )}
+                    </button>
+                </form>
+                <div className="separator"></div>
                 <div className="popup__wrapper__providers">
                     <button
                         onClick={() => handleSignInWithProvider(auth, "google")}

@@ -3,7 +3,11 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-function AccessDenied() {
+interface AccessDeniedProps {
+    to?: string;
+}
+
+function AccessDenied({ to = "/" }: AccessDeniedProps) {
     return (
         <div className="access-denied">
             <div className="access-denied__card">
@@ -13,7 +17,7 @@ function AccessDenied() {
                     You do not have permission to view this page
                 </p>
                 <p>Please check your credentails and try again</p>
-                <Link className="is-easy hover" to="/">
+                <Link className="is-easy hover" to={to}>
                     Back to Home
                 </Link>
             </div>

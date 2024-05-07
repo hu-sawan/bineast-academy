@@ -50,7 +50,7 @@ function Dashboard() {
                                     user?.role.toLowerCase() === "admin" ? (
                                         <Users />
                                     ) : (
-                                        <AccessDenied />
+                                        <AccessDenied to="/dashboard" />
                                     )
                                 }
                             />
@@ -60,7 +60,7 @@ function Dashboard() {
                                     user?.role.toLowerCase() === "admin" ? (
                                         <AddUser />
                                     ) : (
-                                        <AccessDenied />
+                                        <AccessDenied to="/dashboard" />
                                     )
                                 }
                             />
@@ -70,7 +70,7 @@ function Dashboard() {
                                     user?.role.toLowerCase() === "admin" ? (
                                         <AddInstructor />
                                     ) : (
-                                        <AccessDenied />
+                                        <AccessDenied to="/dashboard" />
                                     )
                                 }
                             />
@@ -85,7 +85,7 @@ function Dashboard() {
                                     user?.role.toLowerCase() === "admin" ? (
                                         <Invoices />
                                     ) : (
-                                        <AccessDenied />
+                                        <AccessDenied to="/dashboard" />
                                     )
                                 }
                             />
