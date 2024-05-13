@@ -29,6 +29,9 @@
         border-radius: 0px 5px 5px 0px;
         background-color: var(--search-icon-background-color);
         color: var(--search-icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
 
         &:hover {
@@ -87,9 +90,12 @@
         border-radius: 0;
         width: fit-content;
         z-index: 10;
-        cursor: pointer;
         background-color: var(--primary-background-color);
         color: var(--primary-text-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
     }
 
     &.show {

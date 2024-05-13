@@ -65,18 +65,38 @@
                 }
             }
 
-            button {
-                border: none;
-                display: inline-block;
-                width: fit-content;
-                padding: 5px 10px;
-                border-radius: 5px;
-                transition: 0.3s;
-                margin-left: auto;
+            .popup__wrapper__buttons {
+                display: flex;
+                align-items: center;
+                gap: 10px;
 
-                &:hover {
-                    background-color: #0075ff;
-                    color: white;
+                button {
+                    border: none;
+                    width: fit-content;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    transition: 0.3s;
+
+                    &:hover {
+                        background-color: #0075ff;
+                        color: white;
+                    }
+                }
+
+                span {
+                    font-size: 13px;
+
+                    span {
+                        text-decoration: none;
+                        color: #0075ff;
+                        cursor: pointer;
+                        transition: 0.3s;
+
+                        &:hover {
+                            text-decoration: underline;
+                            color: #0056b3;
+                        }
+                    }
                 }
             }
         }

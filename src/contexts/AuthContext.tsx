@@ -20,11 +20,14 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const accessToken = useAccessToken();
     const [loading, setLoading] = useState<boolean>(true);
+    const [userFullName, setUserFullName] = useState<string>("");
     const updateContext = (newValues: Partial<AuthContextType>) => {
-        setContextValue((prevValue) => ({
-            ...prevValue,
-            ...newValues,
-        }));
+        setContextValue((prevValues) => {
+            return {
+                ...prevValues,
+                ...newValues,
+            };
+        });
     };
 
     const [contextValue, setContextValue] = useState<AuthContextType>({
@@ -33,12 +36,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         authContextError: "",
         authContextLoading: false,
         authContextIsDone: false,
+        setUserFullName,
         updateContext,
     });
 
+    console.log("context updated", userFullName);
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            contextValue.updateContext({
+            updateContext({
                 authContextError: "",
                 authContextSuccess: "",
                 authContextIsDone: false,
@@ -76,20 +82,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             }
                         );
 
-                        const [{ id, role, isPremium }]: [UserFromDB] =
-                            await userDataResponse.json();
+                        const [{ id, role, isPremium, fullName }]: [
+                            UserFromDB
+                        ] = await userDataResponse.json();
 
-                        contextValue.updateContext({
+                        updateContext({
                             authContextIsDone: true,
                             authContextSuccess: `User found. Redirecting to main page in `,
                             authContextError: "",
-                            user: { ...user, id, role, isPremium },
+                            user: {
+                                ...user,
+                                displayName: fullName,
+                                id,
+                                role,
+                                isPremium,
+                            },
                         });
+                        console.log("called 200");
+                        setUserFullName("");
                     }
 
                     // If user was not found in my database then simply add it
                     if (response.status === 404) {
-                        contextValue.updateContext({
+                        updateContext({
                             authContextSuccess: "",
                             authContextError:
                                 "User not found. Creating user...",
@@ -105,23 +120,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                                 },
                                 body: JSON.stringify({
                                     userId: user.uid,
+                                    displayName:
+                                        user.displayName || userFullName,
                                     email: user.email,
                                 }),
                             }
                         );
 
                         if (response.status === 201) {
-                            contextValue.updateContext({
+                            console.log("Name", userFullName);
+                            updateContext({
                                 authContextError: "",
                                 authContextSuccess: `User created. Redirecting to main page in `,
                                 authContextIsDone: true,
                                 user: {
                                     ...user,
+                                    displayName:
+                                        user.displayName || userFullName,
                                     id: user.uid,
                                     role: "USER",
                                     isPremium: false,
                                 },
                             });
+                            console.log("called 404");
+                            setUserFullName("");
                         } else {
                             auth.signOut();
                             throw new Error(
@@ -130,14 +152,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         }
                     }
                 } catch (error) {
-                    if (error instanceof Error)
-                        contextValue.updateContext({
+                    if (error instanceof Error) {
+                        updateContext({
                             authContextError: error.message,
                         });
-                    else
-                        contextValue.updateContext({
+                        setUserFullName("");
+                    } else {
+                        updateContext({
                             authContextError: "Unkown error Happened",
                         });
+                        setUserFullName("");
+                    }
                 }
             } else {
                 setContextValue((prevValue) => {
@@ -148,7 +173,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 });
             }
             setLoading(false);
-            contextValue.updateContext({ authContextLoading: false });
+            updateContext({ authContextLoading: false });
         });
 
         return unsubscribe;

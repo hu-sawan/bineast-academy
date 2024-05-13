@@ -19,6 +19,7 @@ export interface AuthContextType {
     authContextError: string;
     authContextLoading: boolean;
     authContextIsDone: boolean;
+    setUserFullName: (fullName: string) => void;
     updateContext: (newValues: Partial<AuthContextType>) => void;
 }
 

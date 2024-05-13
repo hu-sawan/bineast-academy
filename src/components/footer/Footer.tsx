@@ -8,6 +8,7 @@ import {
 
 function Footer() {
     const CURRENT_YEAR = new Date().getFullYear();
+
     return (
         <footer className="aca-footer">
             <div className="aca-footer__separator">
