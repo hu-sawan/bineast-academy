@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/bineast-academy/static/css/main.a0ee82c5.css",
-    "main.js": "/bineast-academy/static/js/main.4d487c9a.js",
+    "main.js": "/bineast-academy/static/js/main.66fbd3ea.js",
     "static/css/592.6e74ac7a.chunk.css": "/bineast-academy/static/css/592.6e74ac7a.chunk.css",
     "static/js/592.07d0e9ac.chunk.js": "/bineast-academy/static/js/592.07d0e9ac.chunk.js",
     "static/css/260.311908c2.chunk.css": "/bineast-academy/static/css/260.311908c2.chunk.css",
@@ -18,7 +18,7 @@
     "static/css/276.57f78e1e.chunk.css": "/bineast-academy/static/css/276.57f78e1e.chunk.css",
     "static/js/276.1e9e2f1d.chunk.js": "/bineast-academy/static/js/276.1e9e2f1d.chunk.js",
     "static/css/952.2afb12d7.chunk.css": "/bineast-academy/static/css/952.2afb12d7.chunk.css",
-    "static/js/952.3d5d4230.chunk.js": "/bineast-academy/static/js/952.3d5d4230.chunk.js",
+    "static/js/952.76b0c3bc.chunk.js": "/bineast-academy/static/js/952.76b0c3bc.chunk.js",
     "static/css/488.be8869a4.chunk.css": "/bineast-academy/static/css/488.be8869a4.chunk.css",
     "static/js/488.657ddb83.chunk.js": "/bineast-academy/static/js/488.657ddb83.chunk.js",
     "static/css/504.31d6cfe0.chunk.css": "/bineast-academy/static/css/504.31d6cfe0.chunk.css",
@@ -51,7 +51,7 @@
     "static/media/google.png": "/bineast-academy/static/media/google.39c52b1bcccb20569aa4.png",
     "index.html": "/bineast-academy/index.html",
     "main.a0ee82c5.css.map": "/bineast-academy/static/css/main.a0ee82c5.css.map",
-    "main.4d487c9a.js.map": "/bineast-academy/static/js/main.4d487c9a.js.map",
+    "main.66fbd3ea.js.map": "/bineast-academy/static/js/main.66fbd3ea.js.map",
     "592.6e74ac7a.chunk.css.map": "/bineast-academy/static/css/592.6e74ac7a.chunk.css.map",
     "592.07d0e9ac.chunk.js.map": "/bineast-academy/static/js/592.07d0e9ac.chunk.js.map",
     "260.311908c2.chunk.css.map": "/bineast-academy/static/css/260.311908c2.chunk.css.map",
@@ -68,7 +68,7 @@
     "276.57f78e1e.chunk.css.map": "/bineast-academy/static/css/276.57f78e1e.chunk.css.map",
     "276.1e9e2f1d.chunk.js.map": "/bineast-academy/static/js/276.1e9e2f1d.chunk.js.map",
     "952.2afb12d7.chunk.css.map": "/bineast-academy/static/css/952.2afb12d7.chunk.css.map",
-    "952.3d5d4230.chunk.js.map": "/bineast-academy/static/js/952.3d5d4230.chunk.js.map",
+    "952.76b0c3bc.chunk.js.map": "/bineast-academy/static/js/952.76b0c3bc.chunk.js.map",
     "488.be8869a4.chunk.css.map": "/bineast-academy/static/css/488.be8869a4.chunk.css.map",
     "488.657ddb83.chunk.js.map": "/bineast-academy/static/js/488.657ddb83.chunk.js.map",
     "504.83acd974.chunk.js.map": "/bineast-academy/static/js/504.83acd974.chunk.js.map",
@@ -98,6 +98,6 @@
   },
   "entrypoints": [
     "static/css/main.a0ee82c5.css",
-    "static/js/main.4d487c9a.js"
+    "static/js/main.66fbd3ea.js"
   ]
 }
