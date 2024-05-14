@@ -16,6 +16,7 @@ import Login from "../loginpopup/Login";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAccessToken } from "../../contexts/AccessTokenContext";
 import { NavLink } from "react-router-dom";
+import TextImage from "../textImage/TextImage";
 
 function Nav() {
     const [active, setActive] = useState<boolean>(false);
@@ -107,10 +108,17 @@ function Nav() {
                                     onClick={() => setActive(!active)}
                                     className="aca-nav__control__profile"
                                 >
-                                    <img
-                                        src={user.photoURL || undefined}
-                                        alt="user"
-                                    />
+                                    {user.photoURL === undefined ? (
+                                        <img src={user.photoURL} alt="user" />
+                                    ) : (
+                                        <TextImage
+                                            text={
+                                                user && user.displayName
+                                                    ? user.displayName
+                                                    : "Uknown User"
+                                            }
+                                        />
+                                    )}
                                 </div>
                                 <div
                                     className={`aca-nav__control__signout ${
