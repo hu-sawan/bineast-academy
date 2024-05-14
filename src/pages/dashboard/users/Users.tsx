@@ -19,8 +19,8 @@ interface UserRoleProps {
 }
 
 const UserRole = ({ userId, role }: UserRoleProps) => {
-    const [prevChoice, setPrevChoice] = useState(role);
-    const [choice, setChoice] = useState(role);
+    const [prevChoice, setPrevChoice] = useState(role.toLocaleUpperCase());
+    const [choice, setChoice] = useState(role.toUpperCase());
     const [isEditing, setIsEditing] = useState(false);
 
     const accessToken = useAccessToken();
